@@ -2768,9 +2768,14 @@ function getDrawPool() {
   return pool.length > 0 ? pool : MEMBERS;
 }
 
+let dsPackTitle = '';
+let dsPackDescription = '';
+
 function useDefaultPack() {
   DS_QUESTIONS.length = 0;
   DEFAULT_DS_QUESTIONS.forEach(q => DS_QUESTIONS.push(q));
+  dsPackTitle = '防弹命运抽签';
+  dsPackDescription = '';
   document.getElementById('ds-page-heading').textContent = '防弹命运抽签';
   startDrawStory();
 }
@@ -2856,6 +2861,8 @@ async function startPackGame(packId) {
     const pack = data.pack;
     DS_QUESTIONS.length = 0;
     pack.questions.forEach((q, i) => DS_QUESTIONS.push({ q, role: `角色${i+1}` }));
+    dsPackTitle = pack.title || '';
+    dsPackDescription = pack.description || '';
     document.getElementById('ds-page-heading').textContent = pack.title;
     startDrawStory();
   } catch(e) { showToast('加载失败，请重试 ✦'); }
@@ -2966,18 +2973,28 @@ async function showDsResult() {
   });
 
   // build prompt from draw results
-  const rolesList = Object.entries(dsAnswers).map(([role, m]) => `${role}：${m.kr}（${m.cn}）`).join('、');
-  const prompt = `你是一位擅长写乙女向小说的中文作家，文风细腻，擅长写多人追求同一人的复杂情感张力。
-根据以下命运抽签结果，写一段450-550字的故事：
+  const rolesList = Object.entries(dsAnswers).map(([role, m]) => `${role}：${m.kr}（${m.cn}，请用他的中文名或韩文名，不要编造名字）`).join('\n');
+  const questionsList = DS_QUESTIONS.map((q, i) => `第${i+1}签：${q.q}`).join('\n');
+  const packContext = dsPackTitle && dsPackTitle !== '防弹命运抽签'
+    ? `问题包主题：${dsPackTitle}\n${dsPackDescription ? '背景设定：' + dsPackDescription : ''}`
+    : '背景设定：七位BTS成员同时出现在主角生活中';
+
+  const prompt = `你是一位擅长写粉丝向小说的中文作家，文风细腻，擅长多人围绕同一主角的复杂情感张力。
+
+${packContext}
+
+本次抽签的问题是：
+${questionsList}
+
+抽签结果（严格按照以下对应关系写故事，成员名字只用括号里的中文名或kr名，绝对不要自己编造名字）：
 ${rolesList}
 
-故事设定：七位BTS成员同时出现在主角（第二人称"你"）的生活中，每个人都用自己独特的方式靠近你、在意你、争夺你的注意力。
-要求：
+请根据以上设定写一段450-550字的故事：
 - 第二人称"你"视角，读者是故事主角
-- 体现7v1的乙女游戏感：有人直白，有人暗藏心思，有人和你死对头却藏不住在意，有人温柔守护
-- 根据每个人抽到的角色（男友/初恋/死对头/暗恋对象等）来塑造他们的行为和态度
+- 严格贴合问题包的主题和背景，故事场景要符合设定
+- 根据每个人抽到的角色来塑造他们的行为和态度
 - 要有张力和拉扯感，不同性格的人之间有明争暗抢的氛围
-- 语言细腻有画面感，像一部乙女游戏的开场白
+- 语言细腻有画面感
 - 直接开始故事，不要标题，不要解释`;
 
   const el = document.getElementById('ds-story-text');
