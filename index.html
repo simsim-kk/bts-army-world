@@ -3943,16 +3943,7 @@ let pkQCount = 1;
 let currentPackTag = '';
 
 function switchPackTab(tab) {
-  document.getElementById('packs-browse').style.display = tab === 'browse' ? 'block' : 'none';
-  document.getElementById('packs-create').style.display = tab === 'create' ? 'block' : 'none';
-  document.getElementById('packs-submitted').style.display = 'none';
-  document.getElementById('tab-browse').className = tab === 'browse' ? 'btn btn-primary' : 'btn btn-glass';
-  document.getElementById('tab-create').className = tab === 'create' ? 'btn btn-primary' : 'btn btn-glass';
-  document.getElementById('tab-browse').style.flex = '1';
-  document.getElementById('tab-browse').style.fontSize = '13px';
-  document.getElementById('tab-create').style.flex = '1';
-  document.getElementById('tab-create').style.fontSize = '13px';
-  if (tab === 'browse') loadPacks();
+  // legacy stub - packs now integrated into draw-story page
 }
 
 function selectAgeNote(el, val) {
@@ -4015,7 +4006,7 @@ async function submitPack() {
     });
     const data = await res.json();
     if (data.success) {
-      document.getElementById('packs-create').style.display = 'none';
+      document.getElementById('ds-create-wrap').style.display = 'none';
       document.getElementById('packs-submitted').style.display = 'block';
       document.getElementById('pk-result-id').textContent = data.id.replace('pack_','').split('_').pop();
     } else { showToast(data.error || '提交失败'); }
@@ -4112,6 +4103,7 @@ async function startPackGame(packId) {
 }
 
 function savePlImg() {
+  const canvas = document.getElementById('pl-canvas');
   if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
   downloadCanvas('pl-canvas', 'bts-playlist-' + selectedPlMood);
 }
