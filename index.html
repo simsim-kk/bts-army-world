@@ -500,6 +500,39 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
 
+  .story-style-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .style-btn {
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 13px;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .style-btn span {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+  }
+  .style-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--violet); }
+  .style-btn.selected-style {
+    background: linear-gradient(135deg,rgba(196,176,232,0.45),rgba(155,127,212,0.3));
+    border-color: var(--purple);
+    color: var(--deep);
+  }
+  .style-btn.selected-style span { color: var(--purple); }
+
   /* ============ PAGE 6: DRAW STORY ============ */
   #page-draw-story { max-width: 480px; margin: 0 auto; }
   .ds-role-tag {
@@ -783,6 +816,66 @@
     transform: translateY(-1px);
   }
 
+  /* ============ PAGE 12: QUESTION PACKS ============ */
+  /* ============ PAGE 12: QUESTION PACKS - integrated into draw story ============ */
+  .pack-tag-chip {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(196,176,232,0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .pack-tag-chip:hover, .pack-tag-chip.active, .pack-tag-chip.ds-tag-active {
+    background: linear-gradient(135deg,rgba(196,176,232,0.5),rgba(155,127,212,0.35));
+    border-color: var(--purple);
+    color: var(--deep);
+  }
+  .pack-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    backdrop-filter: blur(16px);
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pack-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(107,79,160,0.12); }
+  .pack-card-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+  }
+  .pack-card-meta {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pack-card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .pack-card-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(196,176,232,0.2);
+    color: var(--text-mid);
+    border: 1px solid var(--glass-border);
+  }
+  .pack-age-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(220,100,100,0.15);
+    color: #c46060;
+    border: 1px solid rgba(220,100,100,0.2);
+  }
+
   @media (max-width: 480px) {
     .nav-links { gap: 2px; }
     .nav-link { font-size: 10px; padding: 4px 7px; }
@@ -957,6 +1050,15 @@
         <div class="type-btn" onclick="selectType(this,'重逢')">🎭 久别重逢</div>
       </div>
 
+      <label class="input-label" style="margin-top:16px;">✦ 故事风格</label>
+      <div class="story-style-grid" id="story-style-grid">
+        <div class="style-btn" onclick="selectStyle(this,'散文诗')">🌙 散文诗<span>意象丰富，留白深情</span></div>
+        <div class="style-btn" onclick="selectStyle(this,'温柔日常')">☀️ 温柔日常<span>平淡细腻，像日记</span></div>
+        <div class="style-btn" onclick="selectStyle(this,'偶像剧')">🌸 偶像剧<span>甜甜的，有戏剧感</span></div>
+        <div class="style-btn" onclick="selectStyle(this,'克制深情')">🖤 克制深情<span>少言语，多留白</span></div>
+        <div class="style-btn selected-style" onclick="selectStyle(this,'随机')">🎲 随机<span>惊喜风格</span></div>
+      </div>
+
       <label class="input-label" style="margin-top:16px;">✦ 选择你的member（不选则随机）</label>
       <div class="member-pick-grid" id="member-pick-grid">
         <div class="mpick-btn" onclick="selectMember(this,'RM')">RM</div>
@@ -1009,18 +1111,112 @@
 <!-- PAGE 6: DRAW STORY -->
 <div class="page" id="page-draw-story">
   <div class="section-title">✦ fate draw</div>
-  <div class="section-heading">防弹命运抽签</div>
+  <div class="section-heading" id="ds-page-heading">防弹命运抽签</div>
 
   <!-- INTRO -->
   <div id="ds-intro">
+
+    <!-- DEFAULT PACK -->
     <div class="glass" style="padding:24px;margin-bottom:16px;text-align:center;">
       <div style="font-size:40px;margin-bottom:12px;">🎴</div>
       <p style="font-family:'Noto Serif SC',serif;font-weight:300;font-size:15px;color:var(--text-mid);line-height:1.9;">
         十张命运之签<br>每签揭开一个角色<br>最终生成你的防弹命运故事
       </p>
+      <button class="btn btn-primary" onclick="useDefaultPack()" style="width:100%;margin-top:16px;">✦ 使用默认问题包</button>
     </div>
-    <button class="btn btn-primary" onclick="startDrawStory()" style="width:100%;">✦ 开始抽签</button>
-  </div>
+
+    <!-- SEARCH PACK -->
+    <div class="glass" style="padding:20px;margin-bottom:16px;">
+      <div style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin-bottom:12px;">✦ 搜索问题包</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <input type="text" id="ds-pack-search" placeholder="输入标题或编号…" style="margin-bottom:0;flex:1;">
+        <button class="btn btn-primary" onclick="dsSearchPacks()" style="padding:10px 14px;font-size:13px;">搜索</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+        <span class="pack-tag-chip" onclick="dsFilterTag('校园')">校园</span>
+        <span class="pack-tag-chip" onclick="dsFilterTag('爱豆')">爱豆</span>
+        <span class="pack-tag-chip" onclick="dsFilterTag('职场')">职场</span>
+        <span class="pack-tag-chip" onclick="dsFilterTag('古风')">古风</span>
+        <span class="pack-tag-chip" onclick="dsFilterTag('甜宠')">甜宠</span>
+        <span class="pack-tag-chip" onclick="dsFilterTag('虐恋')">虐恋</span>
+        <span class="pack-tag-chip" onclick="dsFilterTag('成人')">🔞 成人</span>
+        <span class="pack-tag-chip ds-tag-active" onclick="dsFilterTag('')">全部</span>
+      </div>
+      <div id="ds-packs-list" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;"></div>
+    </div>
+
+    <!-- CREATE PACK ENTRY -->
+    <div class="glass" style="padding:20px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:14px;color:var(--text-dark);font-family:'Noto Serif SC',serif;">创建你的问题包</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">设计专属剧情，让所有人来玩</div>
+        </div>
+        <button class="btn btn-glass" onclick="showCreatePack()" style="font-size:12px;padding:8px 16px;">创建 →</button>
+      </div>
+    </div>
+
+    <!-- CREATE FORM (hidden by default) -->
+    <div id="ds-create-wrap" style="display:none;">
+      <div class="glass" style="padding:24px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-size:14px;color:var(--deep);font-family:'Noto Serif SC',serif;">创建问题包</div>
+          <span onclick="hideCreatePack()" style="cursor:pointer;color:var(--text-light);font-size:18px;">✕</span>
+        </div>
+
+        <label class="input-label">✦ 标题 *</label>
+        <input type="text" id="pk-title" placeholder="例：大学室友の日常" maxlength="30" style="margin-bottom:12px;">
+
+        <label class="input-label">✦ 标签 * （逗号分隔，最多5个）</label>
+        <input type="text" id="pk-tags" placeholder="例：校园, 室友, 甜宠" style="margin-bottom:12px;">
+
+        <label class="input-label">✦ 作者昵称</label>
+        <input type="text" id="pk-author" placeholder="留空则显示匿名" maxlength="20" style="margin-bottom:12px;">
+
+        <label class="input-label">✦ 背景描述</label>
+        <textarea id="pk-desc" placeholder="简单介绍背景或玩法…" maxlength="100" style="height:64px;margin-bottom:12px;"></textarea>
+
+        <label class="input-label">✦ 年龄提示</label>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <div class="bazi-sel-btn selected" onclick="selectAgeNote(this,'全年龄')" style="flex:1;font-size:12px;">全年龄</div>
+          <div class="bazi-sel-btn" onclick="selectAgeNote(this,'15+')" style="flex:1;font-size:12px;">15+</div>
+          <div class="bazi-sel-btn" onclick="selectAgeNote(this,'18+')" style="flex:1;font-size:12px;">🔞 18+</div>
+        </div>
+
+        <label class="input-label">✦ 问题列表（5-20个）</label>
+        <p style="font-size:11px;color:var(--text-light);margin-bottom:10px;">每个问题最多50字，例：谁是你的同桌？</p>
+        <div id="pk-questions-wrap" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+          <div class="pk-q-row" style="display:flex;gap:6px;align-items:center;">
+            <span style="font-size:11px;color:var(--text-light);min-width:18px;">1.</span>
+            <input type="text" placeholder="问题1" maxlength="50" style="margin-bottom:0;flex:1;font-size:13px;" class="pk-q-input">
+            <span onclick="removePkQ(this)" style="cursor:pointer;color:var(--text-light);font-size:15px;padding:2px 4px;">✕</span>
+          </div>
+        </div>
+        <button class="btn btn-glass" onclick="addPkQuestion()" style="width:100%;margin-bottom:12px;font-size:12px;" id="pk-add-q-btn">+ 添加问题</button>
+        <button class="btn btn-primary" onclick="submitPack()" style="width:100%;">✦ 提交审核</button>
+      </div>
+
+      <div class="glass" style="padding:14px 18px;margin-bottom:16px;">
+        <p style="font-size:11px;color:var(--text-light);line-height:1.9;">
+          ✦ 提交后生成编号，审核通过后可搜索使用<br>
+          ✦ 18+内容请务必标注年龄提示
+        </p>
+      </div>
+    </div>
+
+    <!-- SUBMIT SUCCESS -->
+    <div id="packs-submitted" style="display:none;">
+      <div class="glass" style="padding:28px 24px;text-align:center;margin-bottom:16px;">
+        <div style="font-size:40px;margin-bottom:10px;">✦</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:17px;color:var(--text-dark);margin-bottom:6px;">提交成功，等待审核</div>
+        <div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">你的问题包编号</div>
+        <div id="pk-result-id" style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--deep);letter-spacing:3px;margin-bottom:10px;"></div>
+        <div style="font-size:11px;color:var(--text-light);">审核通过后可通过编号或标题搜索</div>
+      </div>
+      <button class="btn btn-glass" onclick="hidePksSubmitted()" style="width:100%;">返回</button>
+    </div>
+
+  </div><!-- end ds-intro -->
 
   <!-- DRAW PHASE -->
   <div id="ds-draw" style="display:none;">
@@ -1538,6 +1734,8 @@ function showPage(name) {
   document.getElementById('page-' + name).classList.add('active');
   event.target.classList.add('active');
   if (name === 'message') loadMessages();
+  if (name === 'draw-story') initDrawStoryPage();
+  if (name === 'packs') initDrawStoryPage();
 }
 
 function showToast(msg) {
@@ -1942,8 +2140,120 @@ function roundRectTop(ctx, x, y, w, h, r) {
   ctx.fill();
 }
 
-// ===================== PAGE 6: DRAW STORY =====================
-const DS_QUESTIONS = [
+// ===================== PAGE 6: DRAW STORY + PACKS =====================
+const DEFAULT_DS_QUESTIONS = [
+  { q: '谁是你的男友？', role: '男友' },
+  { q: '谁是你的初恋？', role: '初恋' },
+  { q: '谁是你的青梅竹马？', role: '青梅竹马' },
+  { q: '谁是你的前任？', role: '前任' },
+  { q: '谁是你暗恋过的人？', role: '暗恋对象' },
+  { q: '谁是你的死党？', role: '死党' },
+  { q: '谁是你的死对头？', role: '死对头' },
+  { q: '谁是偶遇的陌生人？', role: '偶遇陌生人' },
+  { q: '谁守护着你的梦？', role: '守梦人' },
+  { q: '谁会在你最难过的夜里陪着你？', role: '深夜陪伴者' },
+];
+
+let dsCurrentTag = '';
+
+function useDefaultPack() {
+  DS_QUESTIONS.length = 0;
+  DEFAULT_DS_QUESTIONS.forEach(q => DS_QUESTIONS.push(q));
+  document.getElementById('ds-page-heading').textContent = '防弹命运抽签';
+  startDrawStory();
+}
+
+function showCreatePack() {
+  document.getElementById('ds-create-wrap').style.display = 'block';
+  document.getElementById('packs-submitted').style.display = 'none';
+}
+function hideCreatePack() {
+  document.getElementById('ds-create-wrap').style.display = 'none';
+}
+function hidePksSubmitted() {
+  document.getElementById('packs-submitted').style.display = 'none';
+  document.getElementById('ds-create-wrap').style.display = 'none';
+}
+
+async function dsSearchPacks() {
+  const q = document.getElementById('ds-pack-search').value.trim();
+  await dsLoadPacks(dsCurrentTag, q);
+}
+
+async function dsFilterTag(tag) {
+  dsCurrentTag = tag;
+  document.querySelectorAll('.pack-tag-chip').forEach(c => {
+    const text = c.textContent.replace('🔞 ','').trim();
+    c.classList.toggle('ds-tag-active', text === tag || (tag === '' && text === '全部'));
+  });
+  await dsLoadPacks(tag);
+}
+
+async function dsLoadPacks(tag = '', q = '') {
+  const list = document.getElementById('ds-packs-list');
+  list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:12px;">加载中…</div>';
+  try {
+    let url = `${WORKER_URL}/packs/list`;
+    const params = [];
+    if (tag) params.push(`tag=${encodeURIComponent(tag)}`);
+    if (q) params.push(`q=${encodeURIComponent(q)}`);
+    if (params.length) url += '?' + params.join('&');
+
+    const res = await fetch(url);
+    const data = await res.json();
+    const packs = data.packs || [];
+
+    if (!packs.length) {
+      list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:12px;">暂无问题包 ✦</div>';
+      return;
+    }
+    list.innerHTML = '';
+    packs.forEach(pack => {
+      const card = document.createElement('div');
+      card.className = 'pack-card';
+      const shortId = pack.id.replace('pack_','').split('_').pop();
+      const isAdult = pack.ageNote && pack.ageNote.includes('+');
+      card.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="pack-card-title" style="margin-bottom:0;">${pack.title}</div>
+          ${isAdult ? `<span class="pack-age-badge">${pack.ageNote}</span>` : ''}
+        </div>
+        <div class="pack-card-meta">
+          <span>by ${pack.author}</span>
+          <span>${pack.questionCount}题</span>
+          <span>▶ ${pack.plays}次</span>
+          <span style="font-family:'Cormorant Garamond',serif;">#${shortId}</span>
+        </div>
+        ${pack.description ? `<div style="font-size:11px;color:var(--text-mid);margin-bottom:6px;">${pack.description}</div>` : ''}
+        <div class="pack-card-tags">${pack.tags.map(t=>`<span class="pack-card-tag">${t}</span>`).join('')}</div>
+      `;
+      card.onclick = () => startPackGame(pack.id);
+      list.appendChild(card);
+    });
+  } catch(e) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:12px;">加载失败，请重试 ✦</div>';
+  }
+}
+
+async function startPackGame(packId) {
+  showToast('加载问题包… ✦');
+  try {
+    const res = await fetch(`${WORKER_URL}/packs/get?id=${packId}`);
+    const data = await res.json();
+    if (!data.pack) { showToast(data.error || '加载失败'); return; }
+    const pack = data.pack;
+    DS_QUESTIONS.length = 0;
+    pack.questions.forEach((q, i) => DS_QUESTIONS.push({ q, role: `角色${i+1}` }));
+    document.getElementById('ds-page-heading').textContent = pack.title;
+    startDrawStory();
+  } catch(e) { showToast('加载失败，请重试 ✦'); }
+}
+
+// init load packs when entering draw-story page
+function initDrawStoryPage() {
+  dsLoadPacks();
+}
+
   { q: '谁是你的男友？', role: '男友' },
   { q: '谁是你的初恋？', role: '初恋' },
   { q: '谁是你的青梅竹马？', role: '青梅竹马' },
@@ -2080,14 +2390,17 @@ async function showDsResult() {
 
   // build prompt from draw results
   const rolesList = Object.entries(dsAnswers).map(([role, m]) => `${role}：${m.kr}（${m.cn}）`).join('、');
-  const prompt = `你是一位擅长写BTS粉丝向治愈系故事的中文作家。
-根据以下命运抽签结果，写一段300-400字的专属故事：
+  const prompt = `你是一位擅长写乙女向小说的中文作家，文风细腻，擅长写多人追求同一人的复杂情感张力。
+根据以下命运抽签结果，写一段450-550字的故事：
 ${rolesList}
+
+故事设定：七位BTS成员同时出现在主角（第二人称"你"）的生活中，每个人都用自己独特的方式靠近你、在意你、争夺你的注意力。
 要求：
-- 用中文写作，第二人称"你"视角
-- 把每个角色自然融入故事情节中
-- 语言细腻温柔，有画面感，像一篇散文诗
-- 结尾给人温暖治愈的感觉
+- 第二人称"你"视角，读者是故事主角
+- 体现7v1的乙女游戏感：有人直白，有人暗藏心思，有人和你死对头却藏不住在意，有人温柔守护
+- 根据每个人抽到的角色（男友/初恋/死对头/暗恋对象等）来塑造他们的行为和态度
+- 要有张力和拉扯感，不同性格的人之间有明争暗抢的氛围
+- 语言细腻有画面感，像一部乙女游戏的开场白
 - 直接开始故事，不要标题，不要解释`;
 
   const el = document.getElementById('ds-story-text');
@@ -2269,6 +2582,32 @@ let selectedMood = '';
 let selectedType = '';
 let selectedMemberPick = 'random';
 
+let selectedStyle = '随机';
+
+function selectStyle(el, style) {
+  document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected-style'));
+  el.classList.add('selected-style');
+  selectedStyle = style;
+}
+
+const STYLE_PROMPTS = {
+  '散文诗': '文体是散文诗，大量使用意象、隐喻和留白，语言如诗如画，情感克制而深远，像张爱玲或村上春树的笔触。',
+  '温柔日常': '文体是温柔的日记体，平淡细腻，记录普通却珍贵的瞬间，语言简单真实，有生活的质感和温度。',
+  '偶像剧': '文体是偶像剧风格，有戏剧性的情节转折，甜蜜的互动，浪漫的氛围，让读者心跳加速的细节描写。',
+  '克制深情': '文体极度克制，少言语多留白，用细小的动作和场景暗示深沉的情感，越克制越深情，像是《请回答1988》的质感。',
+  '随机': '',
+};
+
+const RANDOM_STYLES = ['散文诗', '温柔日常', '偶像剧', '克制深情'];
+
+function getStylePrompt() {
+  if (selectedStyle === '随机') {
+    const s = RANDOM_STYLES[Math.floor(Math.random() * RANDOM_STYLES.length)];
+    return STYLE_PROMPTS[s];
+  }
+  return STYLE_PROMPTS[selectedStyle] || '';
+}
+
 function selectMood(el, mood) {
   document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected-mood'));
   el.classList.add('selected-mood');
@@ -2305,15 +2644,16 @@ async function generateStory() {
   document.getElementById('story-loading').style.display = 'block';
   document.getElementById('loading-member-hint').textContent = `${member.emoji} ${member.kr} 正在走向你…`;
 
-  const prompt = `你是一位擅长写BTS粉丝向治愈系短篇故事的中文作家。
+  const stylePrompt = getStylePrompt();
+  const prompt = `你是一位擅长写BTS粉丝向故事的中文作家。
 请为读者「${name}」写一个与BTS成员${member.name}（${member.cn}）的专属故事。
 故事类型：${selectedType}
 读者当前心情：${selectedMood}
+${stylePrompt ? '文风要求：' + stylePrompt : ''}
 要求：
 - 用中文写作，第二人称"你"视角
-- 字数在300-400字之间
-- 语言细腻温柔，有画面感
-- 结尾要给人温暖或治愈的感觉
+- 字数在350-450字之间
+- 结尾给人温暖或治愈的感觉
 - 直接开始故事，不要写标题，不要任何解释说明
 - 自然融入${member.name}的性格特点`;
 
@@ -2349,7 +2689,6 @@ function resetStory() {
   document.getElementById('story-step1').style.display = 'block';
   document.getElementById('story-content').textContent = '';
 }
-
 function generateStoryCanvas(member, story, userName, storyType) {
   const canvas = document.getElementById('story-canvas');
   const W = 800;
@@ -3595,6 +3934,180 @@ async function loadMessages() {
     });
   } catch (e) {
     list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载失败，请重试 ✦</div>';
+  }
+}
+
+// ===================== PAGE 12: QUESTION PACKS =====================
+let selectedAgeNote = '全年龄';
+let pkQCount = 1;
+let currentPackTag = '';
+
+function switchPackTab(tab) {
+  document.getElementById('packs-browse').style.display = tab === 'browse' ? 'block' : 'none';
+  document.getElementById('packs-create').style.display = tab === 'create' ? 'block' : 'none';
+  document.getElementById('packs-submitted').style.display = 'none';
+  document.getElementById('tab-browse').className = tab === 'browse' ? 'btn btn-primary' : 'btn btn-glass';
+  document.getElementById('tab-create').className = tab === 'create' ? 'btn btn-primary' : 'btn btn-glass';
+  document.getElementById('tab-browse').style.flex = '1';
+  document.getElementById('tab-browse').style.fontSize = '13px';
+  document.getElementById('tab-create').style.flex = '1';
+  document.getElementById('tab-create').style.fontSize = '13px';
+  if (tab === 'browse') loadPacks();
+}
+
+function selectAgeNote(el, val) {
+  document.querySelectorAll('#ds-create-wrap .bazi-sel-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedAgeNote = val;
+}
+
+function addPkQuestion() {
+  if (pkQCount >= 20) { showToast('最多20个问题 ✦'); return; }
+  pkQCount++;
+  const wrap = document.getElementById('pk-questions-wrap');
+  const row = document.createElement('div');
+  row.className = 'pk-q-row';
+  row.style.cssText = 'display:flex;gap:6px;align-items:center;';
+  row.innerHTML = `
+    <span style="font-size:11px;color:var(--text-light);min-width:20px;">${pkQCount}.</span>
+    <input type="text" placeholder="问题${pkQCount}" maxlength="50" style="margin-bottom:0;flex:1;" class="pk-q-input">
+    <span onclick="removePkQ(this)" style="cursor:pointer;color:var(--text-light);font-size:16px;padding:4px;">✕</span>
+  `;
+  wrap.appendChild(row);
+  if (pkQCount >= 20) document.getElementById('pk-add-q-btn').style.display = 'none';
+}
+
+function removePkQ(el) {
+  const rows = document.querySelectorAll('.pk-q-row');
+  if (rows.length <= 1) { showToast('至少保留1个问题 ✦'); return; }
+  el.closest('.pk-q-row').remove();
+  // renumber
+  document.querySelectorAll('.pk-q-row').forEach((row, i) => {
+    row.querySelector('span').textContent = (i+1) + '.';
+    row.querySelector('input').placeholder = '问题' + (i+1);
+  });
+  pkQCount = document.querySelectorAll('.pk-q-row').length;
+  document.getElementById('pk-add-q-btn').style.display = 'block';
+}
+
+async function submitPack() {
+  const title = document.getElementById('pk-title').value.trim();
+  const tagsRaw = document.getElementById('pk-tags').value.trim();
+  const author = document.getElementById('pk-author').value.trim();
+  const description = document.getElementById('pk-desc').value.trim();
+  const questions = [...document.querySelectorAll('.pk-q-input')]
+    .map(i => i.value.trim()).filter(Boolean);
+
+  if (!title) { showToast('请填写标题 ✦'); return; }
+  if (!tagsRaw) { showToast('请填写标签 ✦'); return; }
+  if (questions.length < 5) { showToast('至少需要5个问题 ✦'); return; }
+
+  const tags = tagsRaw.split(/[,，]/).map(t => t.trim()).filter(Boolean).slice(0,5);
+
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = '提交中…';
+
+  try {
+    const res = await fetch(`${WORKER_URL}/packs/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, tags, author, description, ageNote: selectedAgeNote, questions })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('packs-create').style.display = 'none';
+      document.getElementById('packs-submitted').style.display = 'block';
+      document.getElementById('pk-result-id').textContent = data.id.replace('pack_','').split('_').pop();
+    } else { showToast(data.error || '提交失败'); }
+  } catch (e) { showToast('提交失败，请重试 ✦'); }
+  finally { btn.disabled = false; btn.textContent = '✦ 提交审核'; }
+}
+
+function filterByTag(tag) {
+  currentPackTag = tag;
+  document.querySelectorAll('.pack-tag-chip').forEach(c => {
+    c.classList.toggle('active', c.textContent.replace('🔞 ','') === tag || (tag === '' && c.textContent === '全部'));
+  });
+  loadPacks(tag);
+}
+
+async function searchPacks() {
+  const q = document.getElementById('pack-search-input').value.trim();
+  loadPacks(currentPackTag, q);
+}
+
+async function loadPacks(tag = '', q = '') {
+  const list = document.getElementById('packs-list');
+  list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载中…</div>';
+  try {
+    let url = `${WORKER_URL}/packs/list`;
+    const params = [];
+    if (tag) params.push(`tag=${encodeURIComponent(tag)}`);
+    if (q) params.push(`q=${encodeURIComponent(q)}`);
+    if (params.length) url += '?' + params.join('&');
+
+    const res = await fetch(url);
+    const data = await res.json();
+    const packs = data.packs || [];
+
+    if (!packs.length) {
+      list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">暂无问题包，来创建第一个 ✦</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    packs.forEach(pack => {
+      const card = document.createElement('div');
+      card.className = 'pack-card';
+      const shortId = pack.id.replace('pack_','').split('_').pop();
+      const isAdult = pack.ageNote && pack.ageNote.includes('+');
+      card.innerHTML = `
+        <div class="pack-card-title">${pack.title}</div>
+        <div class="pack-card-meta">
+          <span>by ${pack.author}</span>
+          <span>${pack.questionCount}题</span>
+          <span>▶ ${pack.plays}次游玩</span>
+          <span style="font-family:'Cormorant Garamond',serif;letter-spacing:1px;">#${shortId}</span>
+        </div>
+        ${pack.description ? `<div style="font-size:12px;color:var(--text-mid);margin-bottom:8px;line-height:1.6;">${pack.description}</div>` : ''}
+        <div class="pack-card-tags">
+          ${pack.tags.map(t => `<span class="pack-card-tag">${t}</span>`).join('')}
+          ${isAdult ? `<span class="pack-age-badge">${pack.ageNote}</span>` : ''}
+        </div>
+      `;
+      card.onclick = () => startPackGame(pack.id);
+      list.appendChild(card);
+    });
+  } catch (e) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载失败，请重试 ✦</div>';
+  }
+}
+
+async function startPackGame(packId) {
+  showToast('加载问题包… ✦');
+  try {
+    const res = await fetch(`${WORKER_URL}/packs/get?id=${packId}`);
+    const data = await res.json();
+    if (!data.pack) { showToast(data.error || '加载失败'); return; }
+
+    const pack = data.pack;
+    // inject questions into draw story and start
+    DS_QUESTIONS.length = 0;
+    pack.questions.forEach((q, i) => {
+      DS_QUESTIONS.push({ q, role: `角色${i+1}` });
+    });
+
+    // switch to draw story page and start
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-draw-story').classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+    // update draw story title
+    document.querySelector('#page-draw-story .section-heading').textContent = pack.title;
+    startDrawStory();
+    showToast(`「${pack.title}」已加载 ✦`);
+  } catch (e) {
+    showToast('加载失败，请重试 ✦');
   }
 }
 
