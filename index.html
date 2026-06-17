@@ -817,6 +817,65 @@
   }
 
   /* ============ PAGE 12: QUESTION PACKS ============ */
+  /* ============ LYRIC WALL ============ */
+  .lyric-wall-wrap {
+    border-radius: 16px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+  .lyric-wall-track {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    padding: 0 16px;
+  }
+  .lyric-wall-inner {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: lwScroll 30s linear infinite;
+    will-change: transform;
+  }
+  .lyric-wall-inner:hover { animation-play-state: paused; }
+  @keyframes lwScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .lyric-wall-item {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .lyric-wall-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-dark);
+    white-space: nowrap;
+  }
+  .lyric-wall-meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+  }
+  .lyric-wall-divider {
+    font-size: 18px;
+    color: var(--violet);
+    flex-shrink: 0;
+  }
+  .lyric-wall-placeholder {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-light);
+    letter-spacing: 2px;
+  }
+
   /* ============ PAGE 12: QUESTION PACKS - integrated into draw story ============ */
   .pack-tag-chip {
     font-size: 11px;
@@ -965,6 +1024,34 @@
       <button class="btn btn-primary" onclick="downloadCanvas('lyric-canvas','lyric-card')">保存图片</button>
       <button class="btn btn-glass" onclick="shareCanvas('lyric-canvas')">分享</button>
     </div>
+  </div>
+
+  <!-- LYRIC WALL -->
+  <div style="margin-top:32px;">
+    <div class="section-title">✦ lyric wall</div>
+    <div style="font-family:'Noto Serif SC',serif;font-size:18px;font-weight:300;color:var(--text-dark);margin-bottom:16px;">歌词墙</div>
+
+    <!-- scrolling marquee -->
+    <div class="lyric-wall-wrap glass" style="overflow:hidden;padding:0;margin-bottom:16px;">
+      <div class="lyric-wall-track" id="lyric-wall-track">
+        <div class="lyric-wall-inner" id="lyric-wall-inner">
+          <span class="lyric-wall-placeholder">加载中… ✦</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- submit form -->
+    <div class="glass" style="padding:20px;margin-bottom:16px;">
+      <div style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin-bottom:14px;">✦ 投稿你喜欢的歌词</div>
+      <label class="input-label">歌词内容（100字以内）</label>
+      <textarea id="lw-lyric" placeholder="例：You showed me I have reasons I should love myself" maxlength="100" style="height:72px;margin-bottom:10px;"></textarea>
+      <label class="input-label">歌名 — 演唱者</label>
+      <input type="text" id="lw-song" placeholder="例：Answer: Love Myself — BTS" maxlength="50" style="margin-bottom:10px;">
+      <label class="input-label">你的昵称（选填）</label>
+      <input type="text" id="lw-author" placeholder="留空显示匿名" maxlength="20" style="margin-bottom:14px;">
+      <button class="btn btn-primary" onclick="submitLyric()" style="width:100%;" id="lw-submit-btn">✦ 提交歌词</button>
+    </div>
+    <p style="font-size:11px;color:var(--text-light);text-align:center;">歌词经审核后显示在歌词墙上 ✦</p>
   </div>
 </div>
 
@@ -1736,6 +1823,7 @@ function showPage(name) {
   if (name === 'message') loadMessages();
   if (name === 'draw-story') initDrawStoryPage();
   if (name === 'packs') initDrawStoryPage();
+  if (name === 'lyric') loadLyricWall();
 }
 
 function showToast(msg) {
@@ -2140,7 +2228,77 @@ function roundRectTop(ctx, x, y, w, h, r) {
   ctx.fill();
 }
 
-// ===================== PAGE 6: DRAW STORY + PACKS =====================
+// ===================== LYRIC WALL =====================
+const DEFAULT_LYRICS = [
+  { lyric: 'You showed me I have reasons I should love myself', song: 'Answer: Love Myself — BTS' },
+  { lyric: '별이 내린다 / 어둠 속에서 빛나', song: 'Black Swan — BTS' },
+  { lyric: '지금 우리의 행복이 / 영원하기를', song: 'Young Forever — BTS' },
+  { lyric: 'Life goes on / Like an arrow in the blue sky', song: 'Life Goes On — BTS' },
+  { lyric: '봄날이 가도 / 우리 함께해', song: 'Spring Day — BTS' },
+  { lyric: 'I am the one I should love in this world', song: 'Epiphany — Jin' },
+  { lyric: '네 모든 것이 / 나를 숨쉬게 해', song: 'Euphoria — Jungkook' },
+];
+
+async function loadLyricWall() {
+  try {
+    const res = await fetch(`${WORKER_URL}/lyrics/list`);
+    const data = await res.json();
+    const approved = data.lyrics || [];
+    const all = approved.length > 0 ? approved : DEFAULT_LYRICS;
+    renderLyricWall(all);
+  } catch (e) {
+    renderLyricWall(DEFAULT_LYRICS);
+  }
+}
+
+function renderLyricWall(items) {
+  const inner = document.getElementById('lyric-wall-inner');
+  if (!inner) return;
+
+  // duplicate for seamless loop
+  const doubled = [...items, ...items];
+  inner.innerHTML = doubled.map((item, i) => `
+    <span class="lyric-wall-item">
+      <span class="lyric-wall-text">${item.lyric}</span>
+      <span class="lyric-wall-meta">— ${item.song}</span>
+    </span>
+    <span class="lyric-wall-divider">✦</span>
+  `).join('');
+
+  // adjust animation speed based on content length
+  const totalChars = items.reduce((s, i) => s + i.lyric.length, 0);
+  const duration = Math.max(20, totalChars * 0.4);
+  inner.style.animationDuration = duration + 's';
+}
+
+async function submitLyric() {
+  const lyric = document.getElementById('lw-lyric').value.trim();
+  const song = document.getElementById('lw-song').value.trim();
+  const author = document.getElementById('lw-author').value.trim();
+  if (!lyric) { showToast('请输入歌词 ✦'); return; }
+  if (!song) { showToast('请输入歌名 ✦'); return; }
+
+  const btn = document.getElementById('lw-submit-btn');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {
+    const res = await fetch(`${WORKER_URL}/lyrics/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lyric, song, author })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('lw-lyric').value = '';
+      document.getElementById('lw-song').value = '';
+      document.getElementById('lw-author').value = '';
+      showToast('歌词已提交，等待审核 ✦');
+    } else { showToast(data.error || '提交失败'); }
+  } catch (e) { showToast('提交失败，请重试 ✦'); }
+  finally { btn.disabled = false; btn.textContent = '✦ 提交歌词'; }
+}
+
+// load lyric wall when entering lyric page
+
 const DEFAULT_DS_QUESTIONS = [
   { q: '谁是你的男友？', role: '男友' },
   { q: '谁是你的初恋？', role: '初恋' },
