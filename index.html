@@ -2154,6 +2154,9 @@ const DEFAULT_DS_QUESTIONS = [
   { q: '谁会在你最难过的夜里陪着你？', role: '深夜陪伴者' },
 ];
 
+// active question set (can be replaced by custom pack)
+const DS_QUESTIONS = [...DEFAULT_DS_QUESTIONS];
+
 let dsCurrentTag = '';
 
 function useDefaultPack() {
