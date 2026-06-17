@@ -1473,15 +1473,8 @@
         <input type="text" id="ds-pack-search" placeholder="输入标题或编号…" style="margin-bottom:0;flex:1;">
         <button class="btn btn-primary" onclick="dsSearchPacks()" style="padding:10px 14px;font-size:13px;">搜索</button>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
-        <span class="pack-tag-chip" onclick="dsFilterTag('校园')">校园</span>
-        <span class="pack-tag-chip" onclick="dsFilterTag('爱豆')">爱豆</span>
-        <span class="pack-tag-chip" onclick="dsFilterTag('职场')">职场</span>
-        <span class="pack-tag-chip" onclick="dsFilterTag('古风')">古风</span>
-        <span class="pack-tag-chip" onclick="dsFilterTag('甜宠')">甜宠</span>
-        <span class="pack-tag-chip" onclick="dsFilterTag('虐恋')">虐恋</span>
-        <span class="pack-tag-chip" onclick="dsFilterTag('成人')">🔞 成人</span>
-        <span class="pack-tag-chip ds-tag-active" onclick="dsFilterTag('')">全部</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;" id="ds-tags-row">
+        <span class="pack-tag-chip ds-tag-active" onclick="dsFilterTag(this,'')">全部</span>
       </div>
       <div id="ds-packs-list" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;"></div>
     </div>
@@ -2797,12 +2790,10 @@ async function dsSearchPacks() {
   await dsLoadPacks(dsCurrentTag, q);
 }
 
-async function dsFilterTag(tag) {
+async function dsFilterTag(el, tag) {
   dsCurrentTag = tag;
-  document.querySelectorAll('.pack-tag-chip').forEach(c => {
-    const text = c.textContent.replace('🔞 ','').trim();
-    c.classList.toggle('ds-tag-active', text === tag || (tag === '' && text === '全部'));
-  });
+  document.querySelectorAll('#ds-tags-row .pack-tag-chip').forEach(c => c.classList.remove('ds-tag-active'));
+  if (el) el.classList.add('ds-tag-active');
   await dsLoadPacks(tag);
 }
 
@@ -2819,6 +2810,22 @@ async function dsLoadPacks(tag = '', q = '') {
     const res = await fetch(url);
     const data = await res.json();
     const packs = data.packs || [];
+
+    // render dynamic tags from all packs (only on full load, no filter)
+    if (!tag && !q) {
+      const allTags = [...new Set(packs.flatMap(p => p.tags || []))].sort();
+      const tagsRow = document.getElementById('ds-tags-row');
+      if (tagsRow) {
+        tagsRow.innerHTML = `<span class="pack-tag-chip ${!dsCurrentTag ? 'ds-tag-active' : ''}" onclick="dsFilterTag(this,'')">全部</span>`;
+        allTags.forEach(t => {
+          const chip = document.createElement('span');
+          chip.className = 'pack-tag-chip' + (dsCurrentTag === t ? ' ds-tag-active' : '');
+          chip.textContent = t === '成人' ? '🔞 成人' : t;
+          chip.onclick = () => dsFilterTag(chip, t);
+          tagsRow.appendChild(chip);
+        });
+      }
+    }
 
     if (!packs.length) {
       list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:12px;">暂无问题包 ✦</div>';
