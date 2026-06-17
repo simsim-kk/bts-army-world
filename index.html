@@ -533,6 +533,24 @@
   }
   .style-btn.selected-style span { color: var(--purple); }
 
+  .style-quick-btn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 12px;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .style-quick-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--violet); }
+  .style-quick-btn.active-quick {
+    background: linear-gradient(135deg,rgba(196,176,232,0.45),rgba(155,127,212,0.3));
+    border-color: var(--purple);
+    color: var(--deep);
+  }
+
   /* ============ PAGE 6: DRAW STORY ============ */
   #page-draw-story { max-width: 480px; margin: 0 auto; }
   .ds-role-tag {
@@ -1219,9 +1237,22 @@
       <div id="story-content" style="font-family:'Noto Serif SC',serif;font-size:15px;color:var(--text-dark);line-height:2;white-space:pre-wrap;"></div>
     </div>
 
+    <!-- quick style switcher -->
+    <div class="glass" style="padding:16px 20px;margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:2px;margin-bottom:10px;">✦ 换一个风格再生成</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+        <button class="style-quick-btn" onclick="quickStyle('散文诗')">🌙 散文诗</button>
+        <button class="style-quick-btn" onclick="quickStyle('温柔日常')">☀️ 温柔日常</button>
+        <button class="style-quick-btn" onclick="quickStyle('偶像剧')">🌸 偶像剧</button>
+        <button class="style-quick-btn" onclick="quickStyle('克制深情')">🖤 克制深情</button>
+        <button class="style-quick-btn" onclick="quickStyle('随机')">🎲 随机</button>
+      </div>
+      <button class="btn btn-primary" onclick="regenStory()" style="width:100%;font-size:13px;" id="regen-btn">✦ 用此风格重新生成</button>
+    </div>
+
     <div class="btn-row" style="margin-bottom:16px;">
       <button class="btn btn-primary" onclick="saveStoryImg()">保存故事图片</button>
-      <button class="btn btn-glass" onclick="resetStory()">再生成一个</button>
+      <button class="btn btn-glass" onclick="resetStory()">重新设置</button>
     </div>
 
     <canvas id="story-canvas" style="display:none;"></canvas>
@@ -2763,6 +2794,52 @@ let selectedMemberPick = 'random';
 
 let selectedStyle = '随机';
 
+let regenMember = null;
+
+function quickStyle(style) {
+  document.querySelectorAll('.style-quick-btn').forEach(b => b.classList.remove('active-quick'));
+  event.target.classList.add('active-quick');
+  selectedStyle = style;
+}
+
+async function regenStory() {
+  if (!regenMember) { showToast('请先生成一个故事 ✦'); return; }
+  const name = document.getElementById('story-name')?.value?.trim() || '你';
+  const btn = document.getElementById('regen-btn');
+  btn.disabled = true; btn.textContent = '生成中…';
+
+  const stylePrompt = getStylePrompt();
+  const prompt = `你是一位擅长写BTS粉丝向故事的中文作家。
+请为读者「${name}」写一个与BTS成员${regenMember.name}（${regenMember.cn}）的专属故事。
+故事类型：${selectedType}
+读者当前心情：${selectedMood}
+${stylePrompt ? '文风要求：' + stylePrompt : ''}
+要求：
+- 用中文写作，第二人称"你"视角
+- 字数在350-450字之间
+- 结尾给人温暖或治愈的感觉
+- 直接开始故事，不要写标题，不要任何解释说明
+- 自然融入${regenMember.name}的性格特点`;
+
+  try {
+    const story = await callWorkerAI(prompt);
+    const el = document.getElementById('story-content');
+    el.textContent = '';
+    let i = 0;
+    const chars = story.split('');
+    const timer = setInterval(() => {
+      el.textContent += chars[i]; i++;
+      if (i >= chars.length) { clearInterval(timer); generateStoryCanvas(regenMember, story, name, selectedType); }
+    }, 18);
+    document.getElementById('result-story-type').textContent = selectedType + ' ✦ ' + selectedMood + ' ✦ ' + selectedStyle;
+    window.scrollTo(0, 0);
+  } catch (e) {
+    showToast('生成失败，请重试 ✦');
+  } finally {
+    btn.disabled = false; btn.textContent = '✦ 用此风格重新生成';
+  }
+}
+
 function selectStyle(el, style) {
   document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected-style'));
   el.classList.add('selected-style');
@@ -2838,6 +2915,7 @@ ${stylePrompt ? '文风要求：' + stylePrompt : ''}
 
   try {
     const story = await callWorkerAI(prompt);
+    regenMember = member;
 
     document.getElementById('story-loading').style.display = 'none';
     document.getElementById('story-result').style.display = 'block';
