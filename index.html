@@ -817,31 +817,59 @@
   }
 
   /* ============ PAGE 12: QUESTION PACKS ============ */
-  /* ============ LYRIC WALL ============ */
-  .lyric-wall-wrap {
-    border-radius: 16px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-  }
-  .lyric-wall-track {
-    display: flex;
-    align-items: center;
-    width: 100%;
+  /* ============ LYRIC WALL BACKGROUND (5 text rows) ============ */
+  .lw-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
     overflow: hidden;
-    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 64px 0 8px;
+    pointer-events: none;
   }
+  .lw-bg-row {
+    display: flex;
+    white-space: nowrap;
+    gap: 48px;
+    opacity: 0.13;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--deep);
+    letter-spacing: 1px;
+    will-change: transform;
+    flex-shrink: 0;
+  }
+  #lw-row-1 { animation: lwRight 38s linear infinite; font-size: 14px; }
+  #lw-row-2 { animation: lwLeft  46s linear infinite; font-size: 13px; }
+  #lw-row-3 { animation: lwRight 42s linear infinite; font-size: 16px; }
+  #lw-row-4 { animation: lwLeft  50s linear infinite; font-size: 12px; }
+  #lw-row-5 { animation: lwRight 34s linear infinite; font-size: 15px; }
+  @keyframes lwRight {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0%); }
+  }
+  @keyframes lwLeft {
+    from { transform: translateX(0%); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ============ LYRIC WALL (single line marquee) ============ */
   .lyric-wall-inner {
     display: flex;
-    gap: 48px;
+    gap: 40px;
     white-space: nowrap;
-    animation: lwScroll 30s linear infinite;
+    animation: lwScroll 35s linear infinite;
     will-change: transform;
+    align-items: center;
+    padding: 0 16px;
   }
   .lyric-wall-inner:hover { animation-play-state: paused; }
   @keyframes lwScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
   }
   .lyric-wall-item {
     display: inline-flex;
@@ -851,7 +879,7 @@
   }
   .lyric-wall-text {
     font-family: 'Noto Serif SC', serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 300;
     color: var(--text-dark);
     white-space: nowrap;
@@ -862,18 +890,12 @@
     font-size: 11px;
     color: var(--text-light);
     letter-spacing: 1px;
+    white-space: nowrap;
   }
-  .lyric-wall-divider {
-    font-size: 18px;
+  .lyric-wall-sep {
     color: var(--violet);
-    flex-shrink: 0;
-  }
-  .lyric-wall-placeholder {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
     font-size: 14px;
-    color: var(--text-light);
-    letter-spacing: 2px;
+    flex-shrink: 0;
   }
 
   /* ============ PAGE 12: QUESTION PACKS - integrated into draw story ============ */
@@ -994,53 +1016,64 @@
 </div>
 
 <!-- PAGE 2: LYRIC CARD -->
-<div class="page" id="page-lyric">
-  <div class="section-title">✦ lyric card</div>
-  <div class="section-heading">歌词卡片生成器</div>
+<div class="page" id="page-lyric" style="padding:0;overflow:hidden;min-height:100vh;position:relative;">
 
-  <div class="glass lyric-input-area">
-    <label class="input-label">✦ 输入歌词</label>
-    <textarea id="lyric-input" placeholder="在这里输入你最喜欢的一句歌词…&#10;例：You showed me I have reasons I should love myself"></textarea>
-
-    <label class="input-label">✦ 歌曲名称</label>
-    <input type="text" id="song-name" placeholder="歌曲名 — 演唱者">
-
-    <label class="input-label">✦ 卡片风格</label>
-    <select id="card-style">
-      <option value="violet">紫色渐变</option>
-      <option value="night">深夜深紫</option>
-      <option value="dawn">黎明玫瑰金</option>
-      <option value="mint">薄荷白</option>
-    </select>
-
-    <button class="btn btn-primary" onclick="generateLyricCard()" style="width:100%;">
-      生成歌词卡片
-    </button>
+  <!-- BACKGROUND: 5-row text flow -->
+  <div class="lw-bg" id="lw-bg" style="display:none;">
+    <div class="lw-bg-row" id="lw-row-1"></div>
+    <div class="lw-bg-row" id="lw-row-2"></div>
+    <div class="lw-bg-row" id="lw-row-3"></div>
+    <div class="lw-bg-row" id="lw-row-4"></div>
+    <div class="lw-bg-row" id="lw-row-5"></div>
   </div>
 
-  <div class="glass lyric-preview" id="lyric-preview" style="display:none;">
-    <canvas id="lyric-canvas"></canvas>
-    <div style="padding:16px;" class="btn-row">
-      <button class="btn btn-primary" onclick="downloadCanvas('lyric-canvas','lyric-card')">保存图片</button>
-      <button class="btn btn-glass" onclick="shareCanvas('lyric-canvas')">分享</button>
+  <!-- FOREGROUND -->
+  <div style="position:relative;z-index:2;padding:80px 20px 40px;max-width:520px;margin:0 auto;">
+    <div class="section-title">✦ lyric card</div>
+    <div class="section-heading">歌词卡片生成器</div>
+
+    <div class="glass lyric-input-area">
+      <label class="input-label">✦ 输入歌词</label>
+      <textarea id="lyric-input" placeholder="在这里输入你最喜欢的一句歌词…&#10;例：You showed me I have reasons I should love myself"></textarea>
+
+      <label class="input-label">✦ 歌曲名称</label>
+      <input type="text" id="song-name" placeholder="歌曲名 — 演唱者">
+
+      <label class="input-label">✦ 卡片风格</label>
+      <select id="card-style">
+        <option value="violet">紫色渐变</option>
+        <option value="night">深夜深紫</option>
+        <option value="dawn">黎明玫瑰金</option>
+        <option value="mint">薄荷白</option>
+      </select>
+
+      <button class="btn btn-primary" onclick="generateLyricCard()" style="width:100%;">
+        生成歌词卡片
+      </button>
     </div>
-  </div>
 
-  <!-- LYRIC WALL -->
-  <div style="margin-top:32px;">
-    <div class="section-title">✦ lyric wall</div>
-    <div style="font-family:'Noto Serif SC',serif;font-size:18px;font-weight:300;color:var(--text-dark);margin-bottom:16px;">歌词墙</div>
+    <div class="glass lyric-preview" id="lyric-preview" style="display:none;">
+      <canvas id="lyric-canvas"></canvas>
+      <div style="padding:16px;" class="btn-row">
+        <button class="btn btn-primary" onclick="downloadCanvas('lyric-canvas','lyric-card')">保存图片</button>
+        <button class="btn btn-glass" onclick="shareCanvas('lyric-canvas')">分享</button>
+      </div>
+    </div>
 
-    <!-- scrolling marquee -->
-    <div class="lyric-wall-wrap glass" style="overflow:hidden;padding:0;margin-bottom:16px;">
-      <div class="lyric-wall-track" id="lyric-wall-track">
-        <div class="lyric-wall-inner" id="lyric-wall-inner">
-          <span class="lyric-wall-placeholder">加载中… ✦</span>
+    <!-- GLASS CARD LYRIC WALL -->
+    <div style="margin-top:32px;">
+      <div class="section-title">✦ lyric wall</div>
+      <div style="font-family:'Noto Serif SC',serif;font-size:18px;font-weight:300;color:var(--text-dark);margin-bottom:16px;">歌词墙</div>
+      <div class="glass" style="overflow:hidden;padding:0;margin-bottom:16px;border-radius:16px;">
+        <div style="overflow:hidden;padding:16px 0;">
+          <div class="lyric-wall-inner" id="lyric-wall-inner">
+            <span style="color:var(--text-light);font-style:italic;font-family:'Cormorant Garamond',serif;">加载中… ✦</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- submit form -->
+    <!-- SUBMIT FORM -->
     <div class="glass" style="padding:20px;margin-bottom:16px;">
       <div style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin-bottom:14px;">✦ 投稿你喜欢的歌词</div>
       <label class="input-label">歌词内容（100字以内）</label>
@@ -1824,6 +1857,9 @@ function showPage(name) {
   if (name === 'draw-story') initDrawStoryPage();
   if (name === 'packs') initDrawStoryPage();
   if (name === 'lyric') loadLyricWall();
+  // show/hide lyric background
+  const lwBg = document.getElementById('lw-bg');
+  if (lwBg) lwBg.style.display = name === 'lyric' ? 'flex' : 'none';
 }
 
 function showToast(msg) {
@@ -2234,7 +2270,7 @@ const DEFAULT_LYRICS = [
   { lyric: '시작은 미약할지언정 끝은 창대하리（愿你以渺小启程 以伟大结束）', song: 'Snooze (feat. Ryuichi Sakamoto, WOOSUNG of The Rose) — Agust D' },
   { lyric: "We'll always be alive to move us", song: 'NEURON (with 개코, 윤미래) — J-Hope' },
   { lyric: "Flower field that's where I'm at / Open land that's where I'm at / No name that's what I have / No shame I'm on my grave（尽日游花园 今时行旷野 此刻人间无名 去时坟前无愧）", song: '들꽃놀이 Wild Flower (with 조유진) — RM' },
-  { lyric: '무섭긴 하지만 겁이 나지만 함께라는 말을 항상 잊지 마（我知道你会害怕会退缩 但不要忘记 我们说好了要永远在一起）', song: 'BTS' },
+  { lyric: '무섭긴 하지만 겁이 나지만 함께라는 말을 항상 잊지 마（我知道你会害怕会退缩 但不要忘记 我们说好了要永远在一起）', song: 'Letter — Jimin' },
   { lyric: "But I'ma be wherever u are I'ma be here in ur heart（但是无论你身在何处 我会伴你左右 驻足于你的心间）", song: 'wherever u r (ft. V of BTS) — V' },
   { lyric: '이 안개가 걷힐 때쯤 젖은 발로 달려갈게 그때 날 안아줘（等到这雾气散去的时候 我会踏着湿漉的脚跑过去 那时请抱紧我）', song: 'Still With You — Jungkook' },
   { lyric: '결국 시련의 끝에 만개하길（试炼的终点 是花开万里）', song: 'Snooze (feat. Ryuichi Sakamoto, WOOSUNG of The Rose) — Agust D' },
@@ -2262,23 +2298,31 @@ async function loadLyricWall() {
 }
 
 function renderLyricWall(items) {
+  // ── background: 5 text rows ──
+  const texts = items.map(i => i.lyric);
+  const pool = [];
+  while (pool.length < 60) pool.push(...texts);
+
+  for (let r = 1; r <= 5; r++) {
+    const el = document.getElementById(`lw-row-${r}`);
+    if (!el) continue;
+    const offset = (r - 1) * 4;
+    const slice = pool.slice(offset, offset + 16);
+    const half = slice.map(t => `<span style="flex-shrink:0">${t} ✦</span>`).join('');
+    el.innerHTML = half + half;
+  }
+
+  // ── foreground: single-line text marquee ──
   const inner = document.getElementById('lyric-wall-inner');
   if (!inner) return;
-
-  // duplicate for seamless loop
   const doubled = [...items, ...items];
-  inner.innerHTML = doubled.map((item, i) => `
+  inner.innerHTML = doubled.map(item => `
     <span class="lyric-wall-item">
       <span class="lyric-wall-text">${item.lyric}</span>
       <span class="lyric-wall-meta">— ${item.song}</span>
     </span>
-    <span class="lyric-wall-divider">✦</span>
+    <span class="lyric-wall-sep">✦</span>
   `).join('');
-
-  // adjust animation speed based on content length
-  const totalChars = items.reduce((s, i) => s + i.lyric.length, 0);
-  const duration = Math.max(20, totalChars * 0.4);
-  inner.style.animationDuration = duration + 's';
 }
 
 async function submitLyric() {
