@@ -1261,7 +1261,20 @@
 
   <div class="glass army-card">
     <label class="input-label">✦ 你的入团日期</label>
-    <input type="date" id="army-date" lang="en" max="">
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <select id="army-date-y" style="margin-bottom:0;flex:2;">
+        <option value="">年</option>
+        <script>for(let y=new Date().getFullYear();y>=2013;y--)document.write(`<option value="${y}">${y}</option>`)</script>
+      </select>
+      <select id="army-date-m" style="margin-bottom:0;flex:1;">
+        <option value="">月</option>
+        <script>for(let m=1;m<=12;m++)document.write(`<option value="${String(m).padStart(2,'0')}">${m}</option>`)</script>
+      </select>
+      <select id="army-date-d" style="margin-bottom:0;flex:1;">
+        <option value="">日</option>
+        <script>for(let d=1;d<=31;d++)document.write(`<option value="${String(d).padStart(2,'0')}">${d}</option>`)</script>
+      </select>
+    </div>
 
     <button class="btn btn-primary" onclick="calcArmy()" style="width:100%;margin-bottom:0;box-sizing:border-box;">
       生成纪念证书
@@ -2004,7 +2017,20 @@
     </div>
 
     <label class="input-label">梦境日期</label>
-    <input type="date" id="dr-date" lang="en" placeholder="yyyy-mm-dd" style="margin-bottom:12px;">
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <select id="dr-date-y" style="margin-bottom:0;flex:2;">
+        <option value="">年</option>
+        <script>for(let y=new Date().getFullYear();y>=2010;y--)document.write(`<option value="${y}">${y}</option>`)</script>
+      </select>
+      <select id="dr-date-m" style="margin-bottom:0;flex:1;">
+        <option value="">月</option>
+        <script>for(let m=1;m<=12;m++)document.write(`<option value="${String(m).padStart(2,'0')}">${m}</option>`)</script>
+      </select>
+      <select id="dr-date-d" style="margin-bottom:0;flex:1;">
+        <option value="">日</option>
+        <script>for(let d=1;d<=31;d++)document.write(`<option value="${String(d).padStart(2,'0')}">${d}</option>`)</script>
+      </select>
+    </div>
 
     <label class="input-label">梦醒心情</label>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;" id="dr-mood-grid">
@@ -2391,8 +2417,11 @@ function generateLyricCard() {
 
 // ===================== PAGE 3: ARMY =====================
 function calcArmy() {
-  const val = document.getElementById('army-date').value;
-  if (!val) { showToast('请选择入团日期 ✦'); return; }
+  const ay = document.getElementById('army-date-y').value;
+  const am = document.getElementById('army-date-m').value;
+  const ad = document.getElementById('army-date-d').value;
+  if (!ay || !am || !ad) { showToast('请选择完整的入团日期 ✦'); return; }
+  const val = `${ay}-${am}-${ad}`;
   const join = new Date(val);
   const now = new Date();
   const diff = now - join;
@@ -3328,7 +3357,10 @@ async function submitDream() {
   const title = document.getElementById('dr-title').value.trim();
   const content = document.getElementById('dr-content').value.trim();
   const author = document.getElementById('dr-author').value.trim();
-  const dreamDate = document.getElementById('dr-date').value;
+  const dy = document.getElementById('dr-date-y').value;
+  const dm = document.getElementById('dr-date-m').value;
+  const dd = document.getElementById('dr-date-d').value;
+  const dreamDate = dy && dm && dd ? `${dy}/${dm}/${dd}` : '';
   const armyCode = document.getElementById('dr-army-code').value.trim().toUpperCase() || genArmyCode(true);
   let finalMood = selectedDreamMood;
   if (selectedDreamMood === '__custom__') {
@@ -3356,7 +3388,9 @@ async function submitDream() {
       document.getElementById('dr-title').value = '';
       document.getElementById('dr-content').value = '';
       document.getElementById('dr-author').value = '';
-      document.getElementById('dr-date').value = '';
+      document.getElementById('dr-date-y').value = '';
+      document.getElementById('dr-date-m').value = '';
+      document.getElementById('dr-date-d').value = '';
       document.getElementById('dr-army-code').value = armyCode;
       selectedDreamTags = [];
       selectedDreamMood = '';
@@ -3437,7 +3471,6 @@ function convertNodes(node, converter) {
 }
 
 // init
-document.getElementById('army-date').max = new Date().toISOString().split('T')[0];
 loadRemoteQuotes();
 newQuote();
 
