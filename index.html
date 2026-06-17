@@ -3216,7 +3216,7 @@ async function loadDreams() {
   }
 }
 
-const DREAM_PREVIEW_LEN = 200;
+const DREAM_CONTENT_MAP = new Map();
 
 function buildDreamCard(d) {
   const card = document.createElement('div');
@@ -3225,6 +3225,9 @@ function buildDreamCard(d) {
   const preview = isLong ? d.content.slice(0, DREAM_PREVIEW_LEN) + '…' : d.content;
   const liked = dreamLiked.has(d.id);
   const time = new Date(d.time).toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' });
+
+  // store full content by id for safe retrieval
+  DREAM_CONTENT_MAP.set(d.id, d.content);
 
   card.innerHTML = `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
@@ -3241,7 +3244,7 @@ function buildDreamCard(d) {
       ${d.tags.map(t => `<span class="dream-card-tag">${t}</span>`).join('')}
     </div>
     <div class="dream-card-content" id="dc-${d.id}">${preview}</div>
-    ${isLong ? `<button class="dream-expand-btn" id="deb-${d.id}" onclick="expandDream('${d.id}',\`${d.content.replace(/`/g,'\\`')}\`)">展开全文 ↓</button>` : ''}
+    ${isLong ? `<button class="dream-expand-btn" id="deb-${d.id}" onclick="expandDream('${d.id}')">展开全文 ↓</button>` : ''}
     <div class="dream-card-footer">
       <button class="dream-like-btn ${liked ? 'liked' : ''}" id="dlb-${d.id}" onclick="likeDream('${d.id}',this)">
         💜 <span id="dlc-${d.id}">${d.likes || 0}</span>
@@ -3251,10 +3254,11 @@ function buildDreamCard(d) {
   return card;
 }
 
-function expandDream(id, fullContent) {
+function expandDream(id) {
   const el = document.getElementById(`dc-${id}`);
   const btn = document.getElementById(`deb-${id}`);
-  if (!el) return;
+  const fullContent = DREAM_CONTENT_MAP.get(id);
+  if (!el || !fullContent) return;
   if (btn.textContent.includes('展开')) {
     el.textContent = fullContent;
     btn.textContent = '收起 ↑';
