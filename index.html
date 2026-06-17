@@ -2019,11 +2019,28 @@
     <textarea id="dr-content" placeholder="写下你的梦境，越详细越好…" style="height:140px;margin-bottom:12px;" maxlength="3000"></textarea>
 
     <label class="input-label">你的昵称</label>
-    <input type="text" id="dr-author" placeholder="留空显示匿名" maxlength="20" style="margin-bottom:16px;">
+    <input type="text" id="dr-author" placeholder="留空显示匿名" maxlength="20" style="margin-bottom:12px;">
+
+    <label class="input-label">你的专属编号（选填）</label>
+    <div style="display:flex;gap:8px;margin-bottom:6px;">
+      <input type="text" id="dr-army-code" placeholder="例：ARMY-A3K7，没有则留空" maxlength="12" style="margin-bottom:0;flex:1;font-family:'Cormorant Garamond',serif;letter-spacing:2px;">
+      <button class="btn btn-glass" onclick="genArmyCode()" style="padding:10px 14px;font-size:12px;white-space:nowrap;">生成编号</button>
+    </div>
+    <p style="font-size:11px;color:var(--text-light);margin-bottom:16px;">第一次提交请点"生成编号"并保存，以后用它查看你的全部梦境</p>
 
     <button class="btn btn-primary" onclick="submitDream()" style="width:100%;" id="dr-submit-btn">✦ 分享梦境</button>
   </div>
   <p style="font-size:11px;color:var(--text-light);text-align:center;margin-bottom:20px;">梦境经审核后公开显示 ✦</p>
+
+  <!-- MY DREAMS LOOKUP -->
+  <div class="glass" style="padding:20px;margin-bottom:20px;">
+    <div style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin-bottom:12px;">✦ 查看我的梦境</div>
+    <div style="display:flex;gap:8px;">
+      <input type="text" id="dr-lookup-code" placeholder="输入你的编号 ARMY-XXXX" maxlength="12" style="margin-bottom:0;flex:1;font-family:'Cormorant Garamond',serif;letter-spacing:2px;">
+      <button class="btn btn-primary" onclick="lookupMyDreams()" style="padding:10px 14px;font-size:12px;white-space:nowrap;">查看</button>
+    </div>
+    <div id="dr-my-list" style="margin-top:12px;display:flex;flex-direction:column;gap:12px;"></div>
+  </div>
 </div>
 
 <!-- TOAST -->
@@ -3105,6 +3122,53 @@ let dreamLiked = new Set(JSON.parse(sessionStorage.getItem('dreamLiked') || '[]'
 let selectedDreamTags = [];
 let selectedDreamMood = '';
 
+function genArmyCode(returnOnly = false) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = 'ARMY-';
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  if (!returnOnly) {
+    document.getElementById('dr-army-code').value = code;
+    showToast('编号已生成，请保存！✦');
+  }
+  return code;
+}
+
+function showArmyCodeReminder(code) {
+  // create overlay
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `position:fixed;inset:0;background:rgba(30,10,60,0.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;`;
+  overlay.innerHTML = `
+    <div style="background:rgba(255,255,255,0.97);border-radius:24px;padding:32px 28px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(107,79,160,0.25);">
+      <div style="font-size:32px;margin-bottom:12px;">💜</div>
+      <div style="font-family:'Noto Serif SC',serif;font-size:18px;color:#2d1f4e;margin-bottom:8px;">梦境已提交，等待审核</div>
+      <div style="font-size:13px;color:#a89cc0;margin-bottom:20px;">你的专属编号是</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#6b4fa0;letter-spacing:4px;margin-bottom:12px;padding:12px 20px;background:rgba(196,176,232,0.15);border-radius:12px;border:1px solid rgba(196,176,232,0.4);">${code}</div>
+      <div style="font-size:12px;color:#a89cc0;margin-bottom:20px;line-height:1.8;">请保存这个编号<br>下次用它查看你的全部梦境</div>
+      <button onclick="navigator.clipboard.writeText('${code}').then(()=>showToast('编号已复制 ✦'));this.textContent='已复制 ✦';" style="width:100%;padding:10px;border-radius:20px;border:1px solid rgba(196,176,232,0.5);background:rgba(196,176,232,0.2);color:#6b4fa0;cursor:pointer;font-size:13px;margin-bottom:10px;">复制编号</button>
+      <button onclick="this.closest('div[style*=fixed]').remove();" style="width:100%;padding:10px;border-radius:20px;border:none;background:linear-gradient(135deg,#9b7fd4,#6b4fa0);color:white;cursor:pointer;font-size:13px;">我已保存，关闭</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+async function lookupMyDreams() {
+  const code = document.getElementById('dr-lookup-code').value.trim().toUpperCase();
+  if (!code.startsWith('ARMY-') || code.length < 9) { showToast('请输入正确的编号格式 ARMY-XXXX ✦'); return; }
+  const listEl = document.getElementById('dr-my-list');
+  listEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:13px;">查找中…</div>';
+  try {
+    const res = await fetch(`${WORKER_URL}/dreams/list?sort=new&armyCode=${encodeURIComponent(code)}`);
+    const data = await res.json();
+    const dreams = (data.dreams || []).filter(d => d.id !== PINNED_DREAM.id);
+    if (!dreams.length) {
+      listEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:13px;">暂无梦境，或尚未审核 ✦</div>';
+      return;
+    }
+    listEl.innerHTML = '';
+    dreams.forEach(d => listEl.appendChild(buildDreamCard(d)));
+  } catch(e) { listEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:13px;">查找失败，请重试 ✦</div>'; }
+}
+
 function filterDream(el, tag) {
   document.querySelectorAll('.dream-tag-chip').forEach(c => c.classList.remove('active-dream-tag'));
   el.classList.add('active-dream-tag');
@@ -3247,6 +3311,7 @@ async function submitDream() {
   const content = document.getElementById('dr-content').value.trim();
   const author = document.getElementById('dr-author').value.trim();
   const dreamDate = document.getElementById('dr-date').value;
+  const armyCode = document.getElementById('dr-army-code').value.trim().toUpperCase() || genArmyCode(true);
   let finalMood = selectedDreamMood;
   if (selectedDreamMood === '__custom__') {
     finalMood = document.getElementById('dr-mood-custom-input').value.trim() || '';
@@ -3264,7 +3329,8 @@ async function submitDream() {
       body: JSON.stringify({
         title, tags: selectedDreamTags, dreamDate,
         mood: finalMood, content,
-        author: author || '匿名'
+        author: author || '匿名',
+        armyCode,
       })
     });
     const data = await res.json();
@@ -3273,10 +3339,12 @@ async function submitDream() {
       document.getElementById('dr-content').value = '';
       document.getElementById('dr-author').value = '';
       document.getElementById('dr-date').value = '';
+      document.getElementById('dr-army-code').value = armyCode;
       selectedDreamTags = [];
       selectedDreamMood = '';
       document.querySelectorAll('#dr-tag-grid .dream-pick-tag, #dr-mood-grid .dream-pick-tag').forEach(b => b.classList.remove('selected'));
-      showToast('梦境已提交，等待审核 ✦');
+      // show code reminder
+      showArmyCodeReminder(armyCode);
     } else { showToast(data.error || '提交失败'); }
   } catch (e) { showToast('提交失败，请重试 ✦'); }
   finally { btn.disabled = false; btn.textContent = '✦ 分享梦境'; }
