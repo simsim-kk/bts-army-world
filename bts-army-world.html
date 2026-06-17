@@ -1,0 +1,3542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTS ARMY World ✦ 防弹少年团粉丝互动</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+SC:wght@300;400&display=swap');
+
+  :root {
+    --white: #ffffff;
+    --lavender: #e8e0f5;
+    --violet: #c4b0e8;
+    --purple: #9b7fd4;
+    --deep: #6b4fa0;
+    --glass-bg: rgba(255,255,255,0.45);
+    --glass-border: rgba(196,176,232,0.5);
+    --glass-shadow: 0 8px 32px rgba(107,79,160,0.12);
+    --text-dark: #2d1f4e;
+    --text-mid: #6b5a8a;
+    --text-light: #a89cc0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f0ff 0%, #ede6ff 30%, #f0eaff 60%, #e8dff8 100%);
+    font-family: 'Noto Sans SC', sans-serif;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* Ambient orbs */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  body::before {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(196,176,232,0.3) 0%, transparent 70%);
+    top: -100px; left: -100px;
+  }
+  body::after {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(155,127,212,0.2) 0%, transparent 70%);
+    bottom: -50px; right: -50px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.6);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--deep);
+    letter-spacing: 1px;
+  }
+  .nav-links {
+    display: flex; gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .nav-link {
+    font-size: 11px;
+    color: var(--text-mid);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-link:hover, .nav-link.active {
+    background: var(--glass-bg);
+    color: var(--deep);
+  }
+
+  /* PAGES */
+  .page {
+    display: none;
+    min-height: 100vh;
+    padding: 80px 20px 40px;
+    position: relative; z-index: 1;
+  }
+  .page.active { display: block; }
+
+  /* GLASS CARD */
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 8px;
+  }
+  .section-heading {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--text-dark);
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), var(--deep));
+    color: white;
+    box-shadow: 0 4px 20px rgba(107,79,160,0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(107,79,160,0.4);
+  }
+  .btn-glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--deep);
+    backdrop-filter: blur(10px);
+  }
+  .btn-glass:hover {
+    background: rgba(255,255,255,0.7);
+    transform: translateY(-1px);
+  }
+
+  /* ============ PAGE 1: HOME / DAILY COMPANION ============ */
+  #page-home {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .hero-header {
+    text-align: center;
+    padding: 40px 0 32px;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-light);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .hero-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.4;
+  }
+  .hero-title span {
+    background: linear-gradient(135deg, var(--purple), var(--deep));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .draw-card {
+    padding: 32px 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .member-display {
+    margin: 24px 0;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .member-name-kr {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--deep);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .member-name-cn {
+    font-size: 13px;
+    color: var(--text-light);
+    letter-spacing: 3px;
+  }
+  .member-emoji {
+    font-size: 72px;
+    margin-bottom: 12px;
+    display: block;
+    animation: floatEmoji 3s ease-in-out infinite;
+  }
+  @keyframes floatEmoji {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .fortune-text {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    margin-top: 16px;
+    font-style: italic;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+  }
+
+  .draw-placeholder {
+    color: var(--text-light);
+    font-size: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+
+  .stars-row {
+    display: flex; justify-content: center; gap: 6px;
+    margin-bottom: 20px;
+  }
+  .star { color: var(--violet); font-size: 16px; }
+
+  /* Spin animation */
+  @keyframes spinReveal {
+    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    60% { transform: scale(1.1) rotate(3deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  .revealed {
+    animation: spinReveal 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  /* fortune tags */
+  .fortune-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  .ftag {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(196,176,232,0.25);
+    border: 1px solid var(--glass-border);
+    color: var(--text-mid);
+  }
+
+  /* ============ PAGE 2: LYRIC CARD ============ */
+  #page-lyric { max-width: 520px; margin: 0 auto; }
+  .lyric-input-area {
+    padding: 28px 24px;
+    margin-bottom: 20px;
+  }
+  .input-label {
+    font-size: 12px;
+    color: var(--text-light);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  textarea, input[type="text"], select {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.6);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    outline: none;
+    resize: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+  textarea:focus, input:focus, select:focus {
+    border-color: var(--purple);
+    background: rgba(255,255,255,0.8);
+  }
+  textarea { height: 90px; }
+
+  .lyric-preview {
+    padding: 0;
+    overflow: hidden;
+  }
+  #lyric-canvas {
+    width: 100%;
+    border-radius: 24px;
+    display: block;
+  }
+
+  /* ============ PAGE 3: ARMY ANNIVERSARY ============ */
+  #page-army { max-width: 480px; margin: 0 auto; }
+  #page-army .glass { overflow: hidden; }
+  .army-card {
+    padding: 20px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .army-result {
+    margin: 16px 0 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .army-years {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--deep);
+    line-height: 1;
+  }
+  .army-label {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 3px;
+    margin-top: 2px;
+  }
+  .army-days {
+    font-size: 12px;
+    color: var(--text-mid);
+    margin-top: 4px;
+  }
+  input[type="date"] {
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.6);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    outline: none;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+  input[type="date"]:focus { border-color: var(--purple); }
+
+  #army-canvas { width: 100%; border-radius: 24px; display: none; }
+
+  /* ============ PAGE 4: QUOTE ============ */
+  #page-quote { max-width: 480px; margin: 0 auto; }
+  .quote-card {
+    padding: 40px 32px;
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 60px;
+    color: var(--violet);
+    line-height: 0.5;
+    margin-bottom: 20px;
+  }
+  .quote-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+  .quote-author {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-light);
+    letter-spacing: 2px;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeIn 0.5s ease forwards; }
+
+  /* Share button row */
+  .btn-row {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  /* SHARE TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--deep);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ============ PAGE 5: STORY ============ */
+  #page-story { max-width: 480px; margin: 0 auto; }
+
+  .mood-grid, .story-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .mood-btn, .type-btn {
+    padding: 10px 6px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 12px;
+    color: var(--text-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .mood-btn:hover, .type-btn:hover {
+    background: rgba(255,255,255,0.8);
+    border-color: var(--violet);
+  }
+  .mood-btn.selected-mood, .type-btn.selected-type {
+    background: linear-gradient(135deg, rgba(196,176,232,0.4), rgba(155,127,212,0.3));
+    border-color: var(--purple);
+    color: var(--deep);
+    font-weight: 500;
+  }
+
+  .member-pick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .mpick-btn {
+    padding: 8px 4px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 11px;
+    color: var(--text-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 1px;
+  }
+  .mpick-btn:hover { background: rgba(255,255,255,0.8); border-color: var(--violet); }
+  .mpick-btn.selected-type {
+    background: linear-gradient(135deg, rgba(196,176,232,0.4), rgba(155,127,212,0.3));
+    border-color: var(--purple);
+    color: var(--deep);
+  }
+  .mpick-random { font-family: 'Noto Sans SC', sans-serif; font-size: 11px; }
+
+  .story-loader {
+    width: 48px; height: 48px;
+    border: 2px solid var(--lavender);
+    border-top-color: var(--purple);
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+
+  /* ============ PAGE 6: DRAW STORY ============ */
+  #page-draw-story { max-width: 480px; margin: 0 auto; }
+  .ds-role-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(196,176,232,0.25);
+    border: 1px solid var(--glass-border);
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+  .ds-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--lavender);
+    transition: background 0.3s;
+  }
+  .ds-dot.done { background: var(--purple); }
+  .ds-dot.current { background: var(--deep); transform: scale(1.3); }
+
+  /* ============ PAGE 7: MBTI ============ */
+  #page-mbti { max-width: 480px; margin: 0 auto; }
+  .mbti-group-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    margin: 12px 0 6px;
+    text-transform: uppercase;
+  }
+  .mbti-row {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .mbti-btn {
+    padding: 9px 4px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 1px;
+    color: var(--text-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .mbti-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--violet); }
+  .mbti-btn.selected {
+    background: linear-gradient(135deg,rgba(196,176,232,0.5),rgba(155,127,212,0.35));
+    border-color: var(--purple);
+    color: var(--deep);
+    font-weight: 600;
+  }
+  .mbti-tag {
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: rgba(196,176,232,0.25);
+    border: 1px solid var(--glass-border);
+    font-size: 13px;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 2px;
+    color: var(--deep);
+  }
+  .mbti-other-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mbti-other-bar-wrap {
+    flex: 1;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--lavender);
+    overflow: hidden;
+  }
+  .mbti-other-bar {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--violet), var(--purple));
+  }
+
+  /* ============ PAGE 8: BAZI ============ */
+  #page-bazi { max-width: 480px; margin: 0 auto; }
+  .bazi-month-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+  }
+  .bazi-hour-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+  }
+  .bazi-sel-btn {
+    padding: 9px 4px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 12px;
+    color: var(--text-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .bazi-sel-btn span { font-size: 9px; color: var(--text-light); }
+  .bazi-sel-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--violet); }
+  .bazi-sel-btn.selected {
+    background: linear-gradient(135deg,rgba(196,176,232,0.5),rgba(155,127,212,0.35));
+    border-color: var(--purple); color: var(--deep);
+  }
+  .bazi-element-chip {
+    padding: 4px 14px; border-radius: 20px;
+    font-size: 13px; font-family: 'Noto Serif SC', serif;
+    border: 1px solid var(--glass-border);
+  }
+
+  /* ============ PAGE 9: MEMBER PROFILE ============ */
+  #page-profile { max-width: 480px; margin: 0 auto; }
+  .profile-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .profile-mini-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .profile-mini-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(107,79,160,0.15);
+    background: rgba(255,255,255,0.65);
+  }
+  .pmc-emoji { font-size: 40px; margin-bottom: 8px; }
+  .pmc-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--deep);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .pmc-sub {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+  }
+  .pd-section-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--purple);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* ============ PAGE 10: PLAYLIST ============ */
+  #page-playlist { max-width: 480px; margin: 0 auto; }
+  .pl-mood-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 8px;
+  }
+  .pl-mood-btn {
+    padding: 12px 8px;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 13px;
+    color: var(--text-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .pl-mood-btn span { font-size: 18px; }
+  .pl-mood-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--violet); }
+  .pl-mood-btn.selected {
+    background: linear-gradient(135deg,rgba(196,176,232,0.45),rgba(155,127,212,0.3));
+    border-color: var(--purple);
+    color: var(--deep);
+    font-weight: 500;
+  }
+  .song-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .song-card:active { transform: scale(0.98); }
+  .song-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .song-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--violet);
+    min-width: 28px;
+  }
+  .song-info { flex: 1; }
+  .song-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    font-weight: 400;
+  }
+  .song-artist {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+  .song-links { display: flex; gap: 6px; }
+  .song-link-btn {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.6);
+    color: var(--text-mid);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .song-link-btn:hover { background: rgba(255,255,255,0.9); color: var(--deep); }
+  .song-reason {
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+    padding-top: 4px;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { gap: 2px; }
+    .nav-link { font-size: 10px; padding: 4px 7px; }
+    .nav-logo { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BTS ARMY World</div>
+  <div class="nav-links">
+    <a class="nav-link active" href="#" onclick="showPage('home')">今日陪伴</a>
+    <a class="nav-link" href="#" onclick="showPage('lyric')">歌词卡片</a>
+    <a class="nav-link" href="#" onclick="showPage('army')">入团纪念</a>
+    <a class="nav-link" href="#" onclick="showPage('quote')">防弹语录</a>
+    <a class="nav-link" href="#" onclick="showPage('story')">专属故事</a>
+    <a class="nav-link" href="#" onclick="showPage('draw-story')">抽签故事</a>
+    <a class="nav-link" href="#" onclick="showPage('mbti')">MBTI配对</a>
+    <a class="nav-link" href="#" onclick="showPage('bazi')">八字匹配</a>
+    <a class="nav-link" href="#" onclick="showPage('profile')">成员图鉴</a>
+    <a class="nav-link" href="#" onclick="showPage('playlist')">心情歌单</a>
+    <a class="nav-link" href="#" onclick="showPage('message')">留言板</a></div>
+</nav>
+
+<!-- PAGE 1: DAILY COMPANION -->
+<div class="page active" id="page-home">
+  <div id="page-home-inner">
+    <div class="hero-header">
+      <div class="hero-sub">✦ today's companion ✦</div>
+      <div class="hero-title">今天由<span>谁</span>陪伴你</div>
+    </div>
+
+    <div class="glass draw-card">
+      <div class="stars-row">
+        <span class="star">✦</span><span class="star">✦</span><span class="star">✦</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:20px;">闭上眼睛，想一想今天的心情，然后点击抽签</p>
+
+      <div class="member-display" id="member-display">
+        <span class="draw-placeholder">点击下方按钮，抽取今日member ✨</span>
+      </div>
+
+      <button class="btn btn-primary" onclick="drawMember()" style="margin-bottom:12px;width:100%;">
+        ✦ 抽取今日陪伴
+      </button>
+      <button class="btn btn-glass" onclick="shareCompanion()" id="share-companion-btn" style="width:100%;display:none;">
+        分享今日运势
+      </button>
+    </div>
+
+    <canvas id="companion-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- PAGE 2: LYRIC CARD -->
+<div class="page" id="page-lyric">
+  <div class="section-title">✦ lyric card</div>
+  <div class="section-heading">歌词卡片生成器</div>
+
+  <div class="glass lyric-input-area">
+    <label class="input-label">✦ 输入歌词</label>
+    <textarea id="lyric-input" placeholder="在这里输入你最喜欢的一句歌词…&#10;例：You showed me I have reasons I should love myself"></textarea>
+
+    <label class="input-label">✦ 歌曲名称</label>
+    <input type="text" id="song-name" placeholder="歌曲名 — 演唱者">
+
+    <label class="input-label">✦ 卡片风格</label>
+    <select id="card-style">
+      <option value="violet">紫色渐变</option>
+      <option value="night">深夜深紫</option>
+      <option value="dawn">黎明玫瑰金</option>
+      <option value="mint">薄荷白</option>
+    </select>
+
+    <button class="btn btn-primary" onclick="generateLyricCard()" style="width:100%;">
+      生成歌词卡片
+    </button>
+  </div>
+
+  <div class="glass lyric-preview" id="lyric-preview" style="display:none;">
+    <canvas id="lyric-canvas"></canvas>
+    <div style="padding:16px;" class="btn-row">
+      <button class="btn btn-primary" onclick="downloadCanvas('lyric-canvas','lyric-card')">保存图片</button>
+      <button class="btn btn-glass" onclick="shareCanvas('lyric-canvas')">分享</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: ARMY ANNIVERSARY -->
+<div class="page" id="page-army">
+  <div class="section-title">✦ army since</div>
+  <div class="section-heading">入团纪念日</div>
+
+  <div class="glass army-card">
+    <label class="input-label">✦ 你的入团日期</label>
+    <input type="date" id="army-date" max="">
+
+    <button class="btn btn-primary" onclick="calcArmy()" style="width:100%;margin-bottom:0;box-sizing:border-box;">
+      生成纪念证书
+    </button>
+
+    <div class="army-result" id="army-result" style="display:none;">
+      <div class="army-years" id="army-years">0</div>
+      <div class="army-label">YEARS AS ARMY</div>
+      <div class="army-days" id="army-days"></div>
+      <div class="fortune-text" id="army-msg" style="margin-top:8px;font-size:13px;"></div>
+    </div>
+  </div>
+
+  <div id="army-cert-wrap" style="display:none;" class="glass" style="overflow:hidden;">
+    <canvas id="army-canvas" style="width:100%;border-radius:24px;display:block;"></canvas>
+    <div style="padding:16px;" class="btn-row">
+      <button class="btn btn-primary" onclick="downloadCanvas('army-canvas','army-certificate')">保存证书</button>
+      <button class="btn btn-glass" onclick="shareCanvas('army-canvas')">分享</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: QUOTE -->
+<div class="page" id="page-quote">
+  <div class="section-title">✦ today's words</div>
+  <div class="section-heading">今日防弹语录</div>
+
+  <div class="glass quote-card" id="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text" id="quote-text">点击下方按钮，获取今日防弹语录</div>
+    <div class="quote-author" id="quote-author"></div>
+  </div>
+
+  <div class="btn-row" style="margin-bottom:20px;">
+    <button class="btn btn-primary" onclick="newQuote()">换一条语录</button>
+    <button class="btn btn-glass" onclick="shareQuoteImg()" id="share-quote-btn" style="display:none;">分享图片</button>
+  </div>
+
+  <canvas id="quote-canvas" style="display:none;"></canvas>
+</div>
+
+<!-- PAGE 5: STORY -->
+<div class="page" id="page-story">
+  <div class="section-title">✦ your story</div>
+  <div class="section-heading">专属故事生成</div>
+
+  <!-- STEP 1: Questions -->
+  <div id="story-step1">
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <p style="font-size:13px;color:var(--text-light);text-align:center;margin-bottom:20px;letter-spacing:1px;">回答几个问题，获得你与防弹的专属故事 ✦</p>
+
+      <label class="input-label">✦ 你的名字（或昵称）</label>
+      <input type="text" id="story-name" placeholder="你叫什么？">
+
+      <label class="input-label">✦ 现在的心情</label>
+      <div class="mood-grid" id="mood-grid">
+        <div class="mood-btn" onclick="selectMood(this,'开心')">😊 开心</div>
+        <div class="mood-btn" onclick="selectMood(this,'难过')">🌧 难过</div>
+        <div class="mood-btn" onclick="selectMood(this,'焦虑')">😟 焦虑</div>
+        <div class="mood-btn" onclick="selectMood(this,'平静')">🌿 平静</div>
+        <div class="mood-btn" onclick="selectMood(this,'想念')">💜 想念</div>
+        <div class="mood-btn" onclick="selectMood(this,'疲惫')">🌙 疲惫</div>
+      </div>
+
+      <label class="input-label" style="margin-top:16px;">✦ 想要什么样的故事</label>
+      <div class="story-type-grid" id="story-type-grid">
+        <div class="type-btn" onclick="selectType(this,'青梅竹马')">🌸 青梅竹马</div>
+        <div class="type-btn" onclick="selectType(this,'偶遇相识')">✨ 偶遇相识</div>
+        <div class="type-btn" onclick="selectType(this,'暗恋治愈')">💜 暗恋治愈</div>
+        <div class="type-btn" onclick="selectType(this,'温柔日常')">☀️ 温柔日常</div>
+        <div class="type-btn" onclick="selectType(this,'深夜陪伴')">🌙 深夜陪伴</div>
+        <div class="type-btn" onclick="selectType(this,'重逢')">🎭 久别重逢</div>
+      </div>
+
+      <label class="input-label" style="margin-top:16px;">✦ 选择你的member（不选则随机）</label>
+      <div class="member-pick-grid" id="member-pick-grid">
+        <div class="mpick-btn" onclick="selectMember(this,'RM')">RM</div>
+        <div class="mpick-btn" onclick="selectMember(this,'Jin')">JIN</div>
+        <div class="mpick-btn" onclick="selectMember(this,'SUGA')">SUGA</div>
+        <div class="mpick-btn" onclick="selectMember(this,'j-hope')">J-HOPE</div>
+        <div class="mpick-btn" onclick="selectMember(this,'Jimin')">JIMIN</div>
+        <div class="mpick-btn" onclick="selectMember(this,'V')">V</div>
+        <div class="mpick-btn" onclick="selectMember(this,'Jungkook')">JUNGKOOK</div>
+
+        <div class="mpick-btn mpick-random selected-type" onclick="selectMember(this,'random')">🎲 随机</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="generateStory()" style="width:100%;">
+      ✦ 生成我的专属故事
+    </button>
+  </div>
+
+  <!-- STEP 2: Loading -->
+  <div id="story-loading" style="display:none;text-align:center;padding:60px 20px;">
+    <div class="story-loader"></div>
+    <p style="color:var(--text-mid);font-size:14px;margin-top:20px;font-family:'Noto Serif SC',serif;">正在为你编织故事…</p>
+    <p style="color:var(--text-light);font-size:12px;margin-top:8px;" id="loading-member-hint"></p>
+  </div>
+
+  <!-- STEP 3: Result -->
+  <div id="story-result" style="display:none;">
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div id="result-member-emoji" style="font-size:36px;"></div>
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--deep);" id="result-member-name"></div>
+          <div style="font-size:11px;color:var(--text-light);letter-spacing:2px;" id="result-story-type"></div>
+        </div>
+      </div>
+      <div style="width:100%;height:1px;background:var(--glass-border);margin-bottom:16px;"></div>
+      <div id="story-content" style="font-family:'Noto Serif SC',serif;font-size:15px;color:var(--text-dark);line-height:2;white-space:pre-wrap;"></div>
+    </div>
+
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="saveStoryImg()">保存故事图片</button>
+      <button class="btn btn-glass" onclick="resetStory()">再生成一个</button>
+    </div>
+
+    <canvas id="story-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- PAGE 6: DRAW STORY -->
+<div class="page" id="page-draw-story">
+  <div class="section-title">✦ fate draw</div>
+  <div class="section-heading">防弹命运抽签</div>
+
+  <!-- INTRO -->
+  <div id="ds-intro">
+    <div class="glass" style="padding:24px;margin-bottom:16px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:12px;">🎴</div>
+      <p style="font-family:'Noto Serif SC',serif;font-weight:300;font-size:15px;color:var(--text-mid);line-height:1.9;">
+        十张命运之签<br>每签揭开一个角色<br>最终生成你的防弹命运故事
+      </p>
+    </div>
+    <button class="btn btn-primary" onclick="startDrawStory()" style="width:100%;">✦ 开始抽签</button>
+  </div>
+
+  <!-- DRAW PHASE -->
+  <div id="ds-draw" style="display:none;">
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <!-- progress -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <span style="font-size:12px;color:var(--text-light);letter-spacing:2px;">第 <span id="ds-current-num">1</span> / 10 签</span>
+        <div style="display:flex;gap:4px;" id="ds-progress-dots"></div>
+      </div>
+
+      <!-- question -->
+      <div style="text-align:center;padding:8px 0 20px;">
+        <div style="font-size:11px;color:var(--text-light);letter-spacing:3px;margin-bottom:8px;">命运之签</div>
+        <div id="ds-question" style="font-family:'Noto Serif SC',serif;font-size:20px;color:var(--text-dark);font-weight:300;line-height:1.5;"></div>
+      </div>
+
+      <!-- card to flip -->
+      <div id="ds-card-wrap" style="perspective:600px;margin:0 auto 20px;width:160px;height:200px;">
+        <div id="ds-card" style="width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.6s cubic-bezier(.4,2,.6,1);cursor:pointer;" onclick="flipCard()">
+          <!-- front (back face of card) -->
+          <div style="position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;background:linear-gradient(135deg,#c4b0e8,#9b7fd4);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(107,79,160,0.25);">
+            <div style="font-size:32px;">✦</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.8);letter-spacing:3px;margin-top:8px;">点击翻牌</div>
+          </div>
+          <!-- back (revealed face) -->
+          <div id="ds-card-back" style="position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);border-radius:20px;background:rgba(255,255,255,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(107,79,160,0.2);">
+            <div id="ds-reveal-emoji" style="font-size:52px;"></div>
+            <div id="ds-reveal-name" style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--deep);margin-top:8px;"></div>
+            <div id="ds-reveal-cn" style="font-size:11px;color:var(--text-light);letter-spacing:2px;margin-top:2px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="ds-next-btn" onclick="nextQuestion()" style="width:100%;display:none;">
+        下一签 →
+      </button>
+    </div>
+
+    <!-- collected so far -->
+    <div class="glass" style="padding:16px;margin-bottom:16px;" id="ds-collected-wrap" style="display:none;">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:2px;margin-bottom:10px;">已抽到</div>
+      <div id="ds-collected" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="ds-result" style="display:none;">
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="font-size:13px;color:var(--purple);letter-spacing:3px;margin-bottom:6px;">✦ YOUR FATE ✦</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:22px;font-weight:300;color:var(--text-dark);">你的防弹命运图鉴</div>
+      </div>
+
+      <!-- roles summary -->
+      <div id="ds-roles-summary" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;"></div>
+
+      <div style="width:100%;height:1px;background:var(--glass-border);margin-bottom:20px;"></div>
+
+      <!-- story -->
+      <div id="ds-story-text" style="font-family:'Noto Serif SC',serif;font-size:15px;color:var(--text-dark);line-height:2;"></div>
+    </div>
+
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="saveDsImg()">保存分享图</button>
+      <button class="btn btn-glass" onclick="restartDrawStory()">重新抽签</button>
+    </div>
+
+    <canvas id="ds-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- PAGE 7: MBTI -->
+<div class="page" id="page-mbti">
+  <div class="section-title">✦ mbti match</div>
+  <div class="section-heading">MBTI灵魂配对</div>
+
+  <!-- SELECT -->
+  <div id="mbti-select">
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <p style="font-size:13px;color:var(--text-light);text-align:center;margin-bottom:20px;letter-spacing:1px;">选择你的MBTI，找到与你灵魂共鸣的member ✦</p>
+
+      <label class="input-label">✦ 你是哪种人？</label>
+      <div class="mbti-grid" id="mbti-grid">
+        <!-- 分析家 -->
+        <div class="mbti-group-label">分析家</div>
+        <div class="mbti-row">
+          <div class="mbti-btn" onclick="selectMbti(this,'INTJ')">INTJ</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'INTP')">INTP</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ENTJ')">ENTJ</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ENTP')">ENTP</div>
+        </div>
+        <div class="mbti-group-label">外交家</div>
+        <div class="mbti-row">
+          <div class="mbti-btn" onclick="selectMbti(this,'INFJ')">INFJ</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'INFP')">INFP</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ENFJ')">ENFJ</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ENFP')">ENFP</div>
+        </div>
+        <div class="mbti-group-label">守护者</div>
+        <div class="mbti-row">
+          <div class="mbti-btn" onclick="selectMbti(this,'ISTJ')">ISTJ</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ISFJ')">ISFJ</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ESTJ')">ESTJ</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ESFJ')">ESFJ</div>
+        </div>
+        <div class="mbti-group-label">探险家</div>
+        <div class="mbti-row">
+          <div class="mbti-btn" onclick="selectMbti(this,'ISTP')">ISTP</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ISFP')">ISFP</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ESTP')">ESTP</div>
+          <div class="mbti-btn" onclick="selectMbti(this,'ESFP')">ESFP</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="calcMbti()" style="width:100%;">✦ 查看我的配对结果</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="mbti-result" style="display:none;">
+    <!-- best match -->
+    <div class="glass" style="padding:28px 24px;margin-bottom:16px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:3px;margin-bottom:12px;">YOUR SOUL MATCH</div>
+      <div id="mbti-member-emoji" style="font-size:64px;margin-bottom:8px;"></div>
+      <div id="mbti-member-name" style="font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--deep);"></div>
+      <div id="mbti-member-cn" style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin-top:2px;margin-bottom:16px;"></div>
+
+      <div style="display:flex;justify-content:center;gap:8px;margin-bottom:16px;">
+        <div class="mbti-tag" id="mbti-user-type"></div>
+        <div style="font-size:18px;color:var(--violet);">×</div>
+        <div class="mbti-tag" id="mbti-member-type"></div>
+      </div>
+
+      <!-- compatibility bar -->
+      <div style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:11px;color:var(--text-light);">灵魂契合度</span>
+          <span style="font-size:13px;color:var(--deep);font-weight:500;" id="mbti-score"></span>
+        </div>
+        <div style="height:6px;border-radius:3px;background:var(--lavender);overflow:hidden;">
+          <div id="mbti-bar" style="height:100%;border-radius:3px;background:linear-gradient(90deg,var(--violet),var(--deep));width:0%;transition:width 1s ease;"></div>
+        </div>
+      </div>
+
+      <div style="width:100%;height:1px;background:var(--glass-border);margin-bottom:16px;"></div>
+      <div id="mbti-desc" style="font-family:'Noto Serif SC',serif;font-size:14px;color:var(--text-dark);line-height:1.9;text-align:left;"></div>
+    </div>
+
+    <!-- other matches -->
+    <div class="glass" style="padding:20px 24px;margin-bottom:16px;">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:2px;margin-bottom:12px;">其他契合度</div>
+      <div id="mbti-others" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
+
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="saveMbtiImg()">保存配对图</button>
+      <button class="btn btn-glass" onclick="resetMbti()">重新测试</button>
+    </div>
+    <canvas id="mbti-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- PAGE 8: BAZI -->
+<div class="page" id="page-bazi">
+  <div class="section-title">✦ 八字合盘</div>
+  <div class="section-heading">八字命盘匹配</div>
+
+  <div id="bazi-input">
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <p style="font-size:13px;color:var(--text-light);text-align:center;margin-bottom:20px;letter-spacing:1px;">输入你的出生信息，推算五行命盘与member的缘分 ✦</p>
+
+      <label class="input-label">✦ 出生年份</label>
+      <input type="number" id="bazi-year" placeholder="例：1998" min="1900" max="2010" style="margin-bottom:16px;">
+
+      <label class="input-label">✦ 出生月份</label>
+      <div class="bazi-month-grid">
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,1)">一月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,2)">二月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,3)">三月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,4)">四月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,5)">五月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,6)">六月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,7)">七月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,8)">八月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,9)">九月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,10)">十月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,11)">十一月</div>
+        <div class="bazi-sel-btn" onclick="selectBaziMonth(this,12)">十二月</div>
+      </div>
+
+      <label class="input-label" style="margin-top:16px;">✦ 出生日期</label>
+      <input type="number" id="bazi-day" placeholder="例：15" min="1" max="31" style="margin-bottom:16px;">
+
+      <label class="input-label">✦ 出生时辰</label>
+      <div class="bazi-hour-grid">
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,0)">子时<span>23-1时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,1)">丑时<span>1-3时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,2)">寅时<span>3-5时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,3)">卯时<span>5-7时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,4)">辰时<span>7-9时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,5)">巳时<span>9-11时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,6)">午时<span>11-13时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,7)">未时<span>13-15时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,8)">申时<span>15-17时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,9)">酉时<span>17-19时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,10)">戌时<span>19-21时</span></div>
+        <div class="bazi-sel-btn" onclick="selectBaziHour(this,11)">亥时<span>21-23时</span></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="calcBazi()" style="width:100%;">✦ 推算八字缘分</button>
+  </div>
+
+  <div id="bazi-result" style="display:none;">
+    <!-- user bazi summary -->
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:3px;margin-bottom:12px;text-align:center;">YOUR DESTINY CHART</div>
+      <div id="bazi-user-summary" style="display:flex;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;"></div>
+      <div id="bazi-user-desc" style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.8;font-family:'Noto Serif SC',serif;font-weight:300;"></div>
+    </div>
+
+    <!-- best match -->
+    <div class="glass" style="padding:28px 24px;margin-bottom:16px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:3px;margin-bottom:12px;">最佳缘分</div>
+      <div id="bazi-best-emoji" style="font-size:64px;margin-bottom:8px;"></div>
+      <div id="bazi-best-name" style="font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--deep);"></div>
+      <div id="bazi-best-cn" style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin:4px 0 16px;"></div>
+
+      <div style="display:flex;justify-content:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="bazi-element-tags"></div>
+
+      <div style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:11px;color:var(--text-light);">八字契合度</span>
+          <span style="font-size:13px;color:var(--deep);font-weight:500;" id="bazi-score-label"></span>
+        </div>
+        <div style="height:6px;border-radius:3px;background:var(--lavender);overflow:hidden;">
+          <div id="bazi-score-bar" style="height:100%;border-radius:3px;background:linear-gradient(90deg,var(--violet),var(--deep));width:0%;transition:width 1s ease;"></div>
+        </div>
+      </div>
+
+      <div style="width:100%;height:1px;background:var(--glass-border);margin-bottom:16px;"></div>
+      <div id="bazi-best-desc" style="font-family:'Noto Serif SC',serif;font-size:14px;color:var(--text-dark);line-height:1.9;text-align:left;"></div>
+    </div>
+
+    <!-- others -->
+    <div class="glass" style="padding:20px 24px;margin-bottom:16px;">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:2px;margin-bottom:12px;">其他缘分</div>
+      <div id="bazi-others" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
+
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="saveBaziImg()">保存命盘图</button>
+      <button class="btn btn-glass" onclick="resetBazi()">重新推算</button>
+    </div>
+    <canvas id="bazi-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- PAGE 9: MEMBER PROFILE -->
+<div class="page" id="page-profile">
+  <div class="section-title">✦ member profiles</div>
+  <div class="section-heading">成员星座图鉴</div>
+
+  <!-- GRID VIEW -->
+  <div id="profile-grid">
+    <div class="profile-card-grid">
+      <div class="profile-mini-card" onclick="openProfile('RM')">
+        <div class="pmc-emoji">🐨</div>
+        <div class="pmc-name">RM</div>
+        <div class="pmc-sub">射手座 · 狗</div>
+      </div>
+      <div class="profile-mini-card" onclick="openProfile('Jin')">
+        <div class="pmc-emoji">🐹</div>
+        <div class="pmc-name">JIN</div>
+        <div class="pmc-sub">射手座 · 猴</div>
+      </div>
+      <div class="profile-mini-card" onclick="openProfile('SUGA')">
+        <div class="pmc-emoji">🐱</div>
+        <div class="pmc-name">SUGA</div>
+        <div class="pmc-sub">双鱼座 · 鸡</div>
+      </div>
+      <div class="profile-mini-card" onclick="openProfile('j-hope')">
+        <div class="pmc-emoji">🐿️</div>
+        <div class="pmc-name">J-HOPE</div>
+        <div class="pmc-sub">水瓶座 · 狗</div>
+      </div>
+      <div class="profile-mini-card" onclick="openProfile('Jimin')">
+        <div class="pmc-emoji">🐥</div>
+        <div class="pmc-name">JIMIN</div>
+        <div class="pmc-sub">天秤座 · 猪</div>
+      </div>
+      <div class="profile-mini-card" onclick="openProfile('V')">
+        <div class="pmc-emoji">🐻</div>
+        <div class="pmc-name">V</div>
+        <div class="pmc-sub">摩羯座 · 猪</div>
+      </div>
+      <div class="profile-mini-card" onclick="openProfile('Jungkook')">
+        <div class="pmc-emoji">🐰</div>
+        <div class="pmc-name">JUNGKOOK</div>
+        <div class="pmc-sub">处女座 · 牛</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div id="profile-detail" style="display:none;">
+    <button class="btn btn-glass" onclick="closeProfile()" style="margin-bottom:16px;padding:8px 20px;font-size:13px;">← 返回</button>
+
+    <div class="glass" style="padding:32px 24px;margin-bottom:16px;text-align:center;">
+      <div id="pd-emoji" style="font-size:72px;margin-bottom:12px;"></div>
+      <div id="pd-kr" style="font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--deep);"></div>
+      <div id="pd-cn" style="font-size:13px;color:var(--text-light);letter-spacing:3px;margin:4px 0 20px;"></div>
+
+      <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;" id="pd-tags"></div>
+
+      <div style="width:100%;height:1px;background:var(--glass-border);margin-bottom:20px;"></div>
+
+      <!-- zodiac -->
+      <div class="pd-section-label">星座</div>
+      <div id="pd-zodiac-name" style="font-family:'Noto Serif SC',serif;font-size:20px;color:var(--deep);margin-bottom:8px;"></div>
+      <div id="pd-zodiac-desc" style="font-size:14px;color:var(--text-mid);line-height:1.9;text-align:left;margin-bottom:20px;font-family:'Noto Serif SC',serif;font-weight:300;"></div>
+
+      <!-- animal -->
+      <div class="pd-section-label">生肖</div>
+      <div id="pd-animal-name" style="font-family:'Noto Serif SC',serif;font-size:20px;color:var(--deep);margin-bottom:8px;"></div>
+      <div id="pd-animal-desc" style="font-size:14px;color:var(--text-mid);line-height:1.9;text-align:left;margin-bottom:20px;font-family:'Noto Serif SC',serif;font-weight:300;"></div>
+
+      <!-- personality -->
+      <div class="pd-section-label">性格解析</div>
+      <div id="pd-personality" style="font-size:14px;color:var(--text-dark);line-height:1.9;text-align:left;font-family:'Noto Serif SC',serif;font-weight:300;"></div>
+    </div>
+
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="saveProfileImg()">保存图鉴</button>
+    </div>
+    <canvas id="profile-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- PAGE 10: PLAYLIST -->
+<div class="page" id="page-playlist">
+  <div class="section-title">✦ mood playlist</div>
+  <div class="section-heading">心情歌单</div>
+
+  <div id="pl-select">
+    <div class="glass" style="padding:24px;margin-bottom:16px;">
+      <p style="font-size:13px;color:var(--text-light);text-align:center;margin-bottom:20px;letter-spacing:1px;">告诉我你现在的心情，我为你挑一份防弹歌单 ✦</p>
+
+      <label class="input-label">✦ 现在的心情</label>
+      <div class="pl-mood-grid">
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'开心')"><span>😊</span>开心</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'难过')"><span>🌧</span>难过</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'焦虑')"><span>😟</span>焦虑</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'思念')"><span>💜</span>思念</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'疲惫')"><span>🌙</span>疲惫</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'治愈')"><span>🌿</span>想被治愈</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'热血')"><span>🔥</span>热血</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'平静')"><span>✨</span>平静</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'迷茫')"><span>🌫</span>迷茫</div>
+        <div class="pl-mood-btn" onclick="selectPlMood(this,'恋爱')"><span>🌸</span>恋爱脑</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="generatePlaylist()" style="width:100%;">✦ 生成我的歌单</button>
+  </div>
+
+  <div id="pl-result" style="display:none;">
+    <!-- header -->
+    <div class="glass" style="padding:24px;margin-bottom:16px;text-align:center;">
+      <div id="pl-mood-icon" style="font-size:48px;margin-bottom:8px;"></div>
+      <div id="pl-title" style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:300;color:var(--text-dark);margin-bottom:4px;"></div>
+      <div id="pl-subtitle" style="font-size:12px;color:var(--text-light);letter-spacing:2px;"></div>
+    </div>
+
+    <!-- song list -->
+    <div id="pl-songs" style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;"></div>
+
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="savePlImg()">保存歌单图</button>
+      <button class="btn btn-glass" onclick="copyPlaylist()">一键复制歌单</button>
+      <button class="btn btn-glass" onclick="resetPlaylist()">换个心情</button>
+    </div>
+    <canvas id="pl-canvas" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- PAGE 11: MESSAGE BOARD -->
+<div class="page" id="page-message">
+  <div class="section-title">✦ love letters</div>
+  <div class="section-heading">ARMY留言板</div>
+
+  <!-- submit form -->
+  <div class="glass" style="padding:24px;margin-bottom:16px;">
+    <p style="font-size:13px;color:var(--text-light);text-align:center;margin-bottom:20px;letter-spacing:1px;">写下你想说的话，留在这里 ✦<br><span style="font-size:11px;">留言经审核后显示</span></p>
+    <label class="input-label">✦ 你的昵称</label>
+    <input type="text" id="msg-nickname" placeholder="你叫什么？" maxlength="20" style="margin-bottom:16px;">
+    <label class="input-label">✦ 留言内容</label>
+    <textarea id="msg-content" placeholder="写下你想说的话…&#10;可以是对防弹的深情，可以是今天的心情，可以是任何想留下的文字。" maxlength="200" style="height:120px;margin-bottom:8px;"></textarea>
+    <div style="text-align:right;font-size:11px;color:var(--text-light);margin-bottom:16px;" id="msg-count">0 / 200</div>
+    <button class="btn btn-primary" onclick="submitMessage()" style="width:100%;" id="msg-submit-btn">✦ 提交留言</button>
+  </div>
+
+  <!-- message list -->
+  <div style="font-size:11px;color:var(--text-light);letter-spacing:2px;margin-bottom:12px;">已审核的留言</div>
+  <div id="msg-list" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+    <div style="text-align:center;padding:40px 20px;color:var(--text-light);font-size:13px;">加载中…</div>
+  </div>
+  <button class="btn btn-glass" onclick="loadMessages()" style="width:100%;margin-bottom:20px;">刷新留言</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== DATA =====================
+const MEMBERS = [
+  {
+    name: 'RM',
+    kr: 'RM',
+    cn: '金南俊',
+    emoji: '🐨',
+    color: ['#7b61c9','#4a3080'],
+    fortune: ['今天的你，像RM一样，思考得很深。试着把想法写下来。', '随便找本书翻翻吧，说不定会有意外收获。', '今天适合做一件"有意义但不着急"的事。'],
+    tags: ['沉思', '创意', '内敛']
+  },
+  {
+    name: 'Jin',
+    kr: 'JIN',
+    cn: '金硕珍',
+    emoji: '🐹',
+    color: ['#e8a0bf','#c46ea0'],
+    fortune: ['今天记得好好吃饭。Jin说过，好好吃饭就是爱自己。', '今天会有小小的惊喜，注意接收。', '做一件让自己开心的事，不需要理由。'],
+    tags: ['温暖', '治愈', '快乐']
+  },
+  {
+    name: 'SUGA',
+    kr: 'SUGA',
+    cn: '闵玧其',
+    emoji: '🐱',
+    color: ['#4a4a6a','#1a1a3a'],
+    fortune: ['今天可以休息。不必假装精力充沛。', '某件拖了很久的事，今天可以静下心来处理。', '你比你以为的更努力。今天允许自己懒一懒。'],
+    tags: ['独处', '专注', '真实']
+  },
+  {
+    name: 'j-hope',
+    kr: 'J-HOPE',
+    cn: '郑号锡',
+    emoji: '🐿️',
+    color: ['#f5c842','#e89820'],
+    fortune: ['今天的能量满满！做点运动或者跳舞吧。', '把好心情传递出去，今天你是别人的阳光。', '今天适合开始一件新的事情。'],
+    tags: ['活力', '正能量', '行动']
+  },
+  {
+    name: 'Jimin',
+    kr: 'JIMIN',
+    cn: '朴智旻',
+    emoji: '🐥',
+    color: ['#9b7fd4','#6650a0'],
+    fortune: ['今天要对自己温柔一点。就像Jimin对舞台那样认真对待自己。', '今天可能会有些敏感，没关系，感受就是感受。', '用心做好一件小事，今天的你值得被看见。'],
+    tags: ['细腻', '专注', '自我关爱']
+  },
+  {
+    name: 'V',
+    kr: 'V',
+    cn: '金泰亨',
+    emoji: '🐻',
+    color: ['#5b8fa8','#2d6480'],
+    fortune: ['今天用眼睛多看看世界。V式审美上线。', '做一件"没有用"但让你快乐的事。', '今天可以听一首新歌，或者画点什么。'],
+    tags: ['艺术', '自由', '独特']
+  },
+  {
+    name: 'Jungkook',
+    kr: 'JUNGKOOK',
+    cn: '田柾国',
+    emoji: '🐰',
+    color: ['#4a8a6a','#2d6048'],
+    fortune: ['今天的你，什么都可以去试试。JUNGKOOK式的无畏。', '坚持一件你已经开始的事，今天会有进展。', '今天的你，比昨天更厉害了一点点。'],
+    tags: ['勇气', '成长', '坚持']
+  }
+];
+
+const QUOTES = [
+  { text: '不管别人怎么说，你走你的路就好。这是你的人生，你的选择。', author: 'RM' },
+  { text: '就算全世界都不理解你，你也要相信自己。', author: 'SUGA' },
+  { text: '你不必完美。你只需要是你自己。', author: 'Jimin' },
+  { text: '不要害怕失败，因为失败也是一种经历。', author: 'j-hope' },
+  { text: '你的存在本身就有意义，不需要理由。', author: 'Jin' },
+  { text: '去爱自己吧，因为你值得被爱。', author: 'Jungkook' },
+  { text: '星星在最黑的夜晚才最闪亮。', author: 'V' },
+  { text: '所谓的"正常"是什么？做自己就好了。', author: 'RM' },
+  { text: '每天都是新的开始，昨天的眼泪不代表今天。', author: 'j-hope' },
+  { text: '你已经足够好了。真的。', author: 'Jimin' },
+  { text: '爱自己不是自私，而是必须。', author: 'RM' },
+  { text: '哪怕只前进一步，也是进步。', author: 'SUGA' },
+  { text: '你的心情很重要，你的感受很重要。', author: 'Jin' },
+  { text: '相信自己，你能做到。', author: 'Jungkook' },
+  { text: '有时候，停下来休息也是一种勇气。', author: 'V' },
+];
+
+// ===================== WORKER API =====================
+const WORKER_URL = 'https://bts-army-world.huocassie1206.workers.dev';
+
+async function callWorkerAI(prompt) {
+  const res = await fetch(`${WORKER_URL}/ai/story`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data.text;
+}
+
+// ===================== UTILS =====================
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'message') loadMessages();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function downloadCanvas(id, filename) {
+  const canvas = document.getElementById(id);
+  const link = document.createElement('a');
+  link.download = filename + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('图片已保存 ✦');
+}
+
+async function shareCanvas(id) {
+  const canvas = document.getElementById(id);
+  canvas.toBlob(async blob => {
+    if (navigator.share && navigator.canShare) {
+      const file = new File([blob], 'bts-army.png', { type: 'image/png' });
+      try {
+        await navigator.share({ files: [file], title: 'BTS ARMY World' });
+      } catch { downloadCanvas(id, 'bts-share'); }
+    } else {
+      downloadCanvas(id, 'bts-share');
+    }
+  });
+}
+
+// wrap text for canvas
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const chars = text.split('');
+  let line = '';
+  let lines = [];
+  for (let c of chars) {
+    const test = line + c;
+    if (ctx.measureText(test).width > maxWidth && line !== '') {
+      lines.push(line);
+      line = c;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  lines.forEach((l, i) => ctx.fillText(l, x, y + i * lineHeight));
+  return lines.length;
+}
+
+// ===================== PAGE 1: DRAW =====================
+let lastMember = null;
+
+function drawMember() {
+  const idx = Math.floor(Math.random() * MEMBERS.length);
+  const m = MEMBERS[idx];
+  lastMember = m;
+
+  const fortuneIdx = Math.floor(Math.random() * m.fortune.length);
+  const fortune = m.fortune[fortuneIdx];
+
+  const display = document.getElementById('member-display');
+  display.innerHTML = `
+    <span class="member-emoji revealed">${m.emoji}</span>
+    <div class="member-name-kr revealed">${m.kr}</div>
+    <div class="member-name-cn revealed">${m.cn}</div>
+    <div class="fortune-text revealed">${fortune}</div>
+    <div class="fortune-tags">
+      ${m.tags.map(t => `<span class="ftag">${t}</span>`).join('')}
+    </div>
+  `;
+
+  document.getElementById('share-companion-btn').style.display = 'block';
+  generateCompanionCanvas(m, fortune);
+}
+
+function generateCompanionCanvas(m, fortune) {
+  const canvas = document.getElementById('companion-canvas');
+  const W = 800, H = 800;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // BG gradient
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#f5f0ff');
+  bg.addColorStop(0.5, '#ede6ff');
+  bg.addColorStop(1, '#e0d4ff');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // glass card
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  roundRect(ctx, 60, 60, W-120, H-120, 40);
+
+  // member color accent bar
+  const ac = ctx.createLinearGradient(60, 60, W-60, 60);
+  ac.addColorStop(0, m.color[0] + '80');
+  ac.addColorStop(1, m.color[1] + '80');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 60, 60, W-120, 12, 40);
+
+  // emoji
+  ctx.font = '120px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(m.emoji, W/2, 260);
+
+  // name
+  ctx.fillStyle = m.color[1];
+  ctx.font = 'bold 72px serif';
+  ctx.fillText(m.kr, W/2, 360);
+
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '26px sans-serif';
+  ctx.fillText(m.cn, W/2, 400);
+
+  // divider
+  ctx.strokeStyle = 'rgba(196,176,232,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(160, 430); ctx.lineTo(640, 430); ctx.stroke();
+
+  // fortune
+  ctx.fillStyle = '#6b5a8a';
+  ctx.font = '28px serif';
+  wrapText(ctx, fortune, W/2, 480, 560, 46);
+
+  // tags
+  const tagY = 650;
+  const tagW = 120, tagH = 36, tagGap = 16;
+  const totalTagW = m.tags.length * tagW + (m.tags.length-1) * tagGap;
+  let tagX = (W - totalTagW) / 2;
+  m.tags.forEach(tag => {
+    ctx.fillStyle = 'rgba(196,176,232,0.3)';
+    roundRect(ctx, tagX, tagY, tagW, tagH, 18);
+    ctx.fillStyle = '#6b5a8a';
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(tag, tagX + tagW/2, tagY + 24);
+    tagX += tagW + tagGap;
+  });
+
+  // footer
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H - 80);
+
+  // date
+  const today = new Date();
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  ctx.fillText(today.getFullYear() + '.' + String(today.getMonth()+1).padStart(2,'0') + '.' + String(today.getDate()).padStart(2,'0'), W/2, H - 52);
+}
+
+function shareCompanion() {
+  shareCanvas('companion-canvas');
+}
+
+// ===================== PAGE 2: LYRIC CARD =====================
+function generateLyricCard() {
+  const lyric = document.getElementById('lyric-input').value.trim();
+  const song = document.getElementById('song-name').value.trim();
+  const style = document.getElementById('card-style').value;
+  if (!lyric) { showToast('请先输入歌词 ✦'); return; }
+
+  const styles = {
+    violet: { bg: ['#f0eaff','#ddd0ff','#c4b0e8'], text: '#2d1f4e', sub: '#9b7fd4' },
+    night:  { bg: ['#1a1030','#2d1f4e','#1a1030'], text: '#e8e0f5', sub: '#c4b0e8' },
+    dawn:   { bg: ['#fff0f3','#ffd6e0','#ffb3c6'], text: '#4a1020', sub: '#c06080' },
+    mint:   { bg: ['#f0fff8','#d0f0e8','#a8e0d0'], text: '#1a3a30', sub: '#4a9080' },
+  };
+  const s = styles[style];
+
+  const canvas = document.getElementById('lyric-canvas');
+  const W = 800, H = 1000;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, s.bg[0]);
+  bg.addColorStop(0.5, s.bg[1]);
+  bg.addColorStop(1, s.bg[2]);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // card
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  // quote mark
+  ctx.fillStyle = s.sub + '60';
+  ctx.font = 'bold 180px serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('"', 80, 240);
+
+  // lyric text
+  ctx.fillStyle = s.text;
+  ctx.font = '36px serif';
+  ctx.textAlign = 'center';
+  const lines = wrapText(ctx, lyric, W/2, 320, 620, 56);
+
+  // divider
+  ctx.strokeStyle = s.sub + '60';
+  ctx.lineWidth = 1;
+  const divY = 340 + lines * 56;
+  ctx.beginPath(); ctx.moveTo(160, divY); ctx.lineTo(640, divY); ctx.stroke();
+
+  // song
+  if (song) {
+    ctx.fillStyle = s.sub;
+    ctx.font = '24px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('— ' + song, W/2, divY + 48);
+  }
+
+  // footer
+  ctx.fillStyle = s.sub + '80';
+  ctx.font = '20px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H - 80);
+
+  document.getElementById('lyric-preview').style.display = 'block';
+}
+
+// ===================== PAGE 3: ARMY =====================
+function calcArmy() {
+  const val = document.getElementById('army-date').value;
+  if (!val) { showToast('请选择入团日期 ✦'); return; }
+  const join = new Date(val);
+  const now = new Date();
+  const diff = now - join;
+  if (diff < 0) { showToast('入团日期不能是未来哦 ✦'); return; }
+
+  const totalDays = Math.floor(diff / (1000*60*60*24));
+  const years = Math.floor(totalDays / 365);
+  const days = totalDays % 365;
+
+  const msgs = [
+    '谢谢你这么多年，始终在。',
+    '无论多远，ARMY和防弹的距离从未改变。',
+    '入团的那一天，你找到了一个家。',
+    '这些年的每一天，防弹都感受到了你的爱。',
+    '你是最好的ARMY，没有之一。',
+  ];
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+
+  document.getElementById('army-result').style.display = 'flex';
+  document.getElementById('army-years').textContent = years;
+  document.getElementById('army-days').textContent = `共 ${totalDays} 天 ✦ 还有 ${days} 天满${years+1}年`;
+  document.getElementById('army-msg').textContent = msg;
+
+  generateArmyCanvas(years, totalDays, days, val, msg);
+  document.getElementById('army-cert-wrap').style.display = 'block';
+}
+
+function generateArmyCanvas(years, total, remainder, dateStr, msg) {
+  const canvas = document.getElementById('army-canvas');
+  const W = 800, H = 1000;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#f5f0ff');
+  bg.addColorStop(0.5, '#ede6ff');
+  bg.addColorStop(1, '#ddd0ff');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  // top accent
+  const ac = ctx.createLinearGradient(50,50,W-50,50);
+  ac.addColorStop(0,'#c4b0e880'); ac.addColorStop(1,'#9b7fd480');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 50, 50, W-100, 10, 40);
+
+  ctx.textAlign = 'center';
+
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '22px sans-serif';
+  ctx.fillText('C E R T I F I C A T E', W/2, 130);
+
+  ctx.fillStyle = '#6b4fa0';
+  ctx.font = '30px serif';
+  ctx.fillText('这位 ARMY 已入团', W/2, 200);
+
+  ctx.fillStyle = '#2d1f4e';
+  ctx.font = 'bold 110px serif';
+  ctx.fillText(years, W/2, 340);
+
+  ctx.fillStyle = '#9b7fd4';
+  ctx.font = '32px serif';
+  ctx.fillText('Y E A R S', W/2, 395);
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(150,430); ctx.lineTo(650,430); ctx.stroke();
+
+  ctx.fillStyle = '#6b5a8a';
+  ctx.font = '26px sans-serif';
+  ctx.fillText('共 ' + total + ' 天', W/2, 490);
+  ctx.fillText('入团日期：' + dateStr, W/2, 540);
+
+  ctx.fillStyle = '#6b5a8a';
+  ctx.font = '28px serif';
+  wrapText(ctx, msg, W/2, 620, 560, 46);
+
+  // BT21 style stars
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '36px sans-serif';
+  ctx.fillText('✦  ✦  ✦', W/2, 760);
+
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-80);
+  const today = new Date();
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-52);
+}
+
+// ===================== PAGE 4: QUOTES =====================
+let lastQuoteIdx = -1;
+function newQuote() {
+  let idx;
+  do { idx = Math.floor(Math.random() * QUOTES.length); } while (idx === lastQuoteIdx);
+  lastQuoteIdx = idx;
+  const q = QUOTES[idx];
+
+  const card = document.getElementById('quote-card');
+  card.style.opacity = 0;
+  setTimeout(() => {
+    document.getElementById('quote-text').textContent = q.text;
+    document.getElementById('quote-author').textContent = '— ' + q.author;
+    card.style.opacity = 1;
+    card.style.transition = 'opacity 0.4s';
+    generateQuoteCanvas(q);
+    document.getElementById('share-quote-btn').style.display = 'inline-flex';
+  }, 200);
+}
+
+function generateQuoteCanvas(q) {
+  const canvas = document.getElementById('quote-canvas');
+  const W = 800, H = 800;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff'); bg.addColorStop(0.5,'#ede6ff'); bg.addColorStop(1,'#e0d4ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  roundRect(ctx, 60, 60, W-120, H-120, 40);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4b0e840';
+  ctx.font = 'bold 160px serif';
+  ctx.fillText('"', W/2 - 200, 320);
+
+  ctx.fillStyle = '#2d1f4e';
+  ctx.font = '32px serif';
+  wrapText(ctx, q.text, W/2, 300, 580, 52);
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(200,580); ctx.lineTo(600,580); ctx.stroke();
+
+  ctx.fillStyle = '#9b7fd4';
+  ctx.font = 'italic 28px serif';
+  ctx.fillText('— ' + q.author, W/2, 630);
+
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-80);
+}
+
+function shareQuoteImg() {
+  shareCanvas('quote-canvas');
+}
+
+// ===================== CANVAS HELPERS =====================
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function roundRectTop(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h);
+  ctx.lineTo(x, y+h);
+  ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+  ctx.fill();
+}
+
+// ===================== PAGE 6: DRAW STORY =====================
+const DS_QUESTIONS = [
+  { q: '谁是你的男友？', role: '男友' },
+  { q: '谁是你的初恋？', role: '初恋' },
+  { q: '谁是你的青梅竹马？', role: '青梅竹马' },
+  { q: '谁是你的前任？', role: '前任' },
+  { q: '谁是你暗恋过的人？', role: '暗恋对象' },
+  { q: '谁是你的死党？', role: '死党' },
+  { q: '谁是你的死对头？', role: '死对头' },
+  { q: '谁是偶遇的陌生人？', role: '偶遇陌生人' },
+  { q: '谁守护着你的梦？', role: '守梦人' },
+  { q: '谁会在你最难过的夜里陪着你？', role: '深夜陪伴者' },
+];
+
+// Story templates based on key roles
+const DS_STORY_TEMPLATES = [
+  (r) => `${r['男友']?.kr || '他'}总是在你睡前发来一条消息："今天辛苦了。"你从不回复，只是笑着把手机屏幕朝下放。
+而${r['青梅竹马']?.kr || '另一个人'}早就看穿了你的小心思，他什么都没说，只是在某个下午把一杯你最爱的饮料放在你桌上。
+${r['初恋']?.kr || '曾经'}是你的初恋，那段记忆像一枚泛黄的书签，夹在某本再也不会翻开的书里。
+后来你遇见了${r['偶遇陌生人']?.kr || '他'}，在一个下雨的傍晚，他把伞递给你，说："你先用吧。"你接过来，心里忽然觉得，有些人生来就是要在某一刻出现的。
+${r['深夜陪伴者']?.kr || '还有人'}会在你失眠的夜里回你消息，从不问原因，只说："我在。"
+你的故事里没有大起大落，只有一些人，在不同的时刻，用不同的方式，让你知道——被人记得，是这世上最温柔的事。`,
+
+  (r) => `如果人生是一部漫长的电影，${r['男友']?.kr || '他'}就是那个坐在你旁边、不断往你嘴里塞爆米花的人，明明嘴里说着烦，心里却舍不得换座位。
+${r['死党']?.kr || '好朋友'}是唯一一个知道你全部秘密的人，包括你曾经暗恋过${r['暗恋对象']?.kr || '那个人'}整整两年，却始终开不了口。
+${r['初恋']?.kr || '初恋'}已经成了遥远的记忆，像一首听不完的歌，旋律还在，歌词却记不清了。
+而${r['守梦人']?.kr || '有个人'}一直在远处默默看着你，从不打扰，只是在你快撑不住的时候，刚好出现。
+${r['深夜陪伴者']?.kr || '夜里'}有人陪你说话，聊那些白天藏起来的事。你不知道那算不算爱，但你知道，那是你最真实的时刻。
+命运这件事，有时候不是选择，而是某些人，刚好在对的时候，走进了你的故事。`,
+
+  (r) => `有人说，每个人的身边都有七种角色，${r['男友']?.kr || '有人'}给你爱，${r['青梅竹马']?.kr || '有人'}给你陪伴，${r['初恋']?.kr || '有人'}教你心动的感觉。
+${r['前任']?.kr || '那段过去'}留下了一道疤，不深，但下雨天还是会隐隐发痒。你不怪他，只是有时候会想，如果当时再勇敢一点，会不会不一样。
+${r['死对头']?.kr || '有个人'}总和你唱反调，吵架的次数比说谢谢的次数多，但每次你真正需要帮忙，他总是第一个出现。
+${r['守梦人']?.kr || '还有人'}从不说爱，只是默默记得你说过的每一件小事。你喜欢什么颜色，怕什么声音，梦里常去哪里。
+最后是${r['深夜陪伴者']?.kr || '深夜里的那个人'}，他不是故事的主角，却是让你睡得着的原因。
+你的命运里，从来不缺人。缺的，只是看清这些人的勇气。`,
+];
+
+let dsCurrentIdx = 0;
+let dsAnswers = {}; // role -> member
+let dsFlipped = false;
+let dsPicked = null;
+
+function startDrawStory() {
+  dsCurrentIdx = 0;
+  dsAnswers = {};
+  dsFlipped = false;
+  dsPicked = null;
+  document.getElementById('ds-intro').style.display = 'none';
+  document.getElementById('ds-draw').style.display = 'block';
+  document.getElementById('ds-result').style.display = 'none';
+  document.getElementById('ds-collected').innerHTML = '';
+  renderDsQuestion();
+}
+
+function renderDsQuestion() {
+  const q = DS_QUESTIONS[dsCurrentIdx];
+  document.getElementById('ds-current-num').textContent = dsCurrentIdx + 1;
+  document.getElementById('ds-question').textContent = q.q;
+
+  // reset card
+  const card = document.getElementById('ds-card');
+  card.style.transform = 'rotateY(0deg)';
+  dsFlipped = false;
+  document.getElementById('ds-next-btn').style.display = 'none';
+  document.getElementById('ds-reveal-emoji').textContent = '';
+  document.getElementById('ds-reveal-name').textContent = '';
+  document.getElementById('ds-reveal-cn').textContent = '';
+
+  // progress dots
+  const dots = document.getElementById('ds-progress-dots');
+  dots.innerHTML = '';
+  DS_QUESTIONS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'ds-dot' + (i < dsCurrentIdx ? ' done' : i === dsCurrentIdx ? ' current' : '');
+    dots.appendChild(d);
+  });
+}
+
+function flipCard() {
+  if (dsFlipped) return;
+  dsFlipped = true;
+
+  // pick random member
+  dsPicked = MEMBERS[Math.floor(Math.random() * MEMBERS.length)];
+
+  document.getElementById('ds-reveal-emoji').textContent = dsPicked.emoji;
+  document.getElementById('ds-reveal-name').textContent = dsPicked.kr;
+  document.getElementById('ds-reveal-cn').textContent = dsPicked.cn;
+
+  document.getElementById('ds-card').style.transform = 'rotateY(180deg)';
+
+  setTimeout(() => {
+    document.getElementById('ds-next-btn').style.display = 'block';
+    document.getElementById('ds-next-btn').textContent =
+      dsCurrentIdx < DS_QUESTIONS.length - 1 ? '下一签 →' : '✦ 查看我的命运故事';
+  }, 700);
+}
+
+function nextQuestion() {
+  if (!dsFlipped) return;
+
+  // save answer
+  const role = DS_QUESTIONS[dsCurrentIdx].role;
+  dsAnswers[role] = dsPicked;
+
+  // add to collected
+  const col = document.getElementById('ds-collected');
+  const tag = document.createElement('div');
+  tag.className = 'ds-role-tag';
+  tag.innerHTML = `<span>${dsPicked.emoji}</span><span>${dsPicked.kr}</span><span style="color:var(--text-light)">${role}</span>`;
+  col.appendChild(tag);
+  document.getElementById('ds-collected-wrap') && (document.getElementById('ds-collected-wrap').style.display = 'block');
+
+  if (dsCurrentIdx < DS_QUESTIONS.length - 1) {
+    dsCurrentIdx++;
+    renderDsQuestion();
+  } else {
+    showDsResult();
+  }
+}
+
+async function showDsResult() {
+  document.getElementById('ds-draw').style.display = 'none';
+  document.getElementById('ds-result').style.display = 'block';
+
+  // roles summary
+  const summary = document.getElementById('ds-roles-summary');
+  summary.innerHTML = '';
+  Object.entries(dsAnswers).forEach(([role, m]) => {
+    const tag = document.createElement('div');
+    tag.className = 'ds-role-tag';
+    tag.innerHTML = `<span>${m.emoji}</span><span style="color:var(--deep);font-weight:500">${m.kr}</span><span>${role}</span>`;
+    summary.appendChild(tag);
+  });
+
+  // build prompt from draw results
+  const rolesList = Object.entries(dsAnswers).map(([role, m]) => `${role}：${m.kr}（${m.cn}）`).join('、');
+  const prompt = `你是一位擅长写BTS粉丝向治愈系故事的中文作家。
+根据以下命运抽签结果，写一段300-400字的专属故事：
+${rolesList}
+要求：
+- 用中文写作，第二人称"你"视角
+- 把每个角色自然融入故事情节中
+- 语言细腻温柔，有画面感，像一篇散文诗
+- 结尾给人温暖治愈的感觉
+- 直接开始故事，不要标题，不要解释`;
+
+  const el = document.getElementById('ds-story-text');
+  el.textContent = '正在生成你的命运故事…';
+
+  try {
+    const storyText = await callWorkerAI(prompt);
+    el.textContent = '';
+    let i = 0;
+    const chars = storyText.split('');
+    const timer = setInterval(() => {
+      el.textContent += chars[i]; i++;
+      if (i >= chars.length) { clearInterval(timer); generateDsCanvas(storyText); }
+    }, 16);
+  } catch (e) {
+    el.textContent = '故事生成失败，请重试。';
+  }
+}
+
+function restartDrawStory() {
+  document.getElementById('ds-result').style.display = 'none';
+  document.getElementById('ds-intro').style.display = 'block';
+}
+
+function generateDsCanvas(storyText) {
+  const canvas = document.getElementById('ds-canvas');
+  const W = 800;
+  const tmpCtx = document.createElement('canvas').getContext('2d');
+  tmpCtx.font = '24px serif';
+  const lineH = 38, maxW = 580;
+  let lineCount = 0;
+  storyText.split('\n').filter(p => p.trim()).forEach(para => {
+    let line = '';
+    for (const c of para) {
+      if (tmpCtx.measureText(line + c).width > maxW) { lineCount++; line = c; }
+      else line += c;
+    }
+    if (line) lineCount++;
+    lineCount += 0.6;
+  });
+  const rolesCount = Object.keys(dsAnswers).length;
+  const H = Math.max(900, 320 + rolesCount * 36 + lineCount * lineH + 120);
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff'); bg.addColorStop(0.5,'#ede6ff'); bg.addColorStop(1,'#ddd0ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = 'rgba(255,255,255,0.52)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  const ac = ctx.createLinearGradient(50,50,W-50,50);
+  ac.addColorStop(0,'#c4b0e880'); ac.addColorStop(1,'#9b7fd480');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 50, 50, W-100, 10, 40);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '20px sans-serif';
+  ctx.fillText('✦  F A T E  D R A W  ✦', W/2, 120);
+
+  ctx.fillStyle = '#2d1f4e';
+  ctx.font = '32px serif';
+  ctx.fillText('你的防弹命运图鉴', W/2, 165);
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(150,190); ctx.lineTo(650,190); ctx.stroke();
+
+  // roles
+  let ry = 228;
+  const entries = Object.entries(dsAnswers);
+  const cols = 2;
+  const colW = (W - 180) / cols;
+  entries.forEach(([role, m], i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const rx = 110 + col * colW;
+    const rry = ry + row * 36;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#9b7fd4';
+    ctx.font = '18px sans-serif';
+    ctx.fillText(m.emoji + ' ' + m.kr, rx, rry);
+    ctx.fillStyle = '#a89cc0';
+    ctx.font = '16px sans-serif';
+    ctx.fillText(role, rx + 100, rry);
+  });
+
+  const afterRoles = ry + Math.ceil(entries.length / cols) * 36 + 20;
+  ctx.strokeStyle = 'rgba(196,176,232,0.4)';
+  ctx.beginPath(); ctx.moveTo(150, afterRoles); ctx.lineTo(650, afterRoles); ctx.stroke();
+
+  // story
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#3d2a5e';
+  ctx.font = '24px serif';
+  let sy = afterRoles + 36;
+  storyText.split('\n').filter(p => p.trim()).forEach(para => {
+    let line = '';
+    for (const c of para) {
+      if (tmpCtx.measureText(line + c).width > maxW) {
+        ctx.fillText(line, 110, sy); sy += lineH; line = c;
+      } else line += c;
+    }
+    if (line) { ctx.fillText(line, 110, sy); sy += lineH; }
+    sy += lineH * 0.5;
+  });
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '20px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '16px sans-serif';
+  const today = new Date();
+  ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+// init
+document.getElementById('army-date').max = new Date().toISOString().split('T')[0];
+
+newQuote();
+
+// ===================== PAGE 5: STORY =====================
+let selectedMood = '';
+let selectedType = '';
+let selectedMemberPick = 'random';
+
+function selectMood(el, mood) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected-mood'));
+  el.classList.add('selected-mood');
+  selectedMood = mood;
+}
+
+function selectType(el, type) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected-type'));
+  el.classList.add('selected-type');
+  selectedType = type;
+}
+
+function selectMember(el, name) {
+  document.querySelectorAll('.mpick-btn').forEach(b => b.classList.remove('selected-type'));
+  el.classList.add('selected-type');
+  selectedMemberPick = name;
+}
+
+
+
+async function generateStory() {
+  const name = document.getElementById('story-name').value.trim() || '你';
+  if (!selectedMood) { showToast('请选择你的心情 ✦'); return; }
+  if (!selectedType) { showToast('请选择故事类型 ✦'); return; }
+
+  let member;
+  if (selectedMemberPick === 'random') {
+    member = MEMBERS[Math.floor(Math.random() * MEMBERS.length)];
+  } else {
+    member = MEMBERS.find(m => m.name === selectedMemberPick) || MEMBERS[0];
+  }
+
+  document.getElementById('story-step1').style.display = 'none';
+  document.getElementById('story-loading').style.display = 'block';
+  document.getElementById('loading-member-hint').textContent = `${member.emoji} ${member.kr} 正在走向你…`;
+
+  const prompt = `你是一位擅长写BTS粉丝向治愈系短篇故事的中文作家。
+请为读者「${name}」写一个与BTS成员${member.name}（${member.cn}）的专属故事。
+故事类型：${selectedType}
+读者当前心情：${selectedMood}
+要求：
+- 用中文写作，第二人称"你"视角
+- 字数在300-400字之间
+- 语言细腻温柔，有画面感
+- 结尾要给人温暖或治愈的感觉
+- 直接开始故事，不要写标题，不要任何解释说明
+- 自然融入${member.name}的性格特点`;
+
+  try {
+    const story = await callWorkerAI(prompt);
+
+    document.getElementById('story-loading').style.display = 'none';
+    document.getElementById('story-result').style.display = 'block';
+    document.getElementById('result-member-emoji').textContent = member.emoji;
+    document.getElementById('result-member-name').textContent = member.kr + ' · ' + member.cn;
+    document.getElementById('result-story-type').textContent = selectedType + ' ✦ ' + selectedMood;
+
+    const el = document.getElementById('story-content');
+    el.textContent = '';
+    let i = 0;
+    const chars = story.split('');
+    const timer = setInterval(() => {
+      el.textContent += chars[i]; i++;
+      if (i >= chars.length) clearInterval(timer);
+    }, 18);
+
+    setTimeout(() => generateStoryCanvas(member, story, name, selectedType), 2000);
+
+  } catch (e) {
+    document.getElementById('story-loading').style.display = 'none';
+    document.getElementById('story-step1').style.display = 'block';
+    showToast('生成失败，请重试 ✦');
+  }
+}
+
+function resetStory() {
+  document.getElementById('story-result').style.display = 'none';
+  document.getElementById('story-step1').style.display = 'block';
+  document.getElementById('story-content').textContent = '';
+}
+
+function generateStoryCanvas(member, story, userName, storyType) {
+  const canvas = document.getElementById('story-canvas');
+  const W = 800;
+  // measure text height first
+  const tmpCtx = document.createElement('canvas').getContext('2d');
+  tmpCtx.font = '26px serif';
+  const lineH = 42;
+  const maxW = 580;
+  // count lines
+  let lineCount = 0;
+  const paragraphs = story.split('\n').filter(p => p.trim());
+  paragraphs.forEach(para => {
+    let line = '';
+    for (const c of para) {
+      if (tmpCtx.measureText(line + c).width > maxW) { lineCount++; line = c; }
+      else line += c;
+    }
+    if (line) lineCount++;
+    lineCount += 0.5; // paragraph gap
+  });
+  const H = Math.max(900, 300 + lineCount * lineH + 200);
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // BG
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff'); bg.addColorStop(0.5,'#ede6ff'); bg.addColorStop(1,'#ddd0ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  // card
+  ctx.fillStyle = 'rgba(255,255,255,0.52)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  // top accent
+  const ac = ctx.createLinearGradient(50,50,W-50,50);
+  ac.addColorStop(0, member.color[0]+'80'); ac.addColorStop(1, member.color[1]+'80');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 50, 50, W-100, 10, 40);
+
+  ctx.textAlign = 'center';
+
+  // member
+  ctx.font = '56px serif';
+  ctx.fillText(member.emoji, W/2, 160);
+
+  ctx.fillStyle = member.color[1];
+  ctx.font = 'bold 36px serif';
+  ctx.fillText(member.kr, W/2, 210);
+
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  ctx.fillText(storyType + ' · ' + userName + '的专属故事', W/2, 240);
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(150,265); ctx.lineTo(650,265); ctx.stroke();
+
+  // story text
+  ctx.fillStyle = '#3d2a5e';
+  ctx.font = '26px serif';
+  ctx.textAlign = 'left';
+  let y = 310;
+  paragraphs.forEach(para => {
+    let line = '';
+    for (const c of para) {
+      if (tmpCtx.measureText(line + c).width > maxW) {
+        ctx.fillText(line, 110, y); y += lineH; line = c;
+      } else line += c;
+    }
+    if (line) { ctx.fillText(line, 110, y); y += lineH; }
+    y += lineH * 0.5;
+  });
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  const today = new Date();
+  ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+function saveStoryImg() {
+  const canvas = document.getElementById('story-canvas');
+  if (canvas.width === 0) { showToast('图片生成中，稍等一下 ✦'); return; }
+  downloadCanvas('story-canvas', 'bts-story');
+}
+
+// ===================== PAGE 7: MBTI =====================
+// Each member's MBTI
+
+
+// Compatibility scores: [score%, description]
+const MBTI_COMPAT = {
+  // RM (INFP)
+  'INFP-INFP':  [88,'两个追梦者相遇，世界在你们眼中是诗。彼此理解那些无法言说的感受，是最安静也最深刻的陪伴。'],
+  'INFP-ENFJ':  [95,'你是他想要守护的人，他是你愿意打开心扉的人。这种关系温柔而深刻，像春雨落在干涸的土地上。'],
+  'INFP-ISTP':  [72,'一个活在感受里，一个活在逻辑里。看似相距甚远，却能在沉默中找到独特的默契。'],
+  'INFP-ESFJ':  [78,'他的热情和你的内敛形成美妙的互补，他懂得照顾你，你让他感受到被珍视。'],
+  'INFP-ISFP':  [91,'两个感性的灵魂，对美与自由有着共同的渴望。在一起时，连呼吸都是艺术。'],
+  'INFP-INTJ':  [85,'你的梦想需要他的执行力，他的冷静需要你的温度。互补而深刻。'],
+  'INFP-INTP':  [80,'两个内敛的思考者，能在对方身上找到罕见的理解感。'],
+  'INFP-ENTJ':  [68,'他的强势与你的温柔需要磨合，但一旦建立信任，是彼此成长的关系。'],
+  'INFP-ENTP':  [75,'他的思维跳跃让你着迷，你的深情让他驻足。'],
+  'INFP-INFJ':  [93,'灵魂伴侣级别的契合。两个人都相信世界可以更美好，都愿意为此付出。'],
+  'INFP-ENFP':  [87,'共同的热情与对可能性的向往，让这段关系充满活力与浪漫。'],
+  'INFP-ISTJ':  [65,'稳定与飘逸的碰撞，需要耐心，但能给彼此带来不同维度的成长。'],
+  'INFP-ISFJ':  [82,'他的细心呵护让你感到安全，你的温柔让他觉得被懂得。'],
+  'INFP-ESTJ':  [60,'性格差异较大，但互补潜力强，关键是互相尊重彼此的方式。'],
+  'INFP-ESFP':  [74,'他的活力感染你，你的深度让他思考。轻松愉快，却也有意想不到的共鸣。'],
+  'INFP-ESTP':  [62,'一个内敛，一个奔放，相处起来刺激，但需要更多理解与包容。'],
+
+  // SUGA (ISTP)
+  'ISTP-ISTP':  [75,'两个独立的灵魂，不多话，但彼此懂得对方需要空间这件事本身就是一种爱。'],
+  'ISTP-INFP':  [72,'感性与理性的碰撞，安静地陪伴，却能在某个瞬间深深打动彼此。'],
+  'ISTP-ENFJ':  [80,'他的热情融化你的冷静，你的稳重让他有了依靠。意外地合适。'],
+  'ISTP-ESFJ':  [70,'他照顾人的方式让你觉得被接受，你给他带来一种少见的真实感。'],
+  'ISTP-ISFP':  [83,'同是感知型，对世界有相似的体验方式，相处起来自然而舒适。'],
+  'ISTP-INTJ':  [88,'两个独立、理性的人，在沉默中建立深厚的信任。'],
+  'ISTP-INTP':  [85,'逻辑互通，能在技术与思维上产生奇妙的共鸣。'],
+  'ISTP-ENTJ':  [72,'你的沉稳与他的魄力形成互补，只要不强迫彼此改变就很好。'],
+  'ISTP-ENTP':  [78,'两个喜欢探索的人，对话时常有火花，彼此都不无聊。'],
+  'ISTP-INFJ':  [74,'神秘感吸引神秘感，慢慢走近，发现彼此比想象中更契合。'],
+  'ISTP-ENFP':  [68,'他的热情有时会让你不知所措，但也正因如此让生活有了色彩。'],
+  'ISTP-ISTJ':  [80,'同是内向实际型，生活方式高度匹配，是稳定可靠的组合。'],
+  'ISTP-ISFJ':  [75,'他的体贴让你感到温暖，你的独立让他放心。'],
+  'ISTP-ESTJ':  [76,'务实高效，能一起把事情做成，只要给彼此足够的自由空间。'],
+  'ISTP-ESFP':  [72,'他的活力和你的冷静意外地平衡，在轻松氛围中找到默契。'],
+  'ISTP-ESTP':  [80,'同是行动派，相处直接爽快，不拖沓，令人舒适。'],
+
+  // j-hope (ESFJ)
+  'ESFJ-ESFJ':  [82,'两个都爱照顾人，只要学会也接受被照顾，就是温暖的天作之合。'],
+  'ESFJ-INFP':  [78,'你的热情包裹他的内敛，他的深情温柔回应你的付出。'],
+  'ESFJ-ENFJ':  [85,'都是关怀他人的类型，价值观高度一致，能一起创造美好的关系。'],
+  'ESFJ-ISTP':  [70,'你想靠近，他需要距离，但只要理解这一点，反而会相互吸引。'],
+  'ESFJ-ISFP':  [83,'你给他安全感，他给你真实，是互相滋养的关系。'],
+  'ESFJ-INTJ':  [65,'思维方式差异较大，但能互相补充对方的盲点。'],
+  'ESFJ-INTP':  [68,'你的温暖融化他的理性外壳，他的深度让你着迷。'],
+  'ESFJ-ENTJ':  [75,'都是行动派，目标明确，能一起把事情推进。'],
+  'ESFJ-ENTP':  [72,'他的新鲜想法让你保持活力，你的稳定让他有了落脚点。'],
+  'ESFJ-INFJ':  [87,'深度契合，你的热情与他的洞察力形成完美互补。'],
+  'ESFJ-ENFP':  [88,'都充满活力，对生活充满热爱，在一起时世界都更闪亮。'],
+  'ESFJ-ISTJ':  [80,'同是传统守护型，生活观念一致，是踏实可靠的组合。'],
+  'ESFJ-ISFJ':  [85,'都细心体贴，彼此都懂得如何让对方感到被爱。'],
+  'ESFJ-ESTJ':  [80,'务实高效，价值观相近，是能一起把日子过好的伴侣。'],
+  'ESFJ-ESFP':  [84,'都外向开朗，在一起时欢声笑语不断，生活充满阳光。'],
+  'ESFJ-ESTP':  [75,'都是社交达人，相处热闹愉快，只是需要留一些安静时光给彼此。'],
+
+  // Jimin/Jin (ENFJ)
+  'ENFJ-ENFJ':  [83,'两个都想守护对方，只要学会偶尔接受帮助，就是最温暖的关系。'],
+  'ENFJ-INFP':  [95,'主人公遇上调停者，一个给予，一个深情回应，是教科书级别的灵魂配对。'],
+  'ENFJ-ISTP':  [80,'你的热情慢慢融化他冷静的外表，他的真实让你觉得被看见。'],
+  'ENFJ-ESFJ':  [85,'两个关怀型的人，在一起时彼此都被好好照顾。'],
+  'ENFJ-ISFP':  [88,'你欣赏他的艺术感，他被你的热情深深吸引。'],
+  'ENFJ-INTJ':  [78,'你的理想主义与他的战略思维碰撞，能一起做成很多事。'],
+  'ENFJ-INTP':  [75,'你的温情软化他的冷静逻辑，他的深度让你的思考更立体。'],
+  'ENFJ-ENTJ':  [80,'都是领袖气质，能彼此欣赏，也需要学会各退一步。'],
+  'ENFJ-ENTP':  [78,'他的创意配上你的执行力，是很有能量的组合。'],
+  'ENFJ-INFJ':  [90,'深度理解，彼此都能看见对方藏在心底的东西。'],
+  'ENFJ-ENFP':  [86,'都充满理想与热情，在一起时世界充满可能性。'],
+  'ENFJ-ISTJ':  [70,'你的热情与他的稳重互补，需要一些磨合，但很踏实。'],
+  'ENFJ-ISFJ':  [82,'都细腻温柔，彼此都懂得如何让对方感到被珍视。'],
+  'ENFJ-ESTJ':  [75,'行动力都很强，只要价值观一致，是很有执行力的组合。'],
+  'ENFJ-ESFP':  [83,'都活泼开朗，相处起来轻松愉快，充满正能量。'],
+  'ENFJ-ESTP':  [72,'你的深情与他的洒脱需要一些磨合，但能擦出独特的火花。'],
+
+  // V (INFP) — same table as RM/INFP
+  // Jungkook (ISFP)
+  'ISFP-ISFP':  [82,'两个安静的艺术家，不需要太多语言，用行动和感受彼此靠近。'],
+  'ISFP-INFP':  [91,'感性的灵魂相遇，对美的共同感知让两人形成独特的默契。'],
+  'ISFP-ENFJ':  [88,'他的热情让你感到被珍视，你的真诚让他深深着迷。'],
+  'ISFP-ISTP':  [83,'同是感知型，对世界有相似的体验方式，相处自然舒适。'],
+  'ISFP-ESFJ':  [83,'他的照顾让你感到安全，你的温柔让他觉得被接受。'],
+  'ISFP-INTJ':  [70,'思维方式不同，但能互相开阔视野，需要耐心经营。'],
+  'ISFP-INTP':  [72,'你的感性与他的理性形成有趣的张力，慢慢走近后很深刻。'],
+  'ISFP-ENTJ':  [65,'你的柔软与他的强势需要大量磨合，但互补潜力不小。'],
+  'ISFP-ENTP':  [74,'他的活力让你觉得新鲜，你的真诚让他想要停下来。'],
+  'ISFP-INFJ':  [88,'深度感性的两人，能在安静中建立非常深厚的理解。'],
+  'ISFP-ENFP':  [84,'都充满感情，对生活有热情，在一起时充满温度与色彩。'],
+  'ISFP-ISTJ':  [72,'你的随性与他的原则形成对比，需要互相理解，但很稳固。'],
+  'ISFP-ISFJ':  [86,'都温柔细腻，能给彼此带来深深的安全感。'],
+  'ISFP-ESTJ':  [63,'差异较大，但如果互相尊重，能成为彼此的平衡点。'],
+  'ISFP-ESFP':  [82,'都活在当下，享受感官体验，在一起时生活充满乐趣。'],
+  'ISFP-ESTP':  [75,'都喜欢行动，相处直接爽快，在轻松中建立真实感情。'],
+};
+
+// Get all 16 types for fallback
+const ALL_TYPES = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+
+function getCompat(typeA, typeB) {
+  const key1 = typeA + '-' + typeB;
+  const key2 = typeB + '-' + typeA;
+  if (MBTI_COMPAT[key1]) return MBTI_COMPAT[key1];
+  if (MBTI_COMPAT[key2]) return MBTI_COMPAT[key2];
+  // fallback score based on shared letters
+  let shared = 0;
+  for (let i = 0; i < 4; i++) if (typeA[i] === typeB[i]) shared++;
+  const score = 50 + shared * 10;
+  return [score, '你们的性格各有特色，需要多一些理解与包容，但独特的差异也能带来意想不到的成长。'];
+}
+
+let selectedMbtiType = '';
+
+function selectMbti(el, type) {
+  document.querySelectorAll('.mbti-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMbtiType = type;
+}
+
+const MEMBER_MBTI = {
+  RM:        { type: 'ENFP', label: '竞选者' },
+  Jin:       { type: 'INTP', label: '逻辑学家' },
+  SUGA:      { type: 'ISTP', label: '鉴赏家' },
+
+  Jimin:     { type: 'ESTJ', label: '总经理' },
+  V:         { type: 'INFP', label: '调停者' },
+  Jungkook:  { type: 'ISFP', label: '探险家' },
+};
+
+function calcMbti() {
+  if (!selectedMbtiType) { showToast('请先选择你的MBTI ✦'); return; }
+
+  // calc scores for all members
+  const scores = MEMBERS.map(m => {
+    const mmbti = MEMBER_MBTI[m.name];
+    if (!mmbti) return { member: m, score: 50, desc: '', mtype: '?' };
+    const [score, desc] = getCompat(selectedMbtiType, mmbti.type);
+    return { member: m, score, desc, mtype: mmbti.type, mlabel: mmbti.label };
+  });
+  scores.sort((a, b) => b.score - a.score);
+
+  const best = scores[0];
+  const others = scores.slice(1);
+
+  // show result
+  document.getElementById('mbti-select').style.display = 'none';
+  document.getElementById('mbti-result').style.display = 'block';
+
+  document.getElementById('mbti-member-emoji').textContent = best.member.emoji;
+  document.getElementById('mbti-member-name').textContent = best.member.kr;
+  document.getElementById('mbti-member-cn').textContent = best.member.cn;
+  document.getElementById('mbti-user-type').textContent = selectedMbtiType;
+  document.getElementById('mbti-member-type').textContent = best.mtype;
+  document.getElementById('mbti-score').textContent = best.score + '%';
+  document.getElementById('mbti-desc').textContent = best.desc;
+
+  setTimeout(() => {
+    document.getElementById('mbti-bar').style.width = best.score + '%';
+  }, 100);
+
+  // others
+  const othersEl = document.getElementById('mbti-others');
+  othersEl.innerHTML = '';
+  others.forEach(o => {
+    const row = document.createElement('div');
+    row.className = 'mbti-other-row';
+    row.innerHTML = `
+      <span style="font-size:20px;width:28px;text-align:center;">${o.member.emoji}</span>
+      <span style="font-size:12px;color:var(--deep);font-family:'Cormorant Garamond',serif;width:80px;">${o.member.kr}</span>
+      <div class="mbti-other-bar-wrap">
+        <div class="mbti-other-bar" style="width:${o.score}%;"></div>
+      </div>
+      <span style="font-size:12px;color:var(--text-mid);width:36px;text-align:right;">${o.score}%</span>
+    `;
+    othersEl.appendChild(row);
+  });
+
+  generateMbtiCanvas(best, selectedMbtiType);
+}
+
+function resetMbti() {
+  document.getElementById('mbti-result').style.display = 'none';
+  document.getElementById('mbti-select').style.display = 'block';
+  document.querySelectorAll('.mbti-btn').forEach(b => b.classList.remove('selected'));
+  selectedMbtiType = '';
+  document.getElementById('mbti-bar').style.width = '0%';
+}
+
+function generateMbtiCanvas(best, userType) {
+  const canvas = document.getElementById('mbti-canvas');
+  const W = 800, H = 900;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff'); bg.addColorStop(0.5,'#ede6ff'); bg.addColorStop(1,'#ddd0ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.52)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  const ac = ctx.createLinearGradient(50,50,W-50,50);
+  ac.addColorStop(0, best.member.color[0]+'80');
+  ac.addColorStop(1, best.member.color[1]+'80');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 50, 50, W-100, 10, 40);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '20px sans-serif';
+  ctx.fillText('M B T I  S O U L  M A T C H', W/2, 120);
+
+  ctx.font = '80px serif';
+  ctx.fillText(best.member.emoji, W/2, 230);
+
+  ctx.fillStyle = best.member.color[1];
+  ctx.font = 'bold 44px serif';
+  ctx.fillText(best.member.kr, W/2, 295);
+
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '22px sans-serif';
+  ctx.fillText(best.member.cn, W/2, 330);
+
+  // types
+  ctx.fillStyle = 'rgba(196,176,232,0.4)';
+  roundRect(ctx, 220, 355, 140, 44, 22);
+  roundRect(ctx, 440, 355, 140, 44, 22);
+  ctx.fillStyle = '#6b4fa0';
+  ctx.font = '24px serif';
+  ctx.fillText(userType, 290, 382);
+  ctx.fillText(best.mtype, 510, 382);
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '28px sans-serif';
+  ctx.fillText('×', W/2, 382);
+
+  // score bar
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '20px sans-serif';
+  ctx.fillText('灵魂契合度  ' + best.score + '%', W/2, 440);
+
+  ctx.fillStyle = 'rgba(196,176,232,0.3)';
+  roundRect(ctx, 110, 455, 580, 16, 8);
+  const barW = Math.round(580 * best.score / 100);
+  const barGrad = ctx.createLinearGradient(110,0,690,0);
+  barGrad.addColorStop(0, '#c4b0e8'); barGrad.addColorStop(1, '#6b4fa0');
+  ctx.fillStyle = barGrad;
+  roundRect(ctx, 110, 455, barW, 16, 8);
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(110,492); ctx.lineTo(690,492); ctx.stroke();
+
+  // desc
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#3d2a5e';
+  ctx.font = '26px serif';
+  const tmpCtx = document.createElement('canvas').getContext('2d');
+  tmpCtx.font = '26px serif';
+  wrapText(ctx, best.desc, 110, 530, 580, 44);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  const today = new Date();
+  ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+function saveDsImg() {
+  const canvas = document.getElementById('ds-canvas');
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  downloadCanvas('ds-canvas', 'bts-fate-draw');
+}
+
+function saveMbtiImg() {
+  const canvas = document.getElementById('mbti-canvas');
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  downloadCanvas('mbti-canvas', 'bts-mbti-match');
+}
+
+// ===================== PAGE 8: BAZI =====================
+// Heavenly Stems (天干) with element & polarity
+const TIANGAN = ['庚','辛','壬','癸','甲','乙','丙','丁','戊','己'];
+const TG_ELEMENT = ['金','金','水','水','木','木','火','火','土','土'];
+// Earthly Branches (地支) with element
+const DIZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const DZ_ELEMENT = ['水','土','木','木','土','火','火','土','金','金','土','水'];
+
+// Member birth data → derive their bazi elements
+const MEMBER_BAZI = {
+  RM:       { birth: [1994,9,12,6],  sign:'天秤座', animal:'狗', mainElem:'金', secondElem:'土' },
+  Jin:      { birth: [1992,12,4,0],  sign:'射手座', animal:'猴', mainElem:'水', secondElem:'木' },
+  SUGA:     { birth: [1993,3,9,0],   sign:'双鱼座', animal:'鸡', mainElem:'水', secondElem:'火' },
+  'j-hope': { birth: [1994,2,18,0],  sign:'水瓶座', animal:'狗', mainElem:'木', secondElem:'金' },
+  Jimin:    { birth: [1995,10,13,0], sign:'天秤座', animal:'猪', mainElem:'木', secondElem:'水' },
+  V:        { birth: [1995,12,30,0], sign:'摩羯座', animal:'猪', mainElem:'木', secondElem:'土' },
+  Jungkook: { birth: [1997,9,1,0],   sign:'处女座', animal:'牛', mainElem:'火', secondElem:'金' },
+};
+
+// Five elements interaction table: [生 score, 克 score]
+// 相生 +, 相克 -, 同类 neutral
+function elementCompat(a, b) {
+  const sheng = { '木':'火', '火':'土', '土':'金', '金':'水', '水':'木' };
+  const ke    = { '木':'土', '土':'水', '水':'火', '火':'金', '金':'木' };
+  if (a === b) return 80;
+  if (sheng[a] === b) return 95; // a生b，滋养
+  if (sheng[b] === a) return 88; // b生a，被滋养
+  if (ke[a] === b) return 60;    // a克b
+  if (ke[b] === a) return 55;    // b克a
+  return 72; // 其他
+}
+
+function getElementColor(el) {
+  return { '木':'#4a8a6a', '火':'#c46080', '土':'#a08040', '金':'#8070b0', '水':'#4a7090' }[el] || '#9b7fd4';
+}
+
+function getElementDesc(el) {
+  return {
+    '木': '木命之人，性情仁慈，富有生命力与创造力，如春木般向上生长。',
+    '火': '火命之人，热情奔放，充满激情与活力，如烈火般温暖照耀。',
+    '土': '土命之人，沉稳踏实，忠诚可靠，如大地般包容厚重。',
+    '金': '金命之人，意志坚定，重情重义，如金石般坚毅纯粹。',
+    '水': '水命之人，智慧灵动，善于变通，如流水般柔中带刚。',
+  }[el] || '';
+}
+
+
+
+function getCompatDesc(userEl, memberEl, memberName, score) {
+  const sheng = { '木':'火', '火':'土', '土':'金', '金':'水', '水':'木' };
+  const ke    = { '木':'土', '土':'水', '水':'火', '火':'金', '金':'木' };
+  if (userEl === memberEl)
+    return `${memberName}与你同属${userEl}命，他天然懂得你的节奏与坚持，相处起来少了许多解释，多了一份默契。而你的存在，也如同一面镜子，让他看见自己最真实的样子。`;
+  if (sheng[userEl] === memberEl)
+    return `${memberName}的${memberEl}被你的${userEl}所滋养，在你身边他会感到格外踏实，仿佛有一股无形的力量托着他前行。而你给予他的，是他自己也未曾察觉的光。`;
+  if (sheng[memberEl] === userEl)
+    return `${memberName}的${memberEl}天然滋养着你的${userEl}，他的存在让你感到被接纳、被推动，在他身边你会慢慢变得更完整。这是命中注定的陪伴，你也在不知不觉中成为他最想守护的人。`;
+  if (ke[userEl] === memberEl)
+    return `${memberName}在你面前会不自觉地收起锋芒，你让他感受到一种少见的平静与安稳。这份缘分里他需要你，而你对他的影响，比你想象的深远得多。`;
+  if (ke[memberEl] === userEl)
+    return `${memberName}的气场对你来说是一种有趣的挑战，他让你不断思考、成长，很难对他无动于衷。这段缘分需要一些磨合，但正是这种张力，让两人之间的故事格外深刻。`;
+  return `${memberName}与你的五行气场相互呼应，他的存在给你带来一种说不清道不明的舒适感。你们之间的缘分不动声色，却经得起时间。`;
+}
+function getYearElement(year) {
+  return TG_ELEMENT[((year - 4) % 10 + 10) % 10];
+}
+function getMonthElement(month) {
+  const map = [null,'水','水','木','木','木','火','火','火','土','金','金','金'];
+  return map[month] || '土';
+}
+function getDayElement(day) {
+  // 日柱简化：奇数偏阳，偶数偏阴，按旬分配五行
+  const cycle = ((day - 1) % 10 + 10) % 10;
+  return TG_ELEMENT[cycle];
+}
+function getHourElement(hourIdx) {
+  return DZ_ELEMENT[hourIdx];
+}
+
+let baziMonth = 0, baziHour = -1;
+
+function selectBaziMonth(el, m) {
+  document.querySelectorAll('.bazi-month-grid .bazi-sel-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected'); baziMonth = m;
+}
+function selectBaziHour(el, h) {
+  document.querySelectorAll('.bazi-hour-grid .bazi-sel-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected'); baziHour = h;
+}
+
+function calcBazi() {
+  const year = parseInt(document.getElementById('bazi-year').value);
+  const day  = parseInt(document.getElementById('bazi-day').value);
+  if (!year || year < 1900 || year > 2010) { showToast('请输入正确的出生年份 ✦'); return; }
+  if (!baziMonth) { showToast('请选择出生月份 ✦'); return; }
+  if (!day || day < 1 || day > 31) { showToast('请输入正确的出生日期 ✦'); return; }
+  if (baziHour < 0) { showToast('请选择出生时辰 ✦'); return; }
+
+  const yearEl  = getYearElement(year);
+  const monthEl = getMonthElement(baziMonth);
+  const dayEl   = getDayElement(day);
+  const hourEl  = getHourElement(baziHour);
+
+  // weighted main element: year 30%, month 30%, day 20%, hour 20%
+  const counts = { '木':0,'火':0,'土':0,'金':0,'水':0 };
+  counts[yearEl]  += 30;
+  counts[monthEl] += 30;
+  counts[dayEl]   += 20;
+  counts[hourEl]  += 20;
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+  const mainEl = sorted[0][0];
+  // secondEl must be different from mainEl
+  const secondEl = (sorted[1][0] !== mainEl ? sorted[1][0] : sorted[2]?.[0]) || sorted[1][0];
+
+  // heavenly stem of year
+  const stemIdx = ((year - 4) % 10 + 10) % 10;
+  const stemChar = TIANGAN[stemIdx];
+  const branchIdx = ((year - 4) % 12 + 12) % 12;
+  const branchChar = DIZHI[branchIdx % 12];
+
+  // calc scores
+  const scores = MEMBERS.map(m => {
+    const mb = MEMBER_BAZI[m.name];
+    if (!mb) return { member: m, score: 70, mainEl, memberEl: '木' };
+    const s1 = elementCompat(mainEl, mb.mainElem);
+    const s2 = elementCompat(mainEl, mb.secondElem);
+    const score = Math.round(s1 * 0.7 + s2 * 0.3);
+    return { member: m, score, memberEl: mb.mainElem, memberSecondEl: mb.secondElem, sign: mb.sign, animal: mb.animal };
+  });
+  scores.sort((a,b) => b.score - a.score);
+  const best = scores[0];
+  const others = scores.slice(1);
+
+  // show result
+  document.getElementById('bazi-input').style.display = 'none';
+  document.getElementById('bazi-result').style.display = 'block';
+
+  // user summary chips
+  const summaryEl = document.getElementById('bazi-user-summary');
+  summaryEl.innerHTML = [
+    { label: stemChar + branchChar + '年', color: getElementColor(yearEl) },
+    { label: '主命·' + mainEl, color: getElementColor(mainEl) },
+    { label: '辅命·' + secondEl, color: getElementColor(secondEl) },
+  ].map(c => `<div class="bazi-element-chip" style="background:${c.color}20;border-color:${c.color}50;color:${c.color};">${c.label}</div>`).join('');
+  document.getElementById('bazi-user-desc').textContent = getElementDesc(mainEl);
+
+  // best
+  document.getElementById('bazi-best-emoji').textContent = best.member.emoji;
+  document.getElementById('bazi-best-name').textContent = best.member.kr;
+  document.getElementById('bazi-best-cn').textContent = best.member.cn;
+  document.getElementById('bazi-score-label').textContent = best.score + '%';
+  document.getElementById('bazi-best-desc').textContent = getCompatDesc(mainEl, best.memberEl, best.member.cn, best.score);
+
+  const tagsEl = document.getElementById('bazi-element-tags');
+  tagsEl.innerHTML = [
+    { label: '你·' + mainEl, color: getElementColor(mainEl) },
+    { label: '✦', color: '#c4b0e8' },
+    { label: best.member.kr + '·' + best.memberEl, color: getElementColor(best.memberEl) },
+  ].map(c => `<div class="bazi-element-chip" style="background:${c.color}20;border-color:${c.color}50;color:${c.color};">${c.label}</div>`).join('');
+
+  setTimeout(() => {
+    document.getElementById('bazi-score-bar').style.width = best.score + '%';
+  }, 100);
+
+  // others
+  const othersEl = document.getElementById('bazi-others');
+  othersEl.innerHTML = '';
+  others.forEach(o => {
+    const div = document.createElement('div');
+    div.className = 'mbti-other-row';
+    div.innerHTML = `
+      <span style="font-size:20px;width:28px;text-align:center;">${o.member.emoji}</span>
+      <span style="font-size:12px;color:var(--deep);font-family:'Cormorant Garamond',serif;width:80px;">${o.member.kr}</span>
+      <div class="mbti-other-bar-wrap">
+        <div class="mbti-other-bar" style="width:${o.score}%;background:linear-gradient(90deg,${getElementColor(o.memberEl)}60,${getElementColor(o.memberEl)});"></div>
+      </div>
+      <span style="font-size:12px;color:var(--text-mid);width:36px;text-align:right;">${o.score}%</span>
+    `;
+    othersEl.appendChild(div);
+  });
+
+  generateBaziCanvas(best, mainEl, secondEl, stemChar, branchChar, year);
+}
+
+function resetBazi() {
+  document.getElementById('bazi-result').style.display = 'none';
+  document.getElementById('bazi-input').style.display = 'block';
+  document.getElementById('bazi-score-bar').style.width = '0%';
+  document.getElementById('bazi-year').value = '';
+  document.getElementById('bazi-day').value = '';
+  baziMonth = 0; baziHour = -1;
+  document.querySelectorAll('.bazi-sel-btn').forEach(b => b.classList.remove('selected'));
+}
+
+function generateBaziCanvas(best, mainEl, secondEl, stemChar, branchChar, year) {
+  const canvas = document.getElementById('bazi-canvas');
+  const W = 800, H = 960;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff'); bg.addColorStop(0.5,'#ede6ff'); bg.addColorStop(1,'#ddd0ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = 'rgba(255,255,255,0.52)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  const ac = ctx.createLinearGradient(50,50,W-50,50);
+  ac.addColorStop(0, getElementColor(mainEl)+'60');
+  ac.addColorStop(1, getElementColor(best.memberEl)+'60');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 50, 50, W-100, 10, 40);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '20px sans-serif';
+  ctx.fillText('八  字  合  盘', W/2, 120);
+
+  // user element pill
+  ctx.fillStyle = getElementColor(mainEl) + '30';
+  roundRect(ctx, W/2-100, 140, 200, 48, 24);
+  ctx.fillStyle = getElementColor(mainEl);
+  ctx.font = '26px serif';
+  ctx.fillText(stemChar + branchChar + '年  ·  ' + mainEl + '命', W/2, 170);
+
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '28px sans-serif';
+  ctx.fillText('×', W/2, 225);
+
+  // member
+  ctx.font = '72px serif';
+  ctx.fillText(best.member.emoji, W/2, 310);
+  ctx.fillStyle = best.member.color[1];
+  ctx.font = 'bold 40px serif';
+  ctx.fillText(best.member.kr, W/2, 368);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '22px sans-serif';
+  ctx.fillText(best.member.cn + '  ·  ' + best.memberEl + '命', W/2, 402);
+
+  // score
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '20px sans-serif';
+  ctx.fillText('八字契合度  ' + best.score + '%', W/2, 450);
+
+  ctx.fillStyle = 'rgba(196,176,232,0.3)';
+  roundRect(ctx, 110, 464, 580, 16, 8);
+  const barW = Math.round(580 * best.score / 100);
+  const barG = ctx.createLinearGradient(110,0,690,0);
+  barG.addColorStop(0, getElementColor(mainEl)+'aa');
+  barG.addColorStop(1, getElementColor(best.memberEl)+'dd');
+  ctx.fillStyle = barG;
+  roundRect(ctx, 110, 464, barW, 16, 8);
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(110,500); ctx.lineTo(690,500); ctx.stroke();
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#3d2a5e';
+  ctx.font = '26px serif';
+  wrapText(ctx, getCompatDesc(mainEl, best.memberEl, best.member.cn, best.score), 110, 540, 580, 44);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  const today = new Date();
+  ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+function saveBaziImg() {
+  const canvas = document.getElementById('bazi-canvas');
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  downloadCanvas('bazi-canvas', 'bts-bazi-match');
+}
+
+// ===================== PAGE 9: MEMBER PROFILE =====================
+const MEMBER_PROFILES = {
+  RM: {
+    birthday: '1994.09.12',
+    zodiac: '射手座',
+    zodiacEn: 'Sagittarius',
+    zodiacSymbol: '♐',
+    animal: '狗',
+    animalSymbol: '🐶',
+    mbti: 'ENFP',
+    element: '金',
+    color: ['#7b61c9','#4a3080'],
+    tags: ['射手座', '狗年', 'ENFP', '金命'],
+    zodiacDesc: '射手座的南俊，天生带着对世界的好奇与探索欲。他不满足于表面的答案，总是追问"为什么"，用哲学和艺术去理解这个世界。射手座的直率与真诚在他身上体现得淋漓尽致——他愿意把脆弱说出口，也愿意把思考分享给所有人。',
+    animalDesc: '狗年生人，忠诚、正直、有责任感。对认定的事情会全力以赴，对珍视的人会默默守护。狗的敏锐直觉让南俊能感受到他人不易察觉的情绪，这也是他总能写出触动人心歌词的原因。',
+    personality: '南俊是那种会在深夜独自思考人生意义的人，也是第二天早上带着新的领悟出现在你面前的人。他的内心世界比外表呈现的更丰富，更柔软。他爱艺术、爱自然、爱文字，同时承担着领导者的责任，在重量与轻盈之间找到了自己独特的平衡。与他相处，你会觉得被认真对待，被真实看见。',
+  },
+  Jin: {
+    birthday: '1992.12.04',
+    zodiac: '射手座',
+    zodiacEn: 'Sagittarius',
+    zodiacSymbol: '♐',
+    animal: '猴',
+    animalSymbol: '🐒',
+    mbti: 'INTP',
+    element: '水',
+    color: ['#e8a0bf','#c46ea0'],
+    tags: ['射手座', '猴年', 'INTP', '水命'],
+    zodiacDesc: '同为射手座，硕珍却走了一条截然不同的路。射手的乐观与幽默在他身上化成了那些让人猝不及防的玩笑、那些肆无忌惮的笑声。他用轻盈的方式承载着生命中的重，从不让人看见他扛着的东西。',
+    animalDesc: '猴年生人，聪明、灵活、多才多艺。猴的机智让硕珍总能在最意想不到的时刻说出最妙的话。表面上嬉嬉哈哈，内心却深藏着对身边人细腻的关怀，只是他从不直说。',
+    personality: '硕珍是那种把"好好吃饭"说得像情书一样的人。他用玩笑保护自己，也用玩笑保护别人，在所有人都沉默的时刻，他总是第一个开口让气氛变得温暖。退伍归来的他，那句"我回来了"里装着的，不只是时间，还有对每一个等待着的人的深情。',
+  },
+  SUGA: {
+    birthday: '1993.03.09',
+    zodiac: '双鱼座',
+    zodiacEn: 'Pisces',
+    zodiacSymbol: '♓',
+    animal: '鸡',
+    animalSymbol: '🐓',
+    mbti: 'ISTP',
+    element: '水',
+    color: ['#4a4a6a','#1a1a3a'],
+    tags: ['双鱼座', '鸡年', 'ISTP', '水命'],
+    zodiacDesc: '双鱼座的玧其，拥有这个星座最深邃的感受力。他能感知他人感知不到的细节，能把说不清道不明的情绪变成音乐里的一个和弦。双鱼的矛盾性在他身上非常真实——外表冷淡，内心却有一整片海。',
+    animalDesc: '鸡年生人，勤奋、自律、对自己要求极高。鸡的完美主义倾向让玧其永远在追求更好的作品，永远觉得"还不够"。但正是这种不妥协，让他的音乐拥有了无法复制的质感。',
+    personality: '玧其是那种会在凌晨三点还坐在录音室里，只因为有一个音符还不够好的人。他不善言辞，但每一句话都经过深思熟虑。他用音乐说出了嘴巴说不出的话，用沉默守护着他在乎的人。懂他的人，会在他的歌里听见一颗极其温柔的心。',
+  },
+  'j-hope': {
+    birthday: '1994.02.18',
+    zodiac: '水瓶座',
+    zodiacEn: 'Aquarius',
+    zodiacSymbol: '♒',
+    animal: '狗',
+    animalSymbol: '🐶',
+    mbti: 'ESFJ',
+    element: '木',
+    color: ['#f5c842','#e89820'],
+    tags: ['水瓶座', '狗年', 'ESFJ', '木命'],
+
+    zodiacDesc: '水瓶座的号锡，有着这个星座对人群的热爱与独特的个人主义并存的特质。他创造的不只是舞台，是一种氛围，一种感染力。水瓶的前卫与创新让他的艺术总走在时代前面，而水瓶对他人真诚的关怀，则体现在他每次表演结束后对每个人的感谢里。',
+    animalDesc: '狗年生人，忠诚、热情、给人安全感。号锡的"Hope"不是随便取的——他真的是很多人心里的阳光。狗的直率与真诚让他的快乐不掺假，他的笑是发自内心的，他的关心也是。',
+    personality: '号锡是那种能把整个房间的温度提高的人。他的能量不是表演出来的，是真实流淌在血液里的热爱。他爱舞台，爱音乐，爱他的团队，爱每一个因为他的作品感到快乐的人。与他在一起，你很难继续悲伤——不是因为他会说什么大道理，而是因为他的存在本身就是一种治愈。',
+  },
+  Jimin: {
+    birthday: '1995.10.13',
+    zodiac: '天秤座',
+    zodiacEn: 'Libra',
+    zodiacSymbol: '♎',
+    animal: '猪',
+    animalSymbol: '🐷',
+    mbti: 'ESTJ',
+    element: '木',
+    color: ['#9b7fd4','#6650a0'],
+    tags: ['天秤座', '猪年', 'ESTJ', '木命'],
+    zodiacDesc: '天秤座的智旻，对美有着天生的敏锐感知。他在舞台上的每一个细节都经过反复打磨，因为他无法接受"差不多"。天秤的社交天赋让他能在每个人身边都找到连接，让对方感受到被重视；而天秤内心深处的不安全感，则成为他不断突破自己的动力。',
+    animalDesc: '猪年生人，善良、真诚、对情感极为敏锐。猪年的智旻懂得付出，懂得心疼人，也懂得什么叫做"用尽全力"去爱一件事、爱一群人。他的善意不是策略，是本能。',
+    personality: '智旻是那种会因为在乎你而睡不着觉的人。他的细腻让他能感受到别人察觉不到的情绪变化，他的温柔让他总是把最好的留给别人。舞台上他燃烧，舞台下他是会偷偷记住你说过的每一句话的那个人。爱他的人说，跟他在一起会感觉自己被整个世界温柔以待。',
+  },
+  V: {
+    birthday: '1995.12.30',
+    zodiac: '摩羯座',
+    zodiacEn: 'Capricorn',
+    zodiacSymbol: '♑',
+    animal: '猪',
+    animalSymbol: '🐷',
+    mbti: 'INFP',
+    element: '木',
+    color: ['#5b8fa8','#2d6480'],
+    tags: ['摩羯座', '猪年', 'INFP', '木命'],
+    zodiacDesc: '摩羯座的泰亨，有着这个星座最少被人谈及的一面——深情。他对艺术的执着、对自我风格的坚守、对喜爱之物的忠诚，都是摩羯的底色。摩羯的外表常常让人误以为疏离，但走近了才发现，他只是把最深的情感留给了真正重要的人和事。',
+    animalDesc: '猪年生人，感性、真诚、拥有赤子之心。与智旻同年，猪年的泰亨却以另一种方式诠释着这个生肖的特质——他的真实让人放松，他看世界的眼光永远带着一种孩子般的纯粹与好奇。',
+    personality: '泰亨是那种会在美术馆里站着看一幅画两个小时的人，也是突然发信息给你说"今天天空很好看"的人。他活在自己的美学世界里，但那个世界的大门永远对他爱的人敞开。他的与众不同不是刻意为之，而是他本来就是这样。懂他的人，会觉得遇见他是一种幸运。',
+  },
+  Jungkook: {
+    birthday: '1997.09.01',
+    zodiac: '处女座',
+    zodiacEn: 'Virgo',
+    zodiacSymbol: '♍',
+    animal: '牛',
+    animalSymbol: '🐂',
+    mbti: 'ISFP',
+    element: '火',
+    color: ['#4a8a6a','#2d6048'],
+    tags: ['处女座', '牛年', 'ISFP', '火命'],
+    zodiacDesc: '处女座的柾国，把这个星座的完美主义基因发挥到了极致。他对自己的要求从不因为"已经够好了"而停止，因为在他心里永远存在一个更高的标准。处女座的服务精神在他身上化成了对舞台、对作品、对ARMY无条件的付出与专注。',
+    animalDesc: '牛年生人，勤奋、坚韧、脚踏实地。牛的努力不是爆发式的，而是日复一日、年复一年的积累。柾国从练习生时代到现在，从未停止过磨砺自己——那种专注与坚持，是牛年人骨子里的东西。',
+    personality: '柾国是那种二十岁不到就上台，三十岁了还在认真学新技能的人。他的成长是所有人都看见的，但他自己从不觉得够。他有着少年的热血，也有着超越年龄的沉稳。与他相处，你会感受到一种踏实——他做承诺，他就会兑现；他说在乎，他的行动会证明一切。',
+  },
+};
+
+function openProfile(name) {
+  const p = MEMBER_PROFILES[name];
+  const m = MEMBERS.find(m => m.name === name);
+  if (!p || !m) return;
+
+  document.getElementById('profile-grid').style.display = 'none';
+  document.getElementById('profile-detail').style.display = 'block';
+
+  document.getElementById('pd-emoji').textContent = m.emoji;
+  document.getElementById('pd-kr').textContent = m.kr;
+  document.getElementById('pd-cn').textContent = m.cn + '  ·  ' + p.birthday;
+
+  // tags
+  document.getElementById('pd-tags').innerHTML = p.tags.map(t =>
+    `<div style="padding:4px 12px;border-radius:20px;background:rgba(196,176,232,0.25);border:1px solid var(--glass-border);font-size:11px;color:var(--text-mid);">${t}</div>`
+  ).join('');
+
+  document.getElementById('pd-zodiac-name').textContent = p.zodiacSymbol + ' ' + p.zodiac + ' · ' + p.zodiacEn;
+  document.getElementById('pd-zodiac-desc').textContent = p.zodiacDesc;
+  document.getElementById('pd-animal-name').textContent = p.animalSymbol + ' ' + p.animal;
+  document.getElementById('pd-animal-desc').textContent = p.animalDesc;
+  document.getElementById('pd-personality').textContent = p.personality;
+
+  // generate canvas
+  generateProfileCanvas(m, p);
+
+  // scroll to top
+  window.scrollTo(0, 0);
+}
+
+function closeProfile() {
+  document.getElementById('profile-detail').style.display = 'none';
+  document.getElementById('profile-grid').style.display = 'block';
+}
+
+function generateProfileCanvas(m, p) {
+  const canvas = document.getElementById('profile-canvas');
+  const W = 800, H = 1200;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // bg
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff'); bg.addColorStop(0.5,'#ede6ff'); bg.addColorStop(1,'#ddd0ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = 'rgba(255,255,255,0.52)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  // color accent top bar
+  const ac = ctx.createLinearGradient(50,50,W-50,50);
+  ac.addColorStop(0, p.color[0]+'80'); ac.addColorStop(1, p.color[1]+'80');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 50, 50, W-100, 10, 40);
+
+  ctx.textAlign = 'center';
+
+  // emoji + name
+  ctx.font = '80px serif';
+  ctx.fillText(m.emoji, W/2, 190);
+  ctx.fillStyle = p.color[1];
+  ctx.font = 'bold 48px serif';
+  ctx.fillText(m.kr, W/2, 255);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '22px sans-serif';
+  ctx.fillText(m.cn + '  ·  ' + p.birthday, W/2, 290);
+
+  // tags row
+  const tagW = 130, tagH = 34, tagGap = 12;
+  const totalW = p.tags.length * tagW + (p.tags.length-1) * tagGap;
+  let tx = (W - totalW) / 2;
+  p.tags.forEach(tag => {
+    ctx.fillStyle = 'rgba(196,176,232,0.3)';
+    roundRect(ctx, tx, 312, tagW, tagH, 17);
+    ctx.fillStyle = '#6b5a8a';
+    ctx.font = '18px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(tag, tx + tagW/2, 334);
+    tx += tagW + tagGap;
+  });
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(110, 365); ctx.lineTo(690, 365); ctx.stroke();
+
+  // sections
+  const tmpCtx = document.createElement('canvas').getContext('2d');
+  tmpCtx.font = '24px serif';
+  const lineH = 38, maxW = 570;
+
+  function drawSection(label, content, startY) {
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#9b7fd4';
+    ctx.font = '18px sans-serif';
+    ctx.fillText('✦  ' + label, 110, startY);
+    ctx.fillStyle = '#3d2a5e';
+    ctx.font = '24px serif';
+    let y = startY + 32;
+    let lineCount = 0;
+    content.split('').forEach(c => {});
+    // wrap text
+    let line = '';
+    for (const c of content) {
+      if (tmpCtx.measureText(line + c).width > maxW) {
+        ctx.fillText(line, 110, y); y += lineH; line = c; lineCount++;
+      } else line += c;
+    }
+    if (line) { ctx.fillText(line, 110, y); y += lineH; }
+    return y + 16;
+  }
+
+  let y = 395;
+  y = drawSection('星座 · ' + p.zodiac, p.zodiacDesc, y);
+  y = drawSection('生肖 · ' + p.animal, p.animalDesc, y);
+  y = drawSection('性格解析', p.personality, y);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  const today = new Date();
+  ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+function saveProfileImg() {
+  const canvas = document.getElementById('profile-canvas');
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  const name = document.getElementById('pd-kr').textContent;
+  downloadCanvas('profile-canvas', 'bts-profile-' + name);
+}
+
+// ===================== PAGE 10: PLAYLIST =====================
+const PLAYLISTS = {
+  开心: {
+    icon: '😊',
+    title: '今天的你，闪闪发光',
+    subtitle: 'HAPPY VIBES · 8 SONGS',
+    songs: [
+      { title: 'Dynamite', artist: 'BTS', reason: '为快乐而生的歌，听了就想蹦起来。', wy: 'https://music.163.com/#/search/m/?s=Dynamite BTS', sp: 'https://open.spotify.com/search/Dynamite%20BTS' },
+      { title: 'Butter', artist: 'BTS', reason: '丝滑流畅，就像今天的心情一样顺。', wy: 'https://music.163.com/#/search/m/?s=Butter BTS', sp: 'https://open.spotify.com/search/Butter%20BTS' },
+      { title: 'Permission to Dance', artist: 'BTS', reason: '不需要理由，就是想跳舞。', wy: 'https://music.163.com/#/search/m/?s=Permission to Dance BTS', sp: 'https://open.spotify.com/search/Permission%20to%20Dance%20BTS' },
+      { title: 'Boy With Luv', artist: 'BTS ft. Halsey', reason: '粉色泡泡感，治愈又可爱。', wy: 'https://music.163.com/#/search/m/?s=Boy With Luv BTS', sp: 'https://open.spotify.com/search/Boy%20With%20Luv%20BTS' },
+      { title: 'DNA', artist: 'BTS', reason: '命中注定的愉快，听了笑容藏不住。', wy: 'https://music.163.com/#/search/m/?s=DNA BTS', sp: 'https://open.spotify.com/search/DNA%20BTS' },
+      { title: 'Euphoria', artist: 'Jungkook', reason: '像阳光洒在湖面，轻盈而幸福。', wy: 'https://music.163.com/#/search/m/?s=Euphoria Jungkook', sp: 'https://open.spotify.com/search/Euphoria%20Jungkook' },
+      { title: 'Jamais Vu', artist: 'BTS', reason: '温柔地告诉你，美好会一直在。', wy: 'https://music.163.com/#/search/m/?s=Jamais Vu BTS', sp: 'https://open.spotify.com/search/Jamais%20Vu%20BTS' },
+      { title: 'Happy', artist: 'BTS', reason: '简单纯粹的快乐，就这样足够了。', wy: 'https://music.163.com/#/search/m/?s=Happy BTS', sp: 'https://open.spotify.com/search/Happy%20BTS' },
+    ]
+  },
+  难过: {
+    icon: '🌧',
+    title: '哭出来也没关系',
+    subtitle: 'IT\'S OKAY TO CRY · 8 SONGS',
+    songs: [
+      { title: 'The Truth Untold', artist: 'BTS', reason: '把藏在心里说不出口的话，全唱出来了。', wy: 'https://music.163.com/#/search/m/?s=The Truth Untold BTS', sp: 'https://open.spotify.com/search/The%20Truth%20Untold%20BTS' },
+      { title: 'Epiphany', artist: 'Jin', reason: '在最难的时候，他告诉你要爱自己。', wy: 'https://music.163.com/#/search/m/?s=Epiphany Jin BTS', sp: 'https://open.spotify.com/search/Epiphany%20Jin%20BTS' },
+      { title: 'Trivia: Seesaw', artist: 'SUGA', reason: '说清楚了那些说不清楚的感情。', wy: 'https://music.163.com/#/search/m/?s=Trivia Seesaw SUGA', sp: 'https://open.spotify.com/search/Trivia%20Seesaw%20SUGA' },
+      { title: 'Winter Bear', artist: 'V', reason: '像一首轻声的晚安，把悲伤哄睡着。', wy: 'https://music.163.com/#/search/m/?s=Winter Bear V', sp: 'https://open.spotify.com/search/Winter%20Bear%20V' },
+      { title: 'Spring Day', artist: 'BTS', reason: '思念的重量，被这首歌轻轻托着。', wy: 'https://music.163.com/#/search/m/?s=Spring Day BTS', sp: 'https://open.spotify.com/search/Spring%20Day%20BTS' },
+      { title: 'Lost', artist: 'BTS', reason: '迷失的时候，他们也迷失过。', wy: 'https://music.163.com/#/search/m/?s=Lost BTS', sp: 'https://open.spotify.com/search/Lost%20BTS' },
+      { title: 'Shadow', artist: 'SUGA', reason: '把黑暗说出来，就没那么黑了。', wy: 'https://music.163.com/#/search/m/?s=Shadow SUGA BTS', sp: 'https://open.spotify.com/search/Shadow%20SUGA%20BTS' },
+      { title: '00:00 (Zero O\'Clock)', artist: 'BTS', reason: '零点过后，一切重新开始。', wy: 'https://music.163.com/#/search/m/?s=Zero O Clock BTS', sp: 'https://open.spotify.com/search/Zero%20O%20Clock%20BTS' },
+    ]
+  },
+  焦虑: {
+    icon: '😟',
+    title: '深呼吸，慢慢来',
+    subtitle: 'CALM DOWN · 8 SONGS',
+    songs: [
+      { title: 'Answer: Love Myself', artist: 'BTS', reason: '焦虑的根源是不够爱自己，这首歌是解药。', wy: 'https://music.163.com/#/search/m/?s=Answer Love Myself BTS', sp: 'https://open.spotify.com/search/Answer%20Love%20Myself%20BTS' },
+      { title: 'Serendipity', artist: 'Jimin', reason: '像一只温柔的手，把你从焦虑里拉出来。', wy: 'https://music.163.com/#/search/m/?s=Serendipity Jimin', sp: 'https://open.spotify.com/search/Serendipity%20Jimin' },
+      { title: 'Inner Child', artist: 'V', reason: '回到那个没有压力的自己，哪怕只是三分钟。', wy: 'https://music.163.com/#/search/m/?s=Inner Child V BTS', sp: 'https://open.spotify.com/search/Inner%20Child%20V%20BTS' },
+      { title: 'Mikrokosmos', artist: 'BTS', reason: '你是宇宙里一颗不能缺少的星。', wy: 'https://music.163.com/#/search/m/?s=Mikrokosmos BTS', sp: 'https://open.spotify.com/search/Mikrokosmos%20BTS' },
+      { title: 'Life Goes On', artist: 'BTS', reason: '一切都会过去的，生活还在继续。', wy: 'https://music.163.com/#/search/m/?s=Life Goes On BTS', sp: 'https://open.spotify.com/search/Life%20Goes%20On%20BTS' },
+      { title: 'Blue & Grey', artist: 'BTS', reason: '把说不清的压抑说出来，已经是勇气。', wy: 'https://music.163.com/#/search/m/?s=Blue Grey BTS', sp: 'https://open.spotify.com/search/Blue%20Grey%20BTS' },
+      { title: 'Friends', artist: 'Jimin & V', reason: '有人在你身边，没关系的。', wy: 'https://music.163.com/#/search/m/?s=Friends Jimin V BTS', sp: 'https://open.spotify.com/search/Friends%20Jimin%20V%20BTS' },
+      { title: 'Moon', artist: 'Jin', reason: '你是有人在围绕的月亮，不是孤独的星。', wy: 'https://music.163.com/#/search/m/?s=Moon Jin BTS', sp: 'https://open.spotify.com/search/Moon%20Jin%20BTS' },
+    ]
+  },
+  思念: {
+    icon: '💜',
+    title: '想你，在很远的地方',
+    subtitle: 'I MISS YOU · 8 SONGS',
+    songs: [
+      { title: 'Spring Day', artist: 'BTS', reason: '思念这件事，他们写得比任何人都好。', wy: 'https://music.163.com/#/search/m/?s=Spring Day BTS', sp: 'https://open.spotify.com/search/Spring%20Day%20BTS' },
+      { title: 'We are Bulletproof: the Eternal', artist: 'BTS', reason: '写给所有等待着的人。', wy: 'https://music.163.com/#/search/m/?s=We are Bulletproof the Eternal BTS', sp: 'https://open.spotify.com/search/We%20are%20Bulletproof%20Eternal%20BTS' },
+      { title: 'Fly To My Room', artist: 'BTS', reason: '困在原地时，思念是唯一能飞的东西。', wy: 'https://music.163.com/#/search/m/?s=Fly To My Room BTS', sp: 'https://open.spotify.com/search/Fly%20To%20My%20Room%20BTS' },
+      { title: 'Winter Bear', artist: 'V', reason: '泰亨的声音本身就是一种思念。', wy: 'https://music.163.com/#/search/m/?s=Winter Bear V', sp: 'https://open.spotify.com/search/Winter%20Bear%20V' },
+      { title: 'Your Eyes Tell', artist: 'BTS', reason: '连语言都不需要，只要看着你就够了。', wy: 'https://music.163.com/#/search/m/?s=Your Eyes Tell BTS', sp: 'https://open.spotify.com/search/Your%20Eyes%20Tell%20BTS' },
+      { title: 'Jamais Vu', artist: 'Jin, Jungkook, J-Hope', reason: '即使忘了一切，我还是会找到你。', wy: 'https://music.163.com/#/search/m/?s=Jamais Vu BTS', sp: 'https://open.spotify.com/search/Jamais%20Vu%20BTS' },
+      { title: 'Telepathy', artist: 'BTS', reason: '就算不在一起，心是连着的。', wy: 'https://music.163.com/#/search/m/?s=Telepathy BTS', sp: 'https://open.spotify.com/search/Telepathy%20BTS' },
+      { title: 'Still With You', artist: 'Jungkook', reason: '雨天的思念，被他唱得刚刚好。', wy: 'https://music.163.com/#/search/m/?s=Still With You Jungkook', sp: 'https://open.spotify.com/search/Still%20With%20You%20Jungkook' },
+    ]
+  },
+  疲惫: {
+    icon: '🌙',
+    title: '今天辛苦了，好好休息',
+    subtitle: 'REST NOW · 8 SONGS',
+    songs: [
+      { title: '00:00 (Zero O\'Clock)', artist: 'BTS', reason: '今天结束了，明天重新开始。', wy: 'https://music.163.com/#/search/m/?s=Zero O Clock BTS', sp: 'https://open.spotify.com/search/Zero%20O%20Clock%20BTS' },
+      { title: 'Singularity', artist: 'V', reason: '深沉低回，陪你沉进疲惫里再浮起来。', wy: 'https://music.163.com/#/search/m/?s=Singularity V BTS', sp: 'https://open.spotify.com/search/Singularity%20V%20BTS' },
+      { title: 'Trivia: Love', artist: 'J-Hope', reason: '累了也要记得，爱还在。', wy: 'https://music.163.com/#/search/m/?s=Trivia Love J-Hope BTS', sp: 'https://open.spotify.com/search/Trivia%20Love%20BTS' },
+      { title: 'Awake', artist: 'Jin', reason: '即使跌倒，也可以再试一次。', wy: 'https://music.163.com/#/search/m/?s=Awake Jin BTS', sp: 'https://open.spotify.com/search/Awake%20Jin%20BTS' },
+      { title: 'Blue & Grey', artist: 'BTS', reason: '说出来就好了，不用一个人扛。', wy: 'https://music.163.com/#/search/m/?s=Blue Grey BTS', sp: 'https://open.spotify.com/search/Blue%20Grey%20BTS' },
+      { title: 'Dimple', artist: 'BTS', reason: '轻盈温柔，像被人哄着入睡。', wy: 'https://music.163.com/#/search/m/?s=Dimple BTS', sp: 'https://open.spotify.com/search/Dimple%20BTS' },
+      { title: 'Outro: Ego', artist: 'J-Hope', reason: '疲惫也是成长的一部分，你没有白累。', wy: 'https://music.163.com/#/search/m/?s=Outro Ego J-Hope BTS', sp: 'https://open.spotify.com/search/Outro%20Ego%20BTS' },
+      { title: 'Stay', artist: 'BTS', reason: '就待在这里，哪儿也不用去。', wy: 'https://music.163.com/#/search/m/?s=Stay BTS', sp: 'https://open.spotify.com/search/Stay%20BTS' },
+    ]
+  },
+  治愈: {
+    icon: '🌿',
+    title: '让这些歌治愈你',
+    subtitle: 'HEAL YOUR SOUL · 8 SONGS',
+    songs: [
+      { title: 'Magic Shop', artist: 'BTS', reason: '当你找不到出口，这里有一扇门。', wy: 'https://music.163.com/#/search/m/?s=Magic Shop BTS', sp: 'https://open.spotify.com/search/Magic%20Shop%20BTS' },
+      { title: 'Mikrokosmos', artist: 'BTS', reason: '你的存在，本身就是一道光。', wy: 'https://music.163.com/#/search/m/?s=Mikrokosmos BTS', sp: 'https://open.spotify.com/search/Mikrokosmos%20BTS' },
+      { title: 'Answer: Love Myself', artist: 'BTS', reason: '治愈的起点，是接受自己。', wy: 'https://music.163.com/#/search/m/?s=Answer Love Myself BTS', sp: 'https://open.spotify.com/search/Answer%20Love%20Myself%20BTS' },
+      { title: 'Butterfly', artist: 'BTS', reason: '脆弱而美丽，就像你现在的样子。', wy: 'https://music.163.com/#/search/m/?s=Butterfly BTS', sp: 'https://open.spotify.com/search/Butterfly%20BTS' },
+      { title: 'Euphoria', artist: 'Jungkook', reason: '听了会觉得，世界还是温柔的。', wy: 'https://music.163.com/#/search/m/?s=Euphoria Jungkook', sp: 'https://open.spotify.com/search/Euphoria%20Jungkook' },
+      { title: 'Serendipity', artist: 'Jimin', reason: '被温柔包裹的感觉，就是这首歌。', wy: 'https://music.163.com/#/search/m/?s=Serendipity Jimin', sp: 'https://open.spotify.com/search/Serendipity%20Jimin' },
+      { title: 'Inner Child', artist: 'V', reason: '那个曾经受伤的自己，值得被好好爱。', wy: 'https://music.163.com/#/search/m/?s=Inner Child V BTS', sp: 'https://open.spotify.com/search/Inner%20Child%20V%20BTS' },
+      { title: 'Young Forever', artist: 'BTS', reason: '永远年轻，永远热泪盈眶。', wy: 'https://music.163.com/#/search/m/?s=Young Forever BTS', sp: 'https://open.spotify.com/search/Young%20Forever%20BTS' },
+    ]
+  },
+  热血: {
+    icon: '🔥',
+    title: '燃起来，没有什么做不到',
+    subtitle: 'ON FIRE · 8 SONGS',
+    songs: [
+      { title: 'ON', artist: 'BTS', reason: '从一开始就是战场模式，毫无保留。', wy: 'https://music.163.com/#/search/m/?s=ON BTS', sp: 'https://open.spotify.com/search/ON%20BTS' },
+      { title: 'Not Today', artist: 'BTS', reason: '今天不服输，明天也不。', wy: 'https://music.163.com/#/search/m/?s=Not Today BTS', sp: 'https://open.spotify.com/search/Not%20Today%20BTS' },
+      { title: 'IDOL', artist: 'BTS', reason: '做自己，不解释，不妥协。', wy: 'https://music.163.com/#/search/m/?s=IDOL BTS', sp: 'https://open.spotify.com/search/IDOL%20BTS' },
+      { title: 'Dionysus', artist: 'BTS', reason: '全力燃烧，管他结果如何。', wy: 'https://music.163.com/#/search/m/?s=Dionysus BTS', sp: 'https://open.spotify.com/search/Dionysus%20BTS' },
+      { title: 'MIC Drop', artist: 'BTS', reason: '说完了，麦克风丢了，走人。', wy: 'https://music.163.com/#/search/m/?s=MIC Drop BTS', sp: 'https://open.spotify.com/search/MIC%20Drop%20BTS' },
+      { title: 'Outro: Tear', artist: 'BTS', reason: '裂缝里流出来的都是力量。', wy: 'https://music.163.com/#/search/m/?s=Outro Tear BTS', sp: 'https://open.spotify.com/search/Outro%20Tear%20BTS' },
+      { title: 'Agust D', artist: 'SUGA', reason: '把所有压着的东西全部爆发出来。', wy: 'https://music.163.com/#/search/m/?s=Agust D SUGA', sp: 'https://open.spotify.com/search/Agust%20D%20SUGA' },
+      { title: 'UGH!', artist: 'BTS', reason: '对那些让你烦的事情说不。', wy: 'https://music.163.com/#/search/m/?s=UGH BTS', sp: 'https://open.spotify.com/search/UGH%20BTS' },
+    ]
+  },
+  平静: {
+    icon: '✨',
+    title: '静下来，感受这一刻',
+    subtitle: 'SLOW DOWN · 8 SONGS',
+    songs: [
+      { title: 'Trivia: 轉', artist: 'RM', reason: '像一次深呼吸，把心安放。', wy: 'https://music.163.com/#/search/m/?s=Trivia 轉 RM BTS', sp: 'https://open.spotify.com/search/Trivia%20RM%20BTS' },
+      { title: 'Fake Love (Rocking Vibe Mix)', artist: 'BTS', reason: '安静版本，让情绪沉淀下来。', wy: 'https://music.163.com/#/search/m/?s=Fake Love BTS', sp: 'https://open.spotify.com/search/Fake%20Love%20BTS' },
+      { title: 'Moonchild', artist: 'RM', reason: '写给夜晚里安静的人。', wy: 'https://music.163.com/#/search/m/?s=Moonchild RM', sp: 'https://open.spotify.com/search/Moonchild%20RM' },
+      { title: 'Scenery', artist: 'V', reason: '静静地看风景，什么都不想。', wy: 'https://music.163.com/#/search/m/?s=Scenery V', sp: 'https://open.spotify.com/search/Scenery%20V' },
+      { title: 'winter bears', artist: 'V', reason: '柔软的冬天，安静的心。', wy: 'https://music.163.com/#/search/m/?s=Winter Bear V', sp: 'https://open.spotify.com/search/Winter%20Bear%20V' },
+      { title: 'Abyss', artist: 'Jin', reason: '深处的平静，比浅层的喧嚣更真实。', wy: 'https://music.163.com/#/search/m/?s=Abyss Jin', sp: 'https://open.spotify.com/search/Abyss%20Jin' },
+      { title: 'Dear My Friend', artist: 'BTS', reason: '不需要说话，只是陪着。', wy: 'https://music.163.com/#/search/m/?s=Dear My Friend BTS', sp: 'https://open.spotify.com/search/Dear%20My%20Friend%20BTS' },
+      { title: 'Rain', artist: 'BTS', reason: '雨声和音乐，是最好的白噪音。', wy: 'https://music.163.com/#/search/m/?s=Rain BTS', sp: 'https://open.spotify.com/search/Rain%20BTS' },
+    ]
+  },
+  迷茫: {
+    icon: '🌫',
+    title: '找不到方向的时候，听这个',
+    subtitle: 'FIND YOUR WAY · 8 SONGS',
+    songs: [
+      { title: 'N.O', artist: 'BTS', reason: '第一次问：我真正想要的是什么？', wy: 'https://music.163.com/#/search/m/?s=N.O BTS', sp: 'https://open.spotify.com/search/N.O%20BTS' },
+      { title: 'Tomorrow', artist: 'BTS', reason: '黑暗的隧道尽头，总有出口。', wy: 'https://music.163.com/#/search/m/?s=Tomorrow BTS', sp: 'https://open.spotify.com/search/Tomorrow%20BTS' },
+      { title: 'Interlude: Shadow', artist: 'SUGA', reason: '承认迷茫，是找到出路的第一步。', wy: 'https://music.163.com/#/search/m/?s=Interlude Shadow SUGA BTS', sp: 'https://open.spotify.com/search/Interlude%20Shadow%20BTS' },
+      { title: 'Epilogue: Young Forever', artist: 'BTS', reason: '就算迷失，也要保持永远年轻的心。', wy: 'https://music.163.com/#/search/m/?s=Young Forever BTS', sp: 'https://open.spotify.com/search/Young%20Forever%20BTS' },
+      { title: 'Move', artist: 'J-Hope', reason: '一步一步往前走，不知道去哪也没关系。', wy: 'https://music.163.com/#/search/m/?s=Move J-Hope BTS', sp: 'https://open.spotify.com/search/Move%20J-Hope%20BTS' },
+      { title: 'Dis-ease', artist: 'BTS', reason: '不确定感本身也是人生的一部分。', wy: 'https://music.163.com/#/search/m/?s=Dis-ease BTS', sp: 'https://open.spotify.com/search/Dis-ease%20BTS' },
+      { title: 'Road Not Taken', artist: 'BTS', reason: '没走过的路，才是你的故事。', wy: 'https://music.163.com/#/search/m/?s=Road Not Taken BTS', sp: 'https://open.spotify.com/search/Road%20Not%20Taken%20BTS' },
+      { title: 'Answer: Love Myself', artist: 'BTS', reason: '答案一直在你心里。', wy: 'https://music.163.com/#/search/m/?s=Answer Love Myself BTS', sp: 'https://open.spotify.com/search/Answer%20Love%20Myself%20BTS' },
+    ]
+  },
+  恋爱: {
+    icon: '🌸',
+    title: '心动的感觉，交给防弹',
+    subtitle: 'LOVE SONGS · 8 SONGS',
+    songs: [
+      { title: 'Boy With Luv', artist: 'BTS ft. Halsey', reason: '恋爱脑的最佳BGM，甜到冒泡。', wy: 'https://music.163.com/#/search/m/?s=Boy With Luv BTS', sp: 'https://open.spotify.com/search/Boy%20With%20Luv%20BTS' },
+      { title: 'Serendipity', artist: 'Jimin', reason: '智旻把心动唱成了一种宿命。', wy: 'https://music.163.com/#/search/m/?s=Serendipity Jimin', sp: 'https://open.spotify.com/search/Serendipity%20Jimin' },
+      { title: 'Euphoria', artist: 'Jungkook', reason: '柾国的声音，是恋爱开始时的感觉。', wy: 'https://music.163.com/#/search/m/?s=Euphoria Jungkook', sp: 'https://open.spotify.com/search/Euphoria%20Jungkook' },
+      { title: 'Trivia: Just One Day', artist: 'BTS', reason: '只想和你在一起一天，就够了。', wy: 'https://music.163.com/#/search/m/?s=Just One Day BTS', sp: 'https://open.spotify.com/search/Just%20One%20Day%20BTS' },
+      { title: 'Sweet Night', artist: 'V', reason: '泰亨的声音就是深夜恋爱的声音。', wy: 'https://music.163.com/#/search/m/?s=Sweet Night V', sp: 'https://open.spotify.com/search/Sweet%20Night%20V' },
+      { title: 'Butter', artist: 'BTS', reason: '自信撩人，让人心跳加速。', wy: 'https://music.163.com/#/search/m/?s=Butter BTS', sp: 'https://open.spotify.com/search/Butter%20BTS' },
+      { title: 'Your Eyes Tell', artist: 'BTS', reason: '眼睛里都是你，什么话都不用说。', wy: 'https://music.163.com/#/search/m/?s=Your Eyes Tell BTS', sp: 'https://open.spotify.com/search/Your%20Eyes%20Tell%20BTS' },
+      { title: 'DNA', artist: 'BTS', reason: '命中注定的相遇，从DNA开始。', wy: 'https://music.163.com/#/search/m/?s=DNA BTS', sp: 'https://open.spotify.com/search/DNA%20BTS' },
+    ]
+  },
+};
+
+let selectedPlMood = '';
+
+function selectPlMood(el, mood) {
+  document.querySelectorAll('.pl-mood-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPlMood = mood;
+}
+
+function generatePlaylist() {
+  if (!selectedPlMood) { showToast('请先选择你的心情 ✦'); return; }
+  const pl = PLAYLISTS[selectedPlMood];
+
+  document.getElementById('pl-select').style.display = 'none';
+  document.getElementById('pl-result').style.display = 'block';
+
+  document.getElementById('pl-mood-icon').textContent = pl.icon;
+  document.getElementById('pl-title').textContent = pl.title;
+  document.getElementById('pl-subtitle').textContent = pl.subtitle;
+
+  const container = document.getElementById('pl-songs');
+  container.innerHTML = '';
+  pl.songs.forEach((song, i) => {
+    const card = document.createElement('div');
+    card.className = 'song-card';
+    card.innerHTML = `
+      <div class="song-top">
+        <div class="song-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="song-info">
+          <div class="song-title">${song.title}</div>
+          <div class="song-artist">${song.artist}</div>
+        </div>
+        <div class="song-links">
+          <a class="song-link-btn" href="${song.wy}" target="_blank">网易云</a>
+          <a class="song-link-btn" href="${song.sp}" target="_blank">Spotify</a>
+        </div>
+      </div>
+      <div class="song-reason">${song.reason}</div>
+    `;
+    container.appendChild(card);
+  });
+
+  generatePlCanvas(pl);
+  window.scrollTo(0, 0);
+}
+
+function resetPlaylist() {
+  document.getElementById('pl-result').style.display = 'none';
+  document.getElementById('pl-select').style.display = 'block';
+  document.querySelectorAll('.pl-mood-btn').forEach(b => b.classList.remove('selected'));
+  selectedPlMood = '';
+}
+
+function generatePlCanvas(pl) {
+  const canvas = document.getElementById('pl-canvas');
+  const W = 800, H = 1100;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#f5f0ff'); bg.addColorStop(0.5,'#ede6ff'); bg.addColorStop(1,'#ddd0ff');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = 'rgba(255,255,255,0.52)';
+  roundRect(ctx, 50, 50, W-100, H-100, 40);
+
+  const ac = ctx.createLinearGradient(50,50,W-50,50);
+  ac.addColorStop(0,'#c4b0e880'); ac.addColorStop(1,'#9b7fd480');
+  ctx.fillStyle = ac;
+  roundRectTop(ctx, 50, 50, W-100, 10, 40);
+
+  ctx.textAlign = 'center';
+  ctx.font = '64px serif';
+  ctx.fillText(pl.icon, W/2, 170);
+
+  ctx.fillStyle = '#2d1f4e';
+  ctx.font = '32px serif';
+  ctx.fillText(pl.title, W/2, 220);
+
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  ctx.fillText(pl.subtitle, W/2, 252);
+
+  ctx.strokeStyle = 'rgba(196,176,232,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(110,272); ctx.lineTo(690,272); ctx.stroke();
+
+  // song list
+  const tmpCtx = document.createElement('canvas').getContext('2d');
+  tmpCtx.font = '20px serif';
+  let y = 305;
+  pl.songs.forEach((song, i) => {
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#c4b0e8';
+    ctx.font = '20px serif';
+    ctx.fillText(String(i+1).padStart(2,'0'), 110, y);
+
+    ctx.fillStyle = '#2d1f4e';
+    ctx.font = '22px serif';
+    ctx.fillText(song.title, 148, y);
+
+    ctx.fillStyle = '#a89cc0';
+    ctx.font = '17px sans-serif';
+    ctx.fillText(song.artist, 148, y + 22);
+
+    y += 58;
+  });
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4b0e8';
+  ctx.font = '22px serif';
+  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.fillStyle = '#a89cc0';
+  ctx.font = '18px sans-serif';
+  const today = new Date();
+  ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+function copyPlaylist() {
+  if (!selectedPlMood) return;
+  const pl = PLAYLISTS[selectedPlMood];
+  const text = pl.songs.map((s, i) => `${i+1}. ${s.title} - ${s.artist}`).join('\n');
+  const fullText = `【${pl.title}】\n${pl.subtitle}\n\n${text}\n\n✦ BTS ARMY World`;
+  navigator.clipboard.writeText(fullText).then(() => {
+    showToast('歌单已复制，去网易云搜索吧 ✦');
+  }).catch(() => {
+    // fallback for older browsers
+    const el = document.createElement('textarea');
+    el.value = fullText;
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    showToast('歌单已复制，去网易云搜索吧 ✦');
+  });
+}
+
+// ===================== PAGE 11: MESSAGE BOARD =====================
+document.addEventListener('DOMContentLoaded', () => {
+  const msgContent = document.getElementById('msg-content');
+  if (msgContent) {
+    msgContent.addEventListener('input', function() {
+      document.getElementById('msg-count').textContent = `${this.value.length} / 200`;
+    });
+  }
+});
+
+async function submitMessage() {
+  const nickname = document.getElementById('msg-nickname').value.trim();
+  const content = document.getElementById('msg-content').value.trim();
+  if (!nickname) { showToast('请输入昵称 ✦'); return; }
+  if (!content) { showToast('请写点什么 ✦'); return; }
+  const btn = document.getElementById('msg-submit-btn');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {
+    const res = await fetch(`${WORKER_URL}/messages/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nickname, content })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('msg-nickname').value = '';
+      document.getElementById('msg-content').value = '';
+      document.getElementById('msg-count').textContent = '0 / 200';
+      showToast('留言已提交，等待审核 ✦');
+    } else { showToast(data.error || '提交失败'); }
+  } catch (e) { showToast('提交失败，请检查网络 ✦'); }
+  finally { btn.disabled = false; btn.textContent = '✦ 提交留言'; }
+}
+
+async function loadMessages() {
+  const list = document.getElementById('msg-list');
+  list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载中…</div>';
+  try {
+    const res = await fetch(`${WORKER_URL}/messages/list`);
+    const data = await res.json();
+    const messages = data.messages || [];
+    if (!messages.length) {
+      list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">还没有留言，来做第一个 ✦</div>';
+      return;
+    }
+    list.innerHTML = '';
+    messages.forEach(msg => {
+      const card = document.createElement('div');
+      card.className = 'glass';
+      card.style.cssText = 'padding:18px 20px;';
+      const time = new Date(msg.time).toLocaleDateString('zh-CN', { month:'long', day:'numeric' });
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--deep);">${msg.nickname}</span>
+          <span style="font-size:11px;color:var(--text-light);">${time}</span>
+        </div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:14px;color:var(--text-dark);line-height:1.9;font-weight:300;">${msg.content}</div>
+      `;
+      list.appendChild(card);
+    });
+  } catch (e) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载失败，请重试 ✦</div>';
+  }
+}
+
+function savePlImg() {
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  downloadCanvas('pl-canvas', 'bts-playlist-' + selectedPlMood);
+}
+
+function saveProfileImg() {
+  const canvas = document.getElementById('profile-canvas');
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  const name = document.getElementById('pd-kr').textContent;
+  downloadCanvas('profile-canvas', 'bts-profile-' + name);
+}
+
+function saveBaziImg() {
+  const canvas = document.getElementById('bazi-canvas');
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  downloadCanvas('bazi-canvas', 'bts-bazi-match');
+}
+
+function saveMbtiImg() {
+  const canvas = document.getElementById('mbti-canvas');
+  if (!canvas.width) { showToast('图片生成中，稍等一下 ✦'); return; }
+  downloadCanvas('mbti-canvas', 'bts-mbti-match');
+}
+
+</script>
+</body>
+</html>
