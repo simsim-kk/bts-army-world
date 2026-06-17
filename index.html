@@ -823,6 +823,129 @@
     border-top: 1px solid var(--glass-border);
   }
 
+  /* ============ PAGE 13: DREAM BOARD ============ */
+  #page-dream { max-width: 480px; margin: 0 auto; }
+  .dream-tag-chip {
+    font-size: 11px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    background: rgba(196,176,232,0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .dream-tag-chip:hover, .dream-tag-chip.active-dream-tag {
+    background: linear-gradient(135deg,rgba(196,176,232,0.5),rgba(155,127,212,0.35));
+    border-color: var(--purple);
+    color: var(--deep);
+  }
+  .dream-pick-tag {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid var(--glass-border);
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .dream-pick-tag.selected {
+    background: linear-gradient(135deg,rgba(196,176,232,0.45),rgba(155,127,212,0.3));
+    border-color: var(--purple);
+    color: var(--deep);
+  }
+  .dream-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .dream-card.pinned {
+    border-color: var(--purple);
+    background: rgba(196,176,232,0.18);
+  }
+  .dream-pin-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: linear-gradient(135deg,var(--violet),var(--purple));
+    color: white;
+    letter-spacing: 1px;
+  }
+  .dream-card-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+  .dream-card-meta {
+    font-size: 11px;
+    color: var(--text-light);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  .dream-card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+  .dream-card-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(196,176,232,0.25);
+    color: var(--text-mid);
+    border: 1px solid var(--glass-border);
+  }
+  .dream-card-content {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    line-height: 1.9;
+    font-weight: 300;
+    white-space: pre-wrap;
+  }
+  .dream-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--glass-border);
+  }
+  .dream-like-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 12px;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dream-like-btn:hover, .dream-like-btn.liked {
+    background: rgba(196,176,232,0.3);
+    border-color: var(--purple);
+    color: var(--deep);
+  }
+  .dream-expand-btn {
+    font-size: 12px;
+    color: var(--purple);
+    cursor: pointer;
+    padding: 4px 0;
+    background: none;
+    border: none;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+
   /* ============ FOOTER WATERMARK ============ */
   .site-footer {
     text-align: center;
@@ -1019,6 +1142,7 @@
     <a class="nav-link" href="#" onclick="showPage('profile')">成员图鉴</a>
     <a class="nav-link" href="#" onclick="showPage('playlist')">心情歌单</a>
     <a class="nav-link" href="#" onclick="showPage('message')">留言板</a>
+    <a class="nav-link" href="#" onclick="showPage('dream')">梦境</a>
     <a class="nav-link" href="#" onclick="shareSite(event)" style="background:linear-gradient(135deg,var(--violet),var(--purple));color:white;">分享 ✦</a>
     <a class="nav-link lang-toggle" href="#" onclick="toggleLang(event)" id="lang-btn">繁</a></div>
 </nav>
@@ -1824,6 +1948,84 @@
   <button class="btn btn-glass" onclick="loadMessages()" style="width:100%;margin-bottom:20px;">刷新留言</button>
 </div>
 
+<!-- PAGE 13: DREAM BOARD -->
+<div class="page" id="page-dream">
+  <div class="section-title">✦ dream log</div>
+  <div class="section-heading">防弹梦境记录</div>
+
+  <!-- PINNED DREAM (always shown at top) -->
+  <div id="dream-pinned-wrap" style="margin-bottom:20px;"></div>
+
+  <!-- TAGS -->
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+    <span class="dream-tag-chip active-dream-tag" onclick="filterDream(this,'')">全部</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'RM')">🐨 RM</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'Jin')">🐹 JIN</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'SUGA')">🐱 SUGA</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'j-hope')">🐿️ J-HOPE</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'Jimin')">🐥 JIMIN</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'V')">🐻 V</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'Jungkook')">🐰 JUNGKOOK</span>
+    <span class="dream-tag-chip" onclick="filterDream(this,'BTS')">💜 BTS</span>
+  </div>
+
+  <!-- SORT -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;">
+    <button class="btn btn-primary" id="dream-sort-new" onclick="sortDream('new')" style="flex:1;font-size:12px;padding:8px;">最新</button>
+    <button class="btn btn-glass" id="dream-sort-hot" onclick="sortDream('hot')" style="flex:1;font-size:12px;padding:8px;">最热 🔥</button>
+  </div>
+
+  <!-- DREAM LIST -->
+  <div id="dream-list" style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px;">
+    <div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载中…</div>
+  </div>
+
+  <!-- SUBMIT DREAM -->
+  <div class="glass" style="padding:24px;margin-bottom:16px;">
+    <div style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin-bottom:16px;">✦ 分享你的防弹梦境</div>
+
+    <label class="input-label">梦境标题 *</label>
+    <input type="text" id="dr-title" placeholder="给这个梦起个名字…" maxlength="40" style="margin-bottom:12px;">
+
+    <label class="input-label">梦到的成员 *（可多选）</label>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;" id="dr-tag-grid">
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'RM')">🐨 RM</span>
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'Jin')">🐹 JIN</span>
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'SUGA')">🐱 SUGA</span>
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'j-hope')">🐿️ J-HOPE</span>
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'Jimin')">🐥 JIMIN</span>
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'V')">🐻 V</span>
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'Jungkook')">🐰 JUNGKOOK</span>
+      <span class="dream-pick-tag" onclick="toggleDreamTag(this,'BTS')">💜 BTS</span>
+    </div>
+
+    <label class="input-label">梦境日期</label>
+    <input type="date" id="dr-date" style="margin-bottom:12px;">
+
+    <label class="input-label">梦醒心情</label>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;" id="dr-mood-grid">
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'😊 开心')">😊 开心</span>
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'🥹 感动')">🥹 感动</span>
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'😭 哭了')">😭 哭了</span>
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'😍 心动')">😍 心动</span>
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'😅 尴尬')">😅 尴尬</span>
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'😱 惊吓')">😱 惊吓</span>
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'🌙 意犹未尽')">🌙 意犹未尽</span>
+      <span class="dream-pick-tag" onclick="selectDreamMood(this,'__custom__')" id="dr-mood-custom-btn">✏️ 自定义</span>
+    </div>
+    <input type="text" id="dr-mood-custom-input" placeholder="输入你的心情…" maxlength="15" style="display:none;margin-bottom:12px;">
+
+    <label class="input-label">梦境内容 *</label>
+    <textarea id="dr-content" placeholder="写下你的梦境，越详细越好…" style="height:140px;margin-bottom:12px;" maxlength="3000"></textarea>
+
+    <label class="input-label">你的昵称</label>
+    <input type="text" id="dr-author" placeholder="留空显示匿名" maxlength="20" style="margin-bottom:16px;">
+
+    <button class="btn btn-primary" onclick="submitDream()" style="width:100%;" id="dr-submit-btn">✦ 分享梦境</button>
+  </div>
+  <p style="font-size:11px;color:var(--text-light);text-align:center;margin-bottom:20px;">梦境经审核后公开显示 ✦</p>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1938,6 +2140,7 @@ function showPage(name) {
   if (name === 'packs') initDrawStoryPage();
   if (name === 'lyric') loadLyricWall();
   if (name === 'quote') loadRemoteQuotes();
+  if (name === 'dream') loadDreams();
   // show/hide lyric background
   const lwBg = document.getElementById('lw-bg');
   if (lwBg) lwBg.style.display = name === 'lyric' ? 'flex' : 'none';
@@ -2841,6 +3044,242 @@ function generateDsCanvas(storyText) {
   ctx.font = '16px sans-serif';
   const today = new Date();
   ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+// ===================== PAGE 13: DREAM BOARD =====================
+const PINNED_DREAM = {
+  id: 'dream_pinned_0001',
+  title: 'Tokyo Tower is falling down',
+  tags: ['RM', 'SUGA'],
+  dreamDate: '2026-06-14',
+  mood: '😅 尴尬',
+  author: 'simsim',
+  time: '2026-06-14T00:00:00.000Z',
+  likes: 0,
+  pinned: true,
+  approved: true,
+  content: `我走在队伍偏后的位置，前面是BTS的六个背影——当然，除了金南俊。他落在更后面，正跟一个staff边走边聊，偶尔有笑声飘过来。四周很安静，只有脚步声和摄像机的镜头追着我们，像一条甩不掉的尾巴。
+
+我盯着前面那排肩膀，心里一直在盘算：得让南俊到前面去。他该走在那六个人中间，这样镜头才能框住七个人。而我——我想退到最后面，最好能卡在画框边缘之外，只做一个模糊的背景。
+
+正想着怎么开口，我放慢脚步，回头和金南俊说："南俊，你要不要走到前面去？跟其他成员走在一起，这样摄像机就能拍到你们七个人了。"
+
+他偏头看了我一眼，没多问，真的就迈开长腿，穿过队伍，朝着那六个人的方向走去。我看着他一点点靠近那群熟悉的背影，心里那块石头总算落了地——好了，这下镜头里就是完整的七个人了。
+
+结果他走到那群人身边，脚步却没停，直接擦着他们身侧，又继续往前走了两步、三步……最后在队伍最前方约两米的地方才慢下来。那六个人还是结伴走着，中间空出一段不近不远的距离，他一个人领先着，背影孤零零的。
+
+我站在原地，有点无奈地叹了口气。明明是想让他融进去的，怎么最后还是变成了他走前面、大家跟后面的局面？
+
+正想着要不要再提醒他一句，金南俊忽然站定，回过头，朝我招了招手。
+
+"过来。"
+
+我愣了一下，还是跑了过去。他自然而然地放慢步子，等我跟上，两个人的肩膀几乎贴在一起，胳膊时不时蹭到。这种距离让我浑身不自在，总忍不住往回瞄——不是瞄镜头，是瞄某个理论上该在队尾安静走着的人。
+
+大概是回头次数太多了，金南俊侧过脸，压低声音说："没事的，不用担心摄像头，被拍到也没关系。"
+
+我讪讪地转回头，盯着自己的鞋尖，喉咙里那些话翻来覆去地滚了好几遍——南俊啊，其实我不是怕摄像头。我怕的是闵玧其误会。我们两个……好像有点暧昧了ㅠㅠ。
+
+可这些话终究一个字也没吐出来。我只是闷头走着，耳根烧得厉害，心里却止不住地想：闵玧其看见了会不会误会？
+
+金南俊没等到我的回应，只当我是害羞，轻轻拍了拍我的肩，没再追问。
+
+然后，我余光里看到了东京塔。它就那么突兀地出现在街道尽头，铁红色的身影在一片低矮建筑中格外扎眼。我还没来得及感叹梦境的不讲理，那座塔忽然晃了一下。
+
+接着，它开始倾斜。
+
+像一只被抽掉基座的长筷子，缓慢地、沉默地，朝我们的方向倒下来。
+
+人群四散。我下意识回头跑了两步，却发现金南俊还站在原地，仰头看着那座越来越近的铁塔，表情居然带着一点好奇。
+
+疯了。
+
+我冲回去拽他的胳膊，几乎是用尽全力把他往旁边扯。他这才像回过神似的，顺势朝旁边让了一步。塔身几乎是擦着他刚才站的位置砸下来，轰的一声，碎了一地。
+
+我喘着气松开手，心还在狂跳，嘴上只能挤出一句："……金南俊，你刚才差点就变成东京塔的夹心饼干了。"`,
+};
+
+let dreamCurrentTag = '';
+let dreamCurrentSort = 'new';
+let dreamLiked = new Set(JSON.parse(sessionStorage.getItem('dreamLiked') || '[]'));
+let selectedDreamTags = [];
+let selectedDreamMood = '';
+
+function filterDream(el, tag) {
+  document.querySelectorAll('.dream-tag-chip').forEach(c => c.classList.remove('active-dream-tag'));
+  el.classList.add('active-dream-tag');
+  dreamCurrentTag = tag;
+  loadDreams();
+}
+
+function sortDream(sort) {
+  dreamCurrentSort = sort;
+  document.getElementById('dream-sort-new').className = sort === 'new' ? 'btn btn-primary' : 'btn btn-glass';
+  document.getElementById('dream-sort-hot').className = sort === 'hot' ? 'btn btn-primary' : 'btn btn-glass';
+  document.getElementById('dream-sort-new').style.flex = '1';
+  document.getElementById('dream-sort-new').style.fontSize = '12px';
+  document.getElementById('dream-sort-new').style.padding = '8px';
+  document.getElementById('dream-sort-hot').style.flex = '1';
+  document.getElementById('dream-sort-hot').style.fontSize = '12px';
+  document.getElementById('dream-sort-hot').style.padding = '8px';
+  loadDreams();
+}
+
+async function loadDreams() {
+  // render pinned at top always
+  const pinnedWrap = document.getElementById('dream-pinned-wrap');
+  if (pinnedWrap && !pinnedWrap.hasChildNodes()) {
+    pinnedWrap.appendChild(buildDreamCard(PINNED_DREAM));
+  }
+
+  const list = document.getElementById('dream-list');
+  list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载中…</div>';
+  try {
+    let url = `${WORKER_URL}/dreams/list?sort=${dreamCurrentSort}`;
+    if (dreamCurrentTag) url += `&tag=${encodeURIComponent(dreamCurrentTag)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const dreams = (data.dreams || []).filter(d => d.id !== PINNED_DREAM.id);
+
+    if (!dreams.length) {
+      list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">还没有梦境，来分享第一个 ✦</div>';
+      return;
+    }
+    list.innerHTML = '';
+    dreams.forEach(d => list.appendChild(buildDreamCard(d)));
+  } catch (e) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载失败，请重试 ✦</div>';
+  }
+}
+
+const DREAM_PREVIEW_LEN = 200;
+
+function buildDreamCard(d) {
+  const card = document.createElement('div');
+  card.className = 'dream-card' + (d.pinned ? ' pinned' : '');
+  const isLong = d.content.length > DREAM_PREVIEW_LEN;
+  const preview = isLong ? d.content.slice(0, DREAM_PREVIEW_LEN) + '…' : d.content;
+  const liked = dreamLiked.has(d.id);
+  const time = new Date(d.time).toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' });
+
+  card.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div class="dream-card-title" style="flex:1;">${d.title}</div>
+      ${d.pinned ? '<span class="dream-pin-badge">✦ 置顶</span>' : ''}
+    </div>
+    <div class="dream-card-meta">
+      <span>by ${d.author}</span>
+      ${d.dreamDate ? '<span>梦于 ' + d.dreamDate + '</span>' : ''}
+      ${d.mood ? '<span>' + d.mood + '</span>' : ''}
+      <span>${time}</span>
+    </div>
+    <div class="dream-card-tags">
+      ${d.tags.map(t => `<span class="dream-card-tag">${t}</span>`).join('')}
+    </div>
+    <div class="dream-card-content" id="dc-${d.id}">${preview}</div>
+    ${isLong ? `<button class="dream-expand-btn" id="deb-${d.id}" onclick="expandDream('${d.id}',\`${d.content.replace(/`/g,'\\`')}\`)">展开全文 ↓</button>` : ''}
+    <div class="dream-card-footer">
+      <button class="dream-like-btn ${liked ? 'liked' : ''}" id="dlb-${d.id}" onclick="likeDream('${d.id}',this)">
+        💜 <span id="dlc-${d.id}">${d.likes || 0}</span>
+      </button>
+    </div>
+  `;
+  return card;
+}
+
+function expandDream(id, fullContent) {
+  const el = document.getElementById(`dc-${id}`);
+  const btn = document.getElementById(`deb-${id}`);
+  if (!el) return;
+  if (btn.textContent.includes('展开')) {
+    el.textContent = fullContent;
+    btn.textContent = '收起 ↑';
+  } else {
+    el.textContent = fullContent.slice(0, DREAM_PREVIEW_LEN) + '…';
+    btn.textContent = '展开全文 ↓';
+  }
+}
+
+async function likeDream(id, btn) {
+  if (dreamLiked.has(id)) { showToast('已经点过赞了 ✦'); return; }
+  try {
+    const res = await fetch(`${WORKER_URL}/dreams/like`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+    const data = await res.json();
+    if (data.success) {
+      dreamLiked.add(id);
+      sessionStorage.setItem('dreamLiked', JSON.stringify([...dreamLiked]));
+      document.getElementById(`dlc-${id}`).textContent = data.likes;
+      btn.classList.add('liked');
+      showToast('💜 已点赞');
+    }
+  } catch (e) { showToast('点赞失败，请重试'); }
+}
+
+function toggleDreamTag(el, tag) {
+  el.classList.toggle('selected');
+  if (el.classList.contains('selected')) {
+    if (!selectedDreamTags.includes(tag)) selectedDreamTags.push(tag);
+  } else {
+    selectedDreamTags = selectedDreamTags.filter(t => t !== tag);
+  }
+}
+
+function selectDreamMood(el, mood) {
+  document.querySelectorAll('#dr-mood-grid .dream-pick-tag').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  const customInput = document.getElementById('dr-mood-custom-input');
+  if (mood === '__custom__') {
+    customInput.style.display = 'block';
+    selectedDreamMood = '__custom__';
+    customInput.focus();
+  } else {
+    customInput.style.display = 'none';
+    selectedDreamMood = mood;
+  }
+}
+
+async function submitDream() {
+  const title = document.getElementById('dr-title').value.trim();
+  const content = document.getElementById('dr-content').value.trim();
+  const author = document.getElementById('dr-author').value.trim();
+  const dreamDate = document.getElementById('dr-date').value;
+  let finalMood = selectedDreamMood;
+  if (selectedDreamMood === '__custom__') {
+    finalMood = document.getElementById('dr-mood-custom-input').value.trim() || '';
+  }
+  if (!title) { showToast('请填写梦境标题 ✦'); return; }
+  if (selectedDreamTags.length === 0) { showToast('请至少选择一个成员标签 ✦'); return; }
+  if (!content) { showToast('请写下梦境内容 ✦'); return; }
+
+  const btn = document.getElementById('dr-submit-btn');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {
+    const res = await fetch(`${WORKER_URL}/dreams/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title, tags: selectedDreamTags, dreamDate,
+        mood: finalMood, content,
+        author: author || '匿名'
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('dr-title').value = '';
+      document.getElementById('dr-content').value = '';
+      document.getElementById('dr-author').value = '';
+      document.getElementById('dr-date').value = '';
+      selectedDreamTags = [];
+      selectedDreamMood = '';
+      document.querySelectorAll('#dr-tag-grid .dream-pick-tag, #dr-mood-grid .dream-pick-tag').forEach(b => b.classList.remove('selected'));
+      showToast('梦境已提交，等待审核 ✦');
+    } else { showToast(data.error || '提交失败'); }
+  } catch (e) { showToast('提交失败，请重试 ✦'); }
+  finally { btn.disabled = false; btn.textContent = '✦ 分享梦境'; }
 }
 
 async function shareSite(e) {
