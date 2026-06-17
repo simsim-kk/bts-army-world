@@ -770,12 +770,26 @@
   }
   .site-footer a:hover { color: var(--purple); }
 
+  .lang-toggle {
+    background: linear-gradient(135deg, var(--violet), var(--purple)) !important;
+    color: white !important;
+    border-radius: 20px !important;
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    letter-spacing: 1px;
+  }
+  .lang-toggle:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
   @media (max-width: 480px) {
     .nav-links { gap: 2px; }
     .nav-link { font-size: 10px; padding: 4px 7px; }
     .nav-logo { font-size: 16px; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
 </head>
 <body>
 
@@ -793,7 +807,8 @@
     <a class="nav-link" href="#" onclick="showPage('bazi')">八字匹配</a>
     <a class="nav-link" href="#" onclick="showPage('profile')">成员图鉴</a>
     <a class="nav-link" href="#" onclick="showPage('playlist')">心情歌单</a>
-    <a class="nav-link" href="#" onclick="showPage('message')">留言板</a></div>
+    <a class="nav-link" href="#" onclick="showPage('message')">留言板</a>
+    <a class="nav-link lang-toggle" href="#" onclick="toggleLang(event)" id="lang-btn">繁</a></div>
 </nav>
 
 <!-- PAGE 1: DAILY COMPANION -->
@@ -2189,6 +2204,59 @@ function generateDsCanvas(storyText) {
   ctx.font = '16px sans-serif';
   const today = new Date();
   ctx.fillText(today.getFullYear()+'.'+String(today.getMonth()+1).padStart(2,'0')+'.'+String(today.getDate()).padStart(2,'0'), W/2, H-46);
+}
+
+// ===================== LANG TOGGLE =====================
+let isTraditional = false;
+let converterToTW = null;
+let converterToSC = null;
+let originalTexts = new Map();
+
+async function toggleLang(e) {
+  e.preventDefault();
+  const btn = document.getElementById('lang-btn');
+
+  if (!converterToTW) {
+    btn.textContent = '转换中…';
+    try {
+      converterToTW = OpenCC.Converter({ from: 'cn', to: 'twp' });
+      converterToSC = OpenCC.Converter({ from: 'tw', to: 'cn' });
+    } catch(err) {
+      showToast('转换失败，请重试 ✦');
+      btn.textContent = isTraditional ? '简' : '繁';
+      return;
+    }
+  }
+
+  if (!isTraditional) {
+    // convert to traditional
+    convertNodes(document.body, converterToTW);
+    isTraditional = true;
+    btn.textContent = '简';
+  } else {
+    // convert back to simplified
+    convertNodes(document.body, converterToSC);
+    isTraditional = false;
+    btn.textContent = '繁';
+  }
+}
+
+function convertNodes(node, converter) {
+  // skip script, style, input, textarea tags
+  const skipTags = new Set(['SCRIPT','STYLE','INPUT','TEXTAREA','CANVAS']);
+  if (skipTags.has(node.nodeName)) return;
+
+  if (node.nodeType === Node.TEXT_NODE) {
+    if (node.textContent.trim()) {
+      node.textContent = converter(node.textContent);
+    }
+    return;
+  }
+
+  // skip lang-toggle button itself
+  if (node.id === 'lang-btn') return;
+
+  node.childNodes.forEach(child => convertNodes(child, converter));
 }
 
 // init
