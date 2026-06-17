@@ -753,6 +753,23 @@
     border-top: 1px solid var(--glass-border);
   }
 
+  /* ============ FOOTER WATERMARK ============ */
+  .site-footer {
+    text-align: center;
+    padding: 32px 0 24px;
+    position: relative; z-index: 1;
+  }
+  .site-footer a {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-light);
+    text-decoration: none;
+    letter-spacing: 3px;
+    transition: color 0.2s;
+  }
+  .site-footer a:hover { color: var(--purple); }
+
   @media (max-width: 480px) {
     .nav-links { gap: 2px; }
     .nav-link { font-size: 10px; padding: 4px 7px; }
@@ -1649,9 +1666,9 @@ function generateCompanionCanvas(m, fortune) {
 
   // footer
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
   ctx.textAlign = 'center';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H - 80);
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H - 80);
 
   // date
   const today = new Date();
@@ -1723,9 +1740,9 @@ function generateLyricCard() {
 
   // footer
   ctx.fillStyle = s.sub + '80';
-  ctx.font = '20px serif';
+  ctx.font = "italic 20px 'Cormorant Garamond', serif";
   ctx.textAlign = 'center';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H - 80);
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H - 80);
 
   document.getElementById('lyric-preview').style.display = 'block';
 }
@@ -1820,8 +1837,8 @@ function generateArmyCanvas(years, total, remainder, dateStr, msg) {
   ctx.fillText('✦  ✦  ✦', W/2, 760);
 
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-80);
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-80);
   const today = new Date();
   ctx.fillStyle = '#a89cc0';
   ctx.font = '18px sans-serif';
@@ -1879,8 +1896,8 @@ function generateQuoteCanvas(q) {
   ctx.fillText('— ' + q.author, W/2, 630);
 
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-80);
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-80);
 }
 
 function shareQuoteImg() {
@@ -2166,8 +2183,8 @@ function generateDsCanvas(storyText) {
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '20px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.font = "italic 20px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-70);
   ctx.fillStyle = '#a89cc0';
   ctx.font = '16px sans-serif';
   const today = new Date();
@@ -2340,8 +2357,8 @@ function generateStoryCanvas(member, story, userName, storyType) {
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-70);
   ctx.fillStyle = '#a89cc0';
   ctx.font = '18px sans-serif';
   const today = new Date();
@@ -2618,8 +2635,8 @@ function generateMbtiCanvas(best, userType) {
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-70);
   ctx.fillStyle = '#a89cc0';
   ctx.font = '18px sans-serif';
   const today = new Date();
@@ -2901,8 +2918,8 @@ function generateBaziCanvas(best, mainEl, secondEl, stemChar, branchChar, year) 
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-70);
   ctx.fillStyle = '#a89cc0';
   ctx.font = '18px sans-serif';
   const today = new Date();
@@ -3142,8 +3159,8 @@ function generateProfileCanvas(m, p) {
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-70);
   ctx.fillStyle = '#a89cc0';
   ctx.font = '18px sans-serif';
   const today = new Date();
@@ -3419,8 +3436,8 @@ function generatePlCanvas(pl) {
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#c4b0e8';
-  ctx.font = '22px serif';
-  ctx.fillText('✦ BTS ARMY World ✦', W/2, H-70);
+  ctx.font = "italic 22px 'Cormorant Garamond', serif";
+  ctx.fillText('✦ BTS ARMY World ✦ simsim ✦', W/2, H-70);
   ctx.fillStyle = '#a89cc0';
   ctx.font = '18px sans-serif';
   const today = new Date();
@@ -3538,5 +3555,10 @@ function saveMbtiImg() {
 }
 
 </script>
+<!-- FOOTER -->
+<div class="site-footer">
+  <a href="https://github.com/simsim-kk" target="_blank">✦ simsim ✦</a>
+</div>
+
 </body>
 </html>
