@@ -571,6 +571,25 @@
   .ds-dot.done { background: var(--purple); }
   .ds-dot.current { background: var(--deep); transform: scale(1.3); }
 
+  .ds-lock-btn {
+    padding: 7px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.5);
+    font-size: 12px;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .ds-lock-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--violet); }
+  .ds-lock-btn.locked {
+    background: linear-gradient(135deg,rgba(196,176,232,0.45),rgba(155,127,212,0.3));
+    border-color: var(--purple);
+    color: var(--deep);
+    font-weight: 500;
+  }
+
   /* ============ PAGE 7: MBTI ============ */
   #page-mbti { max-width: 480px; margin: 0 auto; }
   .mbti-group-label {
@@ -1273,6 +1292,22 @@
       <p style="font-family:'Noto Serif SC',serif;font-weight:300;font-size:15px;color:var(--text-mid);line-height:1.9;">
         十张命运之签<br>每签揭开一个角色<br>最终生成你的防弹命运故事
       </p>
+
+      <!-- MEMBER LOCK -->
+      <div style="margin-top:20px;text-align:left;">
+        <div style="font-size:11px;color:var(--text-light);letter-spacing:2px;margin-bottom:10px;">✦ 锁定出现的member（不选则全部随机）</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;" id="ds-member-lock-grid">
+          <div class="ds-lock-btn" onclick="toggleLockMember(this,'RM')">🐨 RM</div>
+          <div class="ds-lock-btn" onclick="toggleLockMember(this,'Jin')">🐹 JIN</div>
+          <div class="ds-lock-btn" onclick="toggleLockMember(this,'SUGA')">🐱 SUGA</div>
+          <div class="ds-lock-btn" onclick="toggleLockMember(this,'j-hope')">🐿️ J-HOPE</div>
+          <div class="ds-lock-btn" onclick="toggleLockMember(this,'Jimin')">🐥 JIMIN</div>
+          <div class="ds-lock-btn" onclick="toggleLockMember(this,'V')">🐻 V</div>
+          <div class="ds-lock-btn" onclick="toggleLockMember(this,'Jungkook')">🐰 JUNGKOOK</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-light);text-align:center;" id="ds-lock-hint">当前：全部7人随机</div>
+      </div>
+
       <button class="btn btn-primary" onclick="useDefaultPack()" style="width:100%;margin-top:16px;">✦ 使用默认问题包</button>
     </div>
 
@@ -2402,6 +2437,29 @@ const DS_QUESTIONS = [...DEFAULT_DS_QUESTIONS];
 
 let dsCurrentTag = '';
 
+let lockedMembers = []; // empty = all random
+
+function toggleLockMember(el, name) {
+  el.classList.toggle('locked');
+  if (el.classList.contains('locked')) {
+    if (!lockedMembers.includes(name)) lockedMembers.push(name);
+  } else {
+    lockedMembers = lockedMembers.filter(n => n !== name);
+  }
+  const hint = document.getElementById('ds-lock-hint');
+  if (hint) {
+    hint.textContent = lockedMembers.length === 0
+      ? '当前：全部7人随机'
+      : `当前锁定：${lockedMembers.join('、')}`;
+  }
+}
+
+function getDrawPool() {
+  if (lockedMembers.length === 0) return MEMBERS;
+  const pool = MEMBERS.filter(m => lockedMembers.includes(m.name));
+  return pool.length > 0 ? pool : MEMBERS;
+}
+
 function useDefaultPack() {
   DS_QUESTIONS.length = 0;
   DEFAULT_DS_QUESTIONS.forEach(q => DS_QUESTIONS.push(q));
@@ -2545,8 +2603,9 @@ function flipCard() {
   if (dsFlipped) return;
   dsFlipped = true;
 
-  // pick random member
-  dsPicked = MEMBERS[Math.floor(Math.random() * MEMBERS.length)];
+  // pick random member from locked pool
+  const pool = getDrawPool();
+  dsPicked = pool[Math.floor(Math.random() * pool.length)];
 
   document.getElementById('ds-reveal-emoji').textContent = dsPicked.emoji;
   document.getElementById('ds-reveal-name').textContent = dsPicked.kr;
