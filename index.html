@@ -1172,6 +1172,19 @@
   </div>
 
   <canvas id="quote-canvas" style="display:none;"></canvas>
+
+  <!-- SUBMIT QUOTE -->
+  <div class="glass" style="padding:20px;margin-top:8px;margin-bottom:16px;">
+    <div style="font-size:12px;color:var(--text-light);letter-spacing:2px;margin-bottom:14px;">✦ 投稿你喜欢的防弹语录</div>
+    <label class="input-label">语录内容（150字以内）</label>
+    <textarea id="sq-text" placeholder="写下让你印象深刻的一句话…" maxlength="150" style="height:80px;margin-bottom:10px;"></textarea>
+    <label class="input-label">来源（member或专辑名）</label>
+    <input type="text" id="sq-author" placeholder="例：RM / Answer: Love Myself" maxlength="20" style="margin-bottom:10px;">
+    <label class="input-label">你的昵称（选填）</label>
+    <input type="text" id="sq-contributor" placeholder="留空显示匿名" maxlength="20" style="margin-bottom:14px;">
+    <button class="btn btn-primary" onclick="submitQuote()" style="width:100%;" id="sq-submit-btn">✦ 提交语录</button>
+  </div>
+  <p style="font-size:11px;color:var(--text-light);text-align:center;margin-bottom:20px;">语录经审核后加入随机池 ✦</p>
 </div>
 
 <!-- PAGE 5: STORY -->
@@ -1923,6 +1936,7 @@ function showPage(name) {
   if (name === 'draw-story') initDrawStoryPage();
   if (name === 'packs') initDrawStoryPage();
   if (name === 'lyric') loadLyricWall();
+  if (name === 'quote') loadRemoteQuotes();
   // show/hide lyric background
   const lwBg = document.getElementById('lw-bg');
   if (lwBg) lwBg.style.display = name === 'lyric' ? 'flex' : 'none';
@@ -2250,11 +2264,26 @@ function generateArmyCanvas(years, total, remainder, dateStr, msg) {
 
 // ===================== PAGE 4: QUOTES =====================
 let lastQuoteIdx = -1;
+let allQuotes = [...QUOTES]; // start with built-in, merge remote on load
+
+async function loadRemoteQuotes() {
+  try {
+    const res = await fetch(`${WORKER_URL}/quotes/list`);
+    const data = await res.json();
+    if (data.quotes && data.quotes.length > 0) {
+      // merge, avoid duplicates by text
+      const existing = new Set(QUOTES.map(q => q.text));
+      const newOnes = data.quotes.filter(q => !existing.has(q.text));
+      allQuotes = [...QUOTES, ...newOnes];
+    }
+  } catch (e) { /* use built-in only */ }
+}
+
 function newQuote() {
   let idx;
-  do { idx = Math.floor(Math.random() * QUOTES.length); } while (idx === lastQuoteIdx);
+  do { idx = Math.floor(Math.random() * allQuotes.length); } while (idx === lastQuoteIdx && allQuotes.length > 1);
   lastQuoteIdx = idx;
-  const q = QUOTES[idx];
+  const q = allQuotes[idx];
 
   const card = document.getElementById('quote-card');
   card.style.opacity = 0;
@@ -2266,6 +2295,31 @@ function newQuote() {
     generateQuoteCanvas(q);
     document.getElementById('share-quote-btn').style.display = 'inline-flex';
   }, 200);
+}
+
+async function submitQuote() {
+  const text = document.getElementById('sq-text').value.trim();
+  const author = document.getElementById('sq-author').value.trim();
+  const contributor = document.getElementById('sq-contributor').value.trim();
+  if (!text) { showToast('请输入语录内容 ✦'); return; }
+  if (!author) { showToast('请填写来源 ✦'); return; }
+  const btn = document.getElementById('sq-submit-btn');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {
+    const res = await fetch(`${WORKER_URL}/quotes/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, author, contributor })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('sq-text').value = '';
+      document.getElementById('sq-author').value = '';
+      document.getElementById('sq-contributor').value = '';
+      showToast('语录已提交，等待审核 ✦');
+    } else { showToast(data.error || '提交失败'); }
+  } catch (e) { showToast('提交失败，请重试 ✦'); }
+  finally { btn.disabled = false; btn.textContent = '✦ 提交语录'; }
 }
 
 function generateQuoteCanvas(q) {
@@ -2843,7 +2897,7 @@ function convertNodes(node, converter) {
 
 // init
 document.getElementById('army-date').max = new Date().toISOString().split('T')[0];
-
+loadRemoteQuotes();
 newQuote();
 
 // ===================== PAGE 5: STORY =====================
