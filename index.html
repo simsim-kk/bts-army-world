@@ -824,7 +824,7 @@
   }
 
   /* ============ PAGE 13: DREAM BOARD ============ */
-  #page-dream { max-width: 480px; margin: 0 auto; }
+  #page-dream { max-width: 680px; margin: 0 auto; }
   .dream-tag-chip {
     font-size: 11px;
     padding: 5px 13px;
@@ -858,16 +858,20 @@
     color: var(--deep);
   }
   .dream-card {
-    background: var(--glass-bg);
+    background: rgba(255,255,255,0.85);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     backdrop-filter: blur(16px);
+    box-shadow: 0 4px 20px rgba(107,79,160,0.08);
     padding: 20px;
     transition: all 0.2s;
+    width: 100%;
+    box-sizing: border-box;
   }
   .dream-card.pinned {
     border-color: var(--purple);
-    background: rgba(196,176,232,0.18);
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 4px 24px rgba(107,79,160,0.15);
   }
   .dream-pin-badge {
     font-size: 10px;
@@ -3190,10 +3194,12 @@ function sortDream(sort) {
 }
 
 async function loadDreams() {
-  // render pinned at top always
+  // render pinned at top, respect tag filter
   const pinnedWrap = document.getElementById('dream-pinned-wrap');
-  if (pinnedWrap && !pinnedWrap.hasChildNodes()) {
-    pinnedWrap.appendChild(buildDreamCard(PINNED_DREAM));
+  if (pinnedWrap) {
+    const tagMatch = !dreamCurrentTag || PINNED_DREAM.tags.includes(dreamCurrentTag);
+    pinnedWrap.innerHTML = '';
+    if (tagMatch) pinnedWrap.appendChild(buildDreamCard(PINNED_DREAM));
   }
 
   const list = document.getElementById('dream-list');
