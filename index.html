@@ -967,6 +967,71 @@
   }
   .site-footer a:hover { color: var(--purple); }
 
+  /* ============ HAMBURGER MENU ============ */
+  .hamburger-btn {
+    width: 36px; height: 36px;
+    border: none; background: rgba(255,255,255,0.6);
+    border-radius: 10px; cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 5px;
+    padding: 8px; transition: all 0.2s;
+    border: 1px solid var(--glass-border);
+  }
+  .hamburger-btn:hover { background: rgba(255,255,255,0.9); }
+  .hamburger-btn span {
+    display: block; width: 18px; height: 1.5px;
+    background: var(--deep); border-radius: 2px;
+    transition: all 0.3s;
+    transform-origin: center;
+  }
+  .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+  .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  .nav-overlay {
+    position: fixed; inset: 0; z-index: 150;
+    background: rgba(30,10,60,0.3); backdrop-filter: blur(4px);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .nav-overlay.show { opacity: 1; pointer-events: all; }
+
+  .nav-drawer {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 260px; z-index: 200;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(24px);
+    box-shadow: -4px 0 32px rgba(107,79,160,0.15);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    overflow-y: auto;
+  }
+  .nav-drawer.open { transform: translateX(0); }
+
+  .nav-drawer-inner {
+    padding: 80px 24px 40px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .drawer-link {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 15px; font-weight: 300;
+    color: var(--text-mid);
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .drawer-link:hover { background: rgba(196,176,232,0.2); color: var(--deep); }
+  .drawer-link.active { background: rgba(196,176,232,0.25); color: var(--deep); font-weight: 400; }
+  .share-link {
+    margin-top: 16px;
+    background: linear-gradient(135deg, var(--violet), var(--purple));
+    color: white !important;
+    text-align: center;
+    font-weight: 400;
+  }
+  .share-link:hover { opacity: 0.85; }
+
   .lang-toggle {
     background: linear-gradient(135deg, var(--violet), var(--purple)) !important;
     color: white !important;
@@ -975,10 +1040,7 @@
     font-size: 11px !important;
     letter-spacing: 1px;
   }
-  .lang-toggle:hover {
-    opacity: 0.85;
-    transform: translateY(-1px);
-  }
+  .lang-toggle:hover { opacity: 0.85; transform: translateY(-1px); }
 
   /* ============ PAGE 12: QUESTION PACKS ============ */
   /* ============ LYRIC WALL BACKGROUND (5 text rows) ============ */
@@ -1134,22 +1196,33 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">BTS ARMY World</div>
-  <div class="nav-links">
-    <a class="nav-link active" href="#" onclick="showPage('home')">今日陪伴</a>
-    <a class="nav-link" href="#" onclick="showPage('lyric')">歌词卡片</a>
-    <a class="nav-link" href="#" onclick="showPage('army')">入团纪念</a>
-    <a class="nav-link" href="#" onclick="showPage('quote')">防弹语录</a>
-    <a class="nav-link" href="#" onclick="showPage('story')">专属故事</a>
-    <a class="nav-link" href="#" onclick="showPage('draw-story')">抽签故事</a>
-    <a class="nav-link" href="#" onclick="showPage('mbti')">MBTI配对</a>
-    <a class="nav-link" href="#" onclick="showPage('bazi')">八字匹配</a>
-    <a class="nav-link" href="#" onclick="showPage('profile')">成员图鉴</a>
-    <a class="nav-link" href="#" onclick="showPage('playlist')">心情歌单</a>
-    <a class="nav-link" href="#" onclick="showPage('message')">留言板</a>
-    <a class="nav-link" href="#" onclick="showPage('dream')">梦境</a>
-    <a class="nav-link" href="#" onclick="shareSite(event)" style="background:linear-gradient(135deg,var(--violet),var(--purple));color:white;">分享 ✦</a>
-    <a class="nav-link lang-toggle" href="#" onclick="toggleLang(event)" id="lang-btn">繁</a></div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a class="nav-link lang-toggle" href="#" onclick="toggleLang(event)" id="lang-btn">繁</a>
+    <button class="hamburger-btn" onclick="toggleMenu()" id="hamburger-btn" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-drawer" id="nav-drawer">
+  <div class="nav-drawer-inner">
+    <a class="drawer-link active" href="#" onclick="showPage('home')">✦ 今日陪伴</a>
+    <a class="drawer-link" href="#" onclick="showPage('lyric')">✦ 歌词卡片</a>
+    <a class="drawer-link" href="#" onclick="showPage('army')">✦ 入团纪念</a>
+    <a class="drawer-link" href="#" onclick="showPage('quote')">✦ 防弹语录</a>
+    <a class="drawer-link" href="#" onclick="showPage('story')">✦ 专属故事</a>
+    <a class="drawer-link" href="#" onclick="showPage('draw-story')">✦ 抽签故事</a>
+    <a class="drawer-link" href="#" onclick="showPage('mbti')">✦ MBTI配对</a>
+    <a class="drawer-link" href="#" onclick="showPage('bazi')">✦ 八字匹配</a>
+    <a class="drawer-link" href="#" onclick="showPage('profile')">✦ 成员图鉴</a>
+    <a class="drawer-link" href="#" onclick="showPage('playlist')">✦ 心情歌单</a>
+    <a class="drawer-link" href="#" onclick="showPage('message')">✦ 留言板</a>
+    <a class="drawer-link" href="#" onclick="showPage('dream')">✦ 梦境</a>
+    <a class="drawer-link share-link" href="#" onclick="shareSite(event)">分享网站 ✦</a>
+  </div>
+</div>
+<div class="nav-overlay" id="nav-overlay" onclick="closeMenu()"></div>
 
 <!-- PAGE 1: DAILY COMPANION -->
 <div class="page active" id="page-home">
@@ -2170,20 +2243,43 @@ async function callWorkerAI(prompt) {
 }
 
 // ===================== UTILS =====================
+// ===================== HAMBURGER MENU =====================
+function toggleMenu() {
+  const drawer = document.getElementById('nav-drawer');
+  const overlay = document.getElementById('nav-overlay');
+  const btn = document.getElementById('hamburger-btn');
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) closeMenu();
+  else {
+    drawer.classList.add('open');
+    overlay.classList.add('show');
+    btn.classList.add('open');
+  }
+}
+
+function closeMenu() {
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-overlay').classList.remove('show');
+  document.getElementById('hamburger-btn').classList.remove('open');
+}
+
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
-  event.target.classList.add('active');
+  // update drawer active link
+  document.querySelectorAll('.drawer-link').forEach(l => l.classList.remove('active'));
+  const activeLink = document.querySelector(`.drawer-link[onclick*="'${name}'"]`);
+  if (activeLink) activeLink.classList.add('active');
+  closeMenu();
+  // show/hide lyric background
+  const lwBg = document.getElementById('lw-bg');
+  if (lwBg) lwBg.style.display = name === 'lyric' ? 'flex' : 'none';
   if (name === 'message') loadMessages();
   if (name === 'draw-story') initDrawStoryPage();
   if (name === 'packs') initDrawStoryPage();
   if (name === 'lyric') loadLyricWall();
   if (name === 'quote') loadRemoteQuotes();
   if (name === 'dream') loadDreams();
-  // show/hide lyric background
-  const lwBg = document.getElementById('lw-bg');
-  if (lwBg) lwBg.style.display = name === 'lyric' ? 'flex' : 'none';
 }
 
 function showToast(msg) {
@@ -2953,7 +3049,8 @@ function nextQuestion() {
   const col = document.getElementById('ds-collected');
   const tag = document.createElement('div');
   tag.className = 'ds-role-tag';
-  tag.innerHTML = `<span>${dsPicked.emoji}</span><span>${dsPicked.kr}</span><span style="color:var(--text-light)">${role}</span>`;
+  const qText = DS_QUESTIONS[dsCurrentIdx].q;
+  tag.innerHTML = `<span>${dsPicked.emoji}</span><span>${dsPicked.kr}</span><span style="color:var(--text-light)">${qText}</span>`;
   col.appendChild(tag);
   document.getElementById('ds-collected-wrap') && (document.getElementById('ds-collected-wrap').style.display = 'block');
 
@@ -2972,10 +3069,15 @@ async function showDsResult() {
   // roles summary
   const summary = document.getElementById('ds-roles-summary');
   summary.innerHTML = '';
+  // build role→question map for display
+  const roleToQ = {};
+  DS_QUESTIONS.forEach(q => { roleToQ[q.role] = q.q; });
+
   Object.entries(dsAnswers).forEach(([role, m]) => {
     const tag = document.createElement('div');
     tag.className = 'ds-role-tag';
-    tag.innerHTML = `<span>${m.emoji}</span><span style="color:var(--deep);font-weight:500">${m.kr}</span><span>${role}</span>`;
+    const displayRole = roleToQ[role] || role;
+    tag.innerHTML = `<span>${m.emoji}</span><span style="color:var(--deep);font-weight:500">${m.kr}</span><span>${displayRole}</span>`;
     summary.appendChild(tag);
   });
 
