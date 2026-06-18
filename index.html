@@ -3102,14 +3102,14 @@ async function showDsResult() {
     return `问题"${q.q}" → 由【${member.kr}（${member.cn}）】负责扮演和体现`;
   }).filter(Boolean).join('\n');
 
-  // only detect from pack title, not questions content
   const isFemaleEmperor = dsPackTitle.includes('女尊') || dsPackTitle.includes('皇帝') || dsPackTitle.includes('妃子') || dsPackTitle.includes('后宫');
 
   const packContext = dsPackTitle && dsPackTitle !== '防弹命运抽签'
     ? `【问题包主题】${dsPackTitle}
-【背景设定】${dsPackDescription
-      ? dsPackDescription
-      : `请根据问题包标题"${dsPackTitle}"以及以下问题内容，自行推断最合理的世界观和场景背景，并严格贴合这个设定展开故事。问题内容已反映了场景线索，请充分利用。`
+【背景设定】${
+      isFemaleEmperor
+        ? '这是一个以女性为尊的世界。"你"是皇帝，是国家最高权力者，日理万机。七位成员是你后宫的妃子，身份地位低于你，每天只需争宠。' + (dsPackDescription ? ' 补充：' + dsPackDescription : '')
+        : dsPackDescription || `请根据问题包标题"${dsPackTitle}"以及以下问题内容，自行推断最合理的世界观和场景背景，并严格贴合这个设定展开故事。`
     }`
     : '【背景设定】七位BTS成员同时出现在主角的日常生活中，各自以不同方式争夺主角的注意力';
 
