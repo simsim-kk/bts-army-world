@@ -2282,6 +2282,35 @@ function showPage(name) {
   if (name === 'dream') loadDreams();
 }
 
+// ===================== CACHE SYSTEM =====================
+const CACHE = new Map();
+const CACHE_TTL = 30 * 60 * 1000; // 30分钟
+
+function cacheGet(key) {
+  const entry = CACHE.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > CACHE_TTL) { CACHE.delete(key); return null; }
+  return entry.data;
+}
+
+function cacheSet(key, data) {
+  CACHE.set(key, { data, ts: Date.now() });
+}
+
+function cacheInvalidate(key) {
+  CACHE.delete(key);
+}
+
+// wrapped fetch with cache
+async function fetchWithCache(key, url) {
+  const cached = cacheGet(key);
+  if (cached) return cached;
+  const res = await fetch(url);
+  const data = await res.json();
+  cacheSet(key, data);
+  return data;
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -2611,8 +2640,7 @@ let allQuotes = [...QUOTES]; // start with built-in, merge remote on load
 
 async function loadRemoteQuotes() {
   try {
-    const res = await fetch(`${WORKER_URL}/quotes/list`);
-    const data = await res.json();
+    const data = await fetchWithCache('quotes', `${WORKER_URL}/quotes/list`);
     if (data.quotes && data.quotes.length > 0) {
       // merge, avoid duplicates by text
       const existing = new Set(QUOTES.map(q => q.text));
@@ -2750,8 +2778,7 @@ const DEFAULT_LYRICS = [
 
 async function loadLyricWall() {
   try {
-    const res = await fetch(`${WORKER_URL}/lyrics/list`);
-    const data = await res.json();
+    const data = await fetchWithCache('lyrics', `${WORKER_URL}/lyrics/list`);
     const approved = data.lyrics || [];
     const all = approved.length > 0 ? approved : DEFAULT_LYRICS;
     renderLyricWall(all);
@@ -5081,8 +5108,7 @@ async function loadMessages() {
   const list = document.getElementById('msg-list');
   list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">加载中…</div>';
   try {
-    const res = await fetch(`${WORKER_URL}/messages/list`);
-    const data = await res.json();
+    const data = await fetchWithCache('messages', `${WORKER_URL}/messages/list`);
     const messages = data.messages || [];
     if (!messages.length) {
       list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:13px;">还没有留言，来做第一个 ✦</div>';
