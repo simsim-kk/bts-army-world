@@ -5299,15 +5299,24 @@ function saveMbtiImg() {
 }
 
 </script>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
 <!-- FOOTER -->
 <div class="site-footer">
   <a href="https://github.com/simsim-kk" target="_blank">✦ simsim ✦</a>
   <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:var(--text-light);margin-top:6px;letter-spacing:1px;">
-    本站已被访问 <span id="busuanzi_value_site_pv">...</span> 次
+    本站已被访问 <span id="pv-count">...</span> 次
   </div>
 </div>
+
+<script>
+// self-hosted page view counter via Cloudflare Worker KV
+(async () => {
+  try {
+    const res = await fetch('https://bts-army-world.huocassie1206.workers.dev/pv', { method: 'POST' });
+    const data = await res.json();
+    if (data.pv) document.getElementById('pv-count').textContent = data.pv.toLocaleString();
+  } catch (e) {}
+})();
+</script>
 
 </body>
 </html>
