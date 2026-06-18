@@ -3000,9 +3000,8 @@ async function showDsResult() {
     return `"${q.q}" → 由【${member.kr}（${member.cn}）】扮演`;
   }).filter(Boolean).join('\n');
 
-  // detect world type from title and questions for better context
-  const allQText = DS_QUESTIONS.map(q => q.q).join('');
-  const isFemaleEmperor = allQText.includes('妃') || allQText.includes('陛下') || allQText.includes('宫') || dsPackTitle.includes('女尊') || dsPackTitle.includes('皇帝') || dsPackTitle.includes('妃子');
+  // only detect from pack title, not questions content
+  const isFemaleEmperor = dsPackTitle.includes('女尊') || dsPackTitle.includes('皇帝') || dsPackTitle.includes('妃子') || dsPackTitle.includes('后宫');
 
   const packContext = dsPackTitle && dsPackTitle !== '防弹命运抽签'
     ? `【问题包主题】${dsPackTitle}
