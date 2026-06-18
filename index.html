@@ -3000,21 +3000,30 @@ async function showDsResult() {
     return `"${q.q}" → 由【${member.kr}（${member.cn}）】扮演`;
   }).filter(Boolean).join('\n');
 
+  // detect world type from title and questions for better context
+  const allQText = DS_QUESTIONS.map(q => q.q).join('');
+  const isFemaleEmperor = allQText.includes('妃') || allQText.includes('陛下') || allQText.includes('宫') || dsPackTitle.includes('女尊') || dsPackTitle.includes('皇帝') || dsPackTitle.includes('妃子');
+
   const packContext = dsPackTitle && dsPackTitle !== '防弹命运抽签'
-    ? `【问题包主题】${dsPackTitle}\n【背景设定】${dsPackDescription || '请根据"' + dsPackTitle + '"这个主题，推断出最合理的世界观和场景，并严格贴合这个设定写故事'}`
+    ? `【问题包主题】${dsPackTitle}
+【背景设定】${dsPackDescription
+      ? dsPackDescription
+      : `请根据问题包标题"${dsPackTitle}"以及以下问题内容，自行推断最合理的世界观和场景背景，并严格贴合这个设定展开故事。问题内容已反映了场景线索，请充分利用。`
+    }`
     : '【背景设定】七位BTS成员同时出现在主角的日常生活中，各自以不同方式争夺主角的注意力';
+
+  const femaleEmperorNote = isFemaleEmperor ? `
+━━ 女尊世界特别说明 ━━
+- 这是一个以女性为尊的世界，"你"是皇帝，是最高权力者，日理万机
+- 七位成员是你的妃子，身份低于你，需要争夺你的宠爱
+- 争宠、怀孕、绝食、告状都发生在妃子身上，绝对不是"你"
+- "你"的视角是淡然、掌控、偶尔被这群妃子搞得头疼的皇帝` : '';
 
   const prompt = `你是一位擅长写粉丝向小说的中文作家，擅长多人围绕同一主角的复杂情感张力，文风细腻有画面感，情节有逻辑有起伏。
 
 ━━ 背景信息 ━━
 ${packContext}
-
-━━ 女尊世界特别说明（如背景涉及女尊/宫廷/皇帝） ━━
-- 这是一个以女性为尊的世界，"你"是皇帝，是最高权力者
-- 七位成员是你的妃子，身份低于你，需要争夺你的宠爱
-- "你"日理万机，高高在上，妃子们才是争宠、怀孕、绝食、告状的那一方
-- 绝对不能让"你"怀孕、争宠、或表现出低于妃子的地位
-- "你"的视角是淡然、掌控、偶尔被这群妃子搞得头疼的皇帝
+${femaleEmperorNote}
 
 ━━ 抽签结果（每个问题对应一位成员，他们在故事里扮演对应角色） ━━
 ${allQA}
@@ -3026,10 +3035,11 @@ ${rolesList}
 1. 第二人称"你"视角，"你"的身份完全由背景设定决定
 2. 故事必须有清晰的场景、起因、发展、至少一个情节转折，是真正的故事而非人物罗列
 3. 每位成员的出场方式、台词、行为必须符合他们的性格特征
-4. 抽签结果里的角色关系要真实体现在剧情里，比如"假孕争宠"就要写那个成员假孕的场景
-5. 全程只用中文，不出现任何英文单词
-6. 成员名字只用提供的中文名或kr名，绝对不要编造名字
-7. 字数500-650字，直接开始故事，不要标题，不要任何说明`;
+4. 抽签结果里的角色关系要真实体现在剧情里，比如"假孕争宠"就要写那个成员假孕的具体场景和细节
+5. 如果没有背景描述，根据问题包标题和问题内容推断场景，保持逻辑一致
+6. 全程只用中文，不出现任何英文单词
+7. 成员名字只用提供的中文名或kr名，绝对不要编造名字
+8. 字数500-650字，直接开始故事，不要标题，不要任何说明`;
 
   const el = document.getElementById('ds-story-text');
   el.textContent = '正在生成你的命运故事…';
